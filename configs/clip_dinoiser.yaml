@@ -20,27 +20,27 @@ train:
   corr_lr: 0.00005
   found_lr: 0.01
   num_workers: 4
-  epochs: 100
+  epochs: 3
   milestones:
     - 5000
   step_lr_gamma: 0.1
-  data: "/home/data/imagenet" # CHANGE to your ImageNet data folder
+  data: "./data/coco_stuff164k" # CHANGE to your ImageNet data folder
   loss: CE
   ds_size: 1000
   im_size: 448
-output: "" # CHANGE to your results folder
+output: "reproduce" # CHANGE to your results folder
 
 evaluate:
   eval_only: true
   task:
-    - voc
-    - context
-    - coco_object
-    - context59
-    - voc20
+    # - voc
+    # - context
+    # - coco_object
+    # - context59
+    # - voc20
     - coco_stuff
-    - cityscapes
-    - ade20k
+    # - cityscapes
+    # - ade20k
 
   # evaluation
   voc: segmentation/configs/_base_/datasets/pascal_voc12.py

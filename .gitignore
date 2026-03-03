@@ -1,3 +1,9 @@
+# dataset files
+data/
+
+# models/FOUND
+models/FOUND
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

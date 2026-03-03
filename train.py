@@ -27,7 +27,6 @@ from models import build_model
 from scheduler import MultiStepLR
 from segmentation.evaluation import build_seg_dataloader, build_seg_dataset, build_seg_inference
 
-
 def get_model_dict(model):
     new_check = {}
     new_check['obj_proj.bias'] = model.state_dict()['obj_proj.bias'].cpu()
@@ -87,7 +86,7 @@ def do_train(model, train_cfg, loaders, out_path):
     model.found_model = None
     model.vit_encoder = None
     torch.save({
-        'epoch': epoch,
+        'epoch': epoch, # type:ignore
         'model_state_dict': get_model_dict(model),
     }, os.path.join(ch_path, 'last.pt'))
 
@@ -108,7 +107,7 @@ def validate(model, cfg):
         dist.broadcast_object_list(metric)
         torch.cuda.empty_cache()
         dist.barrier()
-        ret[f"val/{key}_miou"] = metric[0]["mIoU"] * 100
+        ret[f"val/{key}_miou"] = metric[0]["mIoU"] * 100 # type:ignore
     logger.info(ret)
 
 
@@ -140,12 +139,12 @@ def run_val(model, loader, eval_key, logger, cfg):
     return metric
 
 
-def main(cfg):
+def main_initial(cfg):
     out_path = cfg.get('output')
     if out_path == "": out_path = os.getcwd()
     os.makedirs(out_path, exist_ok=True)
     dset_path = cfg.train.get('data')  # Imagenet root
-    train_folder = os.path.join(dset_path, 'train')
+    train_folder = os.path.join(dset_path, 'train_v1')
     assert os.path.exists(train_folder), 'Empty dataset path'
     logger = get_logger(cfg)
     logger.info(f"Running CLIP-DINOiser training")
@@ -187,6 +186,76 @@ def main(cfg):
     # run full evaluation
     validate(model, cfg)
 
+def main(cfg):
+    out_path = cfg.get('output')
+    if out_path == "": out_path = os.getcwd()
+    os.makedirs(out_path, exist_ok=True)
+    dset_path = cfg.train.get('data')
+    train_folder = os.path.join(dset_path, 'images', 'train2017')
+    assert os.path.exists(train_folder), 'Empty dataset path'
+    logger = get_logger(cfg)
+    logger.info(f"Running CLIP-DINOiser training on COCO-Stuff Dataset")
+
+    # COCO-Stuff images are stored as a flat folder (no class subfolders).
+    # Define a small dataset that lists image files in the folder and returns (image, dummy_label).
+    from torchvision.datasets.folder import default_loader
+    IMG_EXTENSIONS = ('.jpg', '.jpeg', '.png', '.bmp', '.tif', '.tiff')
+
+    class FolderImagesDataset(torch.utils.data.Dataset):
+        def __init__(self, root, transform=None):
+            self.root = root
+            self.transform = transform
+            self.samples = [os.path.join(root, f) for f in os.listdir(root)
+                            if f.lower().endswith(IMG_EXTENSIONS)]
+            self.samples.sort()
+
+        def __len__(self):
+            return len(self.samples)
+
+        def __getitem__(self, idx):
+            path = self.samples[idx]
+            img = default_loader(path)
+            if self.transform:
+                img = self.transform(img)
+            # return dummy label 0 to keep compatibility with DataLoader loops
+            return img, 0
+
+    # set up transforms and dataset
+    im_size = cfg.train.get('im_size', 448)
+    num_workers = cfg.train.get('num_workers', 4)
+    transforms = [T.ToTensor(), T.Resize(im_size), T.RandomCrop(im_size), T.RandomHorizontalFlip(p=0.5),
+                  T.ColorJitter(0.5)]
+    train_dataset = FolderImagesDataset(train_folder, transform=T.Compose(transforms))
+
+    if cfg.train.get("ds_size", None) is not None:
+        # if subset: SAMPLE
+        indices = np.random.choice(list(range(len(train_dataset))), cfg.train.ds_size)
+        train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=cfg.train.batch_size,
+                                                   num_workers=num_workers,
+                                                   sampler=torch.utils.data.SubsetRandomSampler(indices))
+    else:
+        train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=cfg.train.batch_size,
+                                                   num_workers=num_workers,
+                                                   shuffle=True)
+
+    classes = ['']  # dummy text query - we do not use text queries for the training
+    model = build_model(cfg.model, class_names=classes)
+    model.load_teachers()
+    mp.set_start_method("fork", force=True)
+    init_dist("pytorch", )
+    rank, world_size = get_dist_info()
+    logger.info(f"RANK and WORLD_SIZE in environ: {rank}/{world_size}")
+
+    cudnn.benchmark = True
+    do_train(model, cfg.train, {"train": train_loader}, out_path=out_path)
+    logger.info(f"Training finished. Running evaluation...")
+
+    ## we can remove dino and found
+    model.found_model = None
+    model.vit_encoder = None
+
+    # run full evaluation
+    validate(model, cfg)
 
 def parse_args():
     parser = argparse.ArgumentParser(

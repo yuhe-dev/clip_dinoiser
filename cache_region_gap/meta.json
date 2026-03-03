@@ -1,0 +1,13 @@
+{
+  "model_name": "ViT-B-32",
+  "pretrained": "openai",
+  "prompt_template": "a photo of a {}",
+  "use_things_only": true,
+  "num_classes": 171,
+  "ignore_index": 255,
+  "bbox_expand": 0.1,
+  "min_region_pixels": 128,
+  "max_regions_per_image": 100,
+  "n": 200,
+  "seed": 0
+}

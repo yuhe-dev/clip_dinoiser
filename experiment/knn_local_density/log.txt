@@ -1,0 +1,766 @@
+[2026-03-02 16:24:39 CLIP_DINOiser] (feature_experiment_pipeline.py 236): INFO [DataPrep] feature='knn_local_density_faiss', pool=200, tier=100, strategy='mixed'
+[2026-03-02 16:24:41 CLIP_DINOiser] (feature_experiment_pipeline.py 309): INFO Training on 100 images. Selectoin meta: {'seed': 0, 'feature_name': 'knn_local_density_faiss', 'feature_kwargs': {'cache_dir': 'visual_embedding', 'emb_file': 'visual_emb.npy', 'paths_file': 'clip_paths.json', 'k': 50, 'metric': 'cosine', 'mode': 'inv_mean_dist', 'include_self': False, 'normalize_for_cosine': True, 'use_gpu': False, 'radius': 0.2}, 'pool_n': 200, 'tier_n': 100, 'subset_strategy': 'mixed', 'counts': {'pool': 200, 'low': 100, 'high': 100, 'mixed': 100, 'random': 100, 'train': 100}}
+[2026-03-02 20:06:56 CLIP_DINOiser] (feature_experiment_pipeline.py 236): INFO [DataPrep] feature='knn_local_density_faiss', pool=200, tier=100, strategy='mixed'
+[2026-03-02 23:55:09 CLIP_DINOiser] (feature_experiment_pipeline.py 236): INFO [DataPrep] feature='knn_local_density_faiss', pool=200, tier=100, strategy='mixed'
+[2026-03-02 23:56:29 CLIP_DINOiser] (feature_experiment_pipeline.py 236): INFO [DataPrep] feature='knn_local_density_faiss', pool=200, tier=100, strategy='mixed'
+[2026-03-02 23:56:31 CLIP_DINOiser] (feature_experiment_pipeline.py 309): INFO Training on 100 images. Selectoin meta: {'seed': 0, 'feature_name': 'knn_local_density_faiss', 'feature_kwargs': {'cache_dir': 'visual_embedding', 'emb_file': 'visual_emb.npy', 'paths_file': 'clip_paths_abs.json', 'k': 50, 'metric': 'cosine', 'mode': 'inv_mean_dist', 'include_self': False, 'normalize_for_cosine': True, 'use_gpu': False, 'radius': 0.2}, 'pool_n': 200, 'tier_n': 100, 'subset_strategy': 'mixed', 'counts': {'pool': 200, 'low': 100, 'high': 100, 'mixed': 100, 'random': 100, 'train': 100}}
+[2026-03-03 00:19:14 CLIP_DINOiser] (feature_experiment_pipeline.py 236): INFO [DataPrep] feature='knn_local_density_faiss', pool=200, tier=100, strategy='mixed'
+[2026-03-03 00:19:17 CLIP_DINOiser] (feature_experiment_pipeline.py 309): INFO Training on 100 images. Selectoin meta: {'seed': 0, 'feature_name': 'knn_local_density_faiss', 'feature_kwargs': {'cache_dir': 'visual_embedding', 'emb_file': 'visual_emb.npy', 'paths_file': 'clip_paths_abs.json', 'k': 50, 'metric': 'cosine', 'mode': 'inv_mean_dist', 'include_self': False, 'normalize_for_cosine': True, 'use_gpu': False, 'radius': 0.2}, 'pool_n': 200, 'tier_n': 100, 'subset_strategy': 'mixed', 'counts': {'pool': 200, 'low': 100, 'high': 100, 'mixed': 100, 'random': 100, 'train': 100}}
+[2026-03-03 00:19:49 CLIP_DINOiser] (feature_experiment_pipeline.py 236): INFO [DataPrep] feature='knn_local_density_faiss', pool=20000, tier=100, strategy='mixed'
+[2026-03-03 00:22:09 CLIP_DINOiser] (feature_experiment_pipeline.py 309): INFO Training on 100 images. Selectoin meta: {'seed': 0, 'feature_name': 'knn_local_density_faiss', 'feature_kwargs': {'cache_dir': 'visual_embedding', 'emb_file': 'visual_emb.npy', 'paths_file': 'clip_paths_abs.json', 'k': 50, 'metric': 'cosine', 'mode': 'inv_mean_dist', 'include_self': False, 'normalize_for_cosine': True, 'use_gpu': False, 'radius': 0.2}, 'pool_n': 20000, 'tier_n': 100, 'subset_strategy': 'mixed', 'counts': {'pool': 20000, 'low': 100, 'high': 100, 'mixed': 100, 'random': 100, 'train': 100}}
+[2026-03-03 00:25:43 CLIP_DINOiser] (feature_experiment_pipeline.py 236): INFO [DataPrep] feature='knn_local_density_faiss', pool=20000, tier=100, strategy='low'
+[2026-03-03 00:26:19 CLIP_DINOiser] (feature_experiment_pipeline.py 236): INFO [DataPrep] feature='knn_local_density_faiss', pool=20000, tier=1000, strategy='high'
+[2026-03-03 00:26:29 CLIP_DINOiser] (feature_experiment_pipeline.py 236): INFO [DataPrep] feature='knn_local_density_faiss', pool=20000, tier=100, strategy='mixed'
+[2026-03-03 00:26:40 CLIP_DINOiser] (feature_experiment_pipeline.py 236): INFO [DataPrep] feature='knn_local_density_faiss', pool=20000, tier=100, strategy='random'
+[2026-03-03 00:27:15 CLIP_DINOiser] (feature_experiment_pipeline.py 236): INFO [DataPrep] feature='knn_local_density_faiss', pool=20000, tier=1000, strategy='low'
+[2026-03-03 00:29:39 CLIP_DINOiser] (feature_experiment_pipeline.py 309): INFO Training on 1000 images. Selectoin meta: {'seed': 0, 'feature_name': 'knn_local_density_faiss', 'feature_kwargs': {'cache_dir': 'visual_embedding', 'emb_file': 'visual_emb.npy', 'paths_file': 'clip_paths_abs.json', 'k': 50, 'metric': 'cosine', 'mode': 'inv_mean_dist', 'include_self': False, 'normalize_for_cosine': True, 'use_gpu': False, 'radius': 0.2}, 'pool_n': 20000, 'tier_n': 1000, 'subset_strategy': 'low', 'counts': {'pool': 20000, 'low': 1000, 'high': 1000, 'mixed': 1000, 'random': 1000, 'train': 1000}}
+[2026-03-03 00:32:19 CLIP_DINOiser] (feature_experiment_pipeline.py 346): INFO Training finished. Running evaluation...
+[2026-03-03 00:37:49 CLIP_DINOiser] (logging.py 102): INFO per class results:
+[2026-03-03 00:37:49 CLIP_DINOiser] (logging.py 102): INFO 
++------------------+-------+-------+
+|      Class       |  IoU  |  Acc  |
++------------------+-------+-------+
+|      person      | 12.56 | 13.18 |
+|     bicycle      | 54.17 | 83.24 |
+|       car        | 43.34 |  74.7 |
+|    motorcycle    | 67.73 | 87.88 |
+|     airplane     | 41.62 | 89.14 |
+|       bus        | 62.71 | 82.91 |
+|      train       | 54.44 | 68.82 |
+|      truck       | 36.96 | 46.23 |
+|       boat       | 33.07 | 79.34 |
+|  traffic light   | 21.75 | 70.56 |
+|   fire hydrant   | 54.98 | 81.06 |
+|    stop sign     | 61.72 | 90.93 |
+|  parking meter   |  26.9 | 34.96 |
+|      bench       | 35.94 | 46.44 |
+|       bird       | 56.41 | 86.78 |
+|       cat        | 70.36 | 88.33 |
+|       dog        | 61.77 | 81.82 |
+|      horse       | 61.95 | 86.01 |
+|      sheep       |  74.2 |  89.7 |
+|       cow        | 65.52 | 81.98 |
+|     elephant     | 80.88 | 92.52 |
+|       bear       | 79.24 | 89.89 |
+|      zebra       | 78.69 | 93.17 |
+|     giraffe      |  48.3 | 89.37 |
+|     backpack     |  8.13 | 57.81 |
+|     umbrella     | 34.51 | 70.37 |
+|     handbag      | 11.33 | 15.64 |
+|       tie        |  1.0  | 48.77 |
+|     suitcase     | 47.04 | 53.66 |
+|     frisbee      |  14.3 | 54.78 |
+|       skis       |  8.24 | 59.62 |
+|    snowboard     | 14.68 | 62.79 |
+|   sports ball    |  2.62 | 59.33 |
+|       kite       | 31.34 | 50.95 |
+|   baseball bat   |  6.29 | 10.45 |
+|  baseball glove  | 21.04 | 49.44 |
+|    skateboard    | 18.26 |  54.9 |
+|    surfboard     | 34.49 | 71.91 |
+|  tennis racket   |  6.99 | 50.25 |
+|      bottle      | 24.16 | 51.89 |
+|    wine glass    | 30.62 | 72.61 |
+|       cup        | 17.34 | 24.71 |
+|       fork       | 14.79 | 16.54 |
+|      knife       |  5.55 |  7.55 |
+|      spoon       | 19.48 | 32.74 |
+|       bowl       | 12.45 | 15.98 |
+|      banana      | 37.25 | 46.86 |
+|      apple       | 11.43 | 12.87 |
+|     sandwich     | 12.58 | 13.66 |
+|      orange      |  22.7 | 26.12 |
+|     broccoli     |  6.05 |  6.43 |
+|      carrot      | 24.78 | 25.47 |
+|     hot dog      |  34.5 | 40.23 |
+|      pizza       | 43.55 | 52.37 |
+|      donut       | 48.99 | 53.26 |
+|       cake       | 47.71 | 68.56 |
+|      chair       | 15.49 | 16.87 |
+|      couch       | 46.87 | 57.89 |
+|   potted plant   |  9.58 | 13.21 |
+|       bed        | 48.68 | 60.95 |
+|   dining table   | 11.03 | 12.04 |
+|      toilet      | 29.53 | 75.35 |
+|        tv        | 29.23 | 36.91 |
+|      laptop      | 44.45 | 65.86 |
+|      mouse       | 21.25 | 44.63 |
+|      remote      | 14.38 | 67.19 |
+|     keyboard     | 39.83 | 59.63 |
+|    cell phone    | 30.64 | 56.04 |
+|    microwave     | 22.87 | 29.99 |
+|       oven       | 23.74 | 69.12 |
+|     toaster      | 20.08 | 50.36 |
+|       sink       | 30.39 | 53.46 |
+|   refrigerator   |  49.7 | 62.26 |
+|       book       | 26.95 | 32.01 |
+|      clock       | 44.62 | 83.06 |
+|       vase       | 29.25 | 51.84 |
+|     scissors     | 50.87 | 61.11 |
+|    teddy bear    | 62.34 | 73.87 |
+|    hair drier    |  1.59 | 17.09 |
+|    toothbrush    | 25.22 | 56.33 |
+|      banner      |  2.18 | 75.53 |
+|     blanket      |  6.1  | 19.32 |
+|      branch      |  6.31 | 41.17 |
+|      bridge      | 24.71 | 40.22 |
+|  building-other  | 30.63 | 54.98 |
+|       bush       | 11.83 | 33.76 |
+|     cabinet      | 24.94 | 35.42 |
+|       cage       |  5.51 |  6.6  |
+|    cardboard     | 22.11 | 26.11 |
+|      carpet      | 40.39 | 53.83 |
+|  ceiling-other   | 27.25 | 42.21 |
+|   ceiling-tile   |  7.15 | 21.88 |
+|      cloth       |  0.49 |  1.72 |
+|     clothes      |  4.1  | 28.26 |
+|      clouds      | 32.27 | 36.71 |
+|     counter      | 10.31 | 32.96 |
+|     cupboard     |  3.79 | 17.36 |
+|     curtain      | 32.67 | 39.72 |
+|    desk-stuff    | 22.94 | 38.14 |
+|       dirt       | 13.21 | 15.06 |
+|    door-stuff    | 13.75 | 18.91 |
+|      fence       | 26.36 | 48.52 |
+|   floor-marble   |  6.02 | 10.14 |
+|   floor-other    |  9.05 | 39.67 |
+|   floor-stone    |  1.56 |  2.7  |
+|    floor-tile    | 35.26 | 41.28 |
+|    floor-wood    | 23.27 |  28.5 |
+|      flower      |  30.8 | 43.08 |
+|       fog        | 12.21 | 16.09 |
+|    food-other    |  11.5 |  75.9 |
+|      fruit       | 17.95 | 65.89 |
+| furniture-other  |  5.67 |  9.04 |
+|      grass       | 49.58 | 63.03 |
+|      gravel      | 13.78 | 25.23 |
+|   ground-other   |  2.72 | 32.94 |
+|       hill       |  6.39 |  7.99 |
+|      house       | 11.19 | 31.47 |
+|      leaves      |  8.24 | 10.35 |
+|      light       |  3.88 | 29.74 |
+|       mat        |  0.61 |  3.47 |
+|      metal       |  4.1  |  4.72 |
+|   mirror-stuff   | 11.01 | 13.14 |
+|       moss       |  0.0  |  0.0  |
+|     mountain     | 36.55 | 61.68 |
+|       mud        |  0.11 |  0.37 |
+|      napkin      |  9.44 | 39.69 |
+|       net        |  9.85 | 26.31 |
+|      paper       | 13.25 | 26.45 |
+|     pavement     | 32.43 | 50.92 |
+|      pillow      |  6.05 | 22.64 |
+|   plant-other    |  4.99 |  7.18 |
+|     plastic      |  4.2  |  4.46 |
+|     platform     |  5.98 |  9.2  |
+|   playingfield   |  0.19 |  0.19 |
+|     railing      |  4.79 | 14.71 |
+|     railroad     | 38.39 | 83.78 |
+|      river       | 42.24 |  60.3 |
+|       road       | 31.46 | 40.12 |
+|       rock       |  30.6 | 43.16 |
+|       roof       |  4.49 | 29.26 |
+|       rug        | 18.09 | 23.14 |
+|      salad       | 12.75 |  28.4 |
+|       sand       | 40.69 | 50.41 |
+|       sea        | 51.69 | 63.95 |
+|      shelf       | 14.52 | 16.91 |
+|    sky-other     | 47.59 | 57.37 |
+|    skyscraper    | 22.33 | 40.04 |
+|       snow       |  70.5 | 87.19 |
+|   solid-other    |  0.1  |  0.47 |
+|      stairs      | 10.86 | 18.31 |
+|      stone       |  7.42 | 11.73 |
+|      straw       | 15.62 | 20.35 |
+| structural-other |  0.16 |  0.35 |
+|      table       |  6.78 |  9.36 |
+|       tent       |  6.03 | 12.78 |
+|  textile-other   |  4.13 |  6.02 |
+|      towel       |  9.75 |  43.4 |
+|       tree       | 35.04 | 38.24 |
+|    vegetable     | 15.51 | 46.08 |
+|    wall-brick    | 29.44 | 41.34 |
+|  wall-concrete   |  3.28 |  3.36 |
+|    wall-other    |  6.29 | 11.73 |
+|    wall-panel    |  2.1  |  2.75 |
+|    wall-stone    | 24.49 | 36.61 |
+|    wall-tile     | 39.49 | 60.46 |
+|    wall-wood     | 12.15 | 13.21 |
+|   water-other    | 16.71 | 56.13 |
+|    waterdrops    |  0.06 |  0.77 |
+|   window-blind   | 33.81 | 45.31 |
+|   window-other   | 25.51 | 46.28 |
+|       wood       |  7.77 | 24.76 |
++------------------+-------+-------+
+[2026-03-03 00:37:49 CLIP_DINOiser] (logging.py 102): INFO Summary:
+[2026-03-03 00:37:49 CLIP_DINOiser] (logging.py 102): INFO 
++-------+-------+-------+
+|  aAcc |  mIoU |  mAcc |
++-------+-------+-------+
+| 38.81 | 24.49 | 41.49 |
++-------+-------+-------+
+[2026-03-03 00:37:49 CLIP_DINOiser] (feature_experiment_pipeline.py 358): INFO Results saved to knn_local_density/low.json
+[2026-03-03 00:37:57 CLIP_DINOiser] (feature_experiment_pipeline.py 236): INFO [DataPrep] feature='knn_local_density_faiss', pool=20000, tier=1000, strategy='high'
+[2026-03-03 00:40:21 CLIP_DINOiser] (feature_experiment_pipeline.py 309): INFO Training on 1000 images. Selectoin meta: {'seed': 0, 'feature_name': 'knn_local_density_faiss', 'feature_kwargs': {'cache_dir': 'visual_embedding', 'emb_file': 'visual_emb.npy', 'paths_file': 'clip_paths_abs.json', 'k': 50, 'metric': 'cosine', 'mode': 'inv_mean_dist', 'include_self': False, 'normalize_for_cosine': True, 'use_gpu': False, 'radius': 0.2}, 'pool_n': 20000, 'tier_n': 1000, 'subset_strategy': 'high', 'counts': {'pool': 20000, 'low': 1000, 'high': 1000, 'mixed': 1000, 'random': 1000, 'train': 1000}}
+[2026-03-03 00:42:32 CLIP_DINOiser] (feature_experiment_pipeline.py 346): INFO Training finished. Running evaluation...
+[2026-03-03 00:46:44 CLIP_DINOiser] (logging.py 102): INFO per class results:
+[2026-03-03 00:46:44 CLIP_DINOiser] (logging.py 102): INFO 
++------------------+-------+-------+
+|      Class       |  IoU  |  Acc  |
++------------------+-------+-------+
+|      person      | 13.17 | 13.86 |
+|     bicycle      | 53.72 | 82.98 |
+|       car        | 43.13 | 74.95 |
+|    motorcycle    | 67.32 |  86.7 |
+|     airplane     | 42.44 | 89.07 |
+|       bus        | 62.79 |  83.2 |
+|      train       | 54.31 | 68.28 |
+|      truck       | 37.85 | 47.31 |
+|       boat       | 32.59 | 80.91 |
+|  traffic light   | 21.84 | 69.48 |
+|   fire hydrant   | 55.93 | 82.26 |
+|    stop sign     | 62.43 | 90.08 |
+|  parking meter   | 27.93 | 35.57 |
+|      bench       | 35.58 | 45.32 |
+|       bird       | 57.52 | 86.53 |
+|       cat        | 70.28 | 87.61 |
+|       dog        | 61.29 | 80.44 |
+|      horse       | 62.14 | 86.25 |
+|      sheep       | 74.37 | 88.26 |
+|       cow        | 65.93 | 81.62 |
+|     elephant     | 81.28 | 91.75 |
+|       bear       | 79.44 | 89.01 |
+|      zebra       | 80.05 | 92.78 |
+|     giraffe      | 48.63 | 87.64 |
+|     backpack     |  8.1  | 55.83 |
+|     umbrella     | 34.38 |  69.8 |
+|     handbag      |  9.33 | 12.46 |
+|       tie        |  1.13 | 55.48 |
+|     suitcase     | 46.76 | 53.27 |
+|     frisbee      | 15.74 | 50.47 |
+|       skis       |  8.88 | 59.14 |
+|    snowboard     | 15.77 | 63.67 |
+|   sports ball    |  2.49 | 59.18 |
+|       kite       | 31.58 | 50.47 |
+|   baseball bat   |  4.18 |  9.62 |
+|  baseball glove  | 21.58 |  48.6 |
+|    skateboard    | 19.11 | 55.05 |
+|    surfboard     | 27.91 | 73.78 |
+|  tennis racket   |  7.14 | 48.61 |
+|      bottle      | 25.06 | 53.74 |
+|    wine glass    | 30.89 | 71.72 |
+|       cup        | 17.27 |  24.3 |
+|       fork       | 14.85 | 16.61 |
+|      knife       |  5.69 |  7.57 |
+|      spoon       | 18.44 | 32.66 |
+|       bowl       |  12.6 | 16.39 |
+|      banana      | 39.15 |  49.2 |
+|      apple       |  11.5 | 12.79 |
+|     sandwich     | 14.04 | 15.16 |
+|      orange      |  23.4 | 26.79 |
+|     broccoli     | 13.07 | 14.01 |
+|      carrot      | 29.99 | 30.85 |
+|     hot dog      | 33.68 | 39.53 |
+|      pizza       | 43.86 | 51.95 |
+|      donut       |  50.5 | 54.42 |
+|       cake       | 47.93 | 69.27 |
+|      chair       | 14.93 | 16.14 |
+|      couch       | 47.12 | 58.63 |
+|   potted plant   |  9.33 | 12.55 |
+|       bed        |  49.2 | 61.89 |
+|   dining table   | 10.88 | 11.87 |
+|      toilet      | 31.68 | 74.83 |
+|        tv        | 29.67 | 37.35 |
+|      laptop      |  43.7 | 63.83 |
+|      mouse       |  22.0 | 46.05 |
+|      remote      | 14.28 |  66.3 |
+|     keyboard     | 41.85 | 61.89 |
+|    cell phone    |  33.2 | 57.07 |
+|    microwave     | 24.57 | 31.77 |
+|       oven       | 24.34 | 69.42 |
+|     toaster      | 20.04 |  51.0 |
+|       sink       | 31.21 |  55.1 |
+|   refrigerator   | 49.43 |  61.5 |
+|       book       |  28.1 | 32.75 |
+|      clock       | 44.12 | 82.92 |
+|       vase       | 30.11 | 54.95 |
+|     scissors     | 50.96 | 61.26 |
+|    teddy bear    | 62.62 | 75.06 |
+|    hair drier    |  1.94 | 15.15 |
+|    toothbrush    | 26.09 | 55.99 |
+|      banner      |  2.1  | 75.16 |
+|     blanket      |  6.15 | 18.79 |
+|      branch      |  6.18 | 41.28 |
+|      bridge      | 24.02 | 38.68 |
+|  building-other  | 30.88 | 55.67 |
+|       bush       | 11.82 | 33.77 |
+|     cabinet      | 25.47 | 36.36 |
+|       cage       |  5.5  |  6.56 |
+|    cardboard     | 22.58 | 26.67 |
+|      carpet      | 39.54 | 52.68 |
+|  ceiling-other   | 28.03 | 43.84 |
+|   ceiling-tile   |  7.31 | 21.21 |
+|      cloth       |  0.44 |  1.46 |
+|     clothes      |  4.06 | 27.43 |
+|      clouds      | 31.96 | 36.23 |
+|     counter      | 10.27 | 33.06 |
+|     cupboard     |  4.58 | 21.97 |
+|     curtain      | 33.03 | 39.65 |
+|    desk-stuff    | 23.22 | 37.95 |
+|       dirt       | 13.37 | 15.28 |
+|    door-stuff    | 14.81 | 20.54 |
+|      fence       | 26.34 | 48.21 |
+|   floor-marble   |  5.46 |  9.37 |
+|   floor-other    |  9.02 | 40.37 |
+|   floor-stone    |  1.59 |  2.74 |
+|    floor-tile    | 35.96 | 42.17 |
+|    floor-wood    |  22.4 | 26.93 |
+|      flower      | 31.35 | 42.05 |
+|       fog        | 13.19 | 17.33 |
+|    food-other    | 11.29 | 74.22 |
+|      fruit       |  18.0 | 64.02 |
+| furniture-other  |  5.61 |  8.89 |
+|      grass       |  49.5 | 63.43 |
+|      gravel      | 13.05 | 23.77 |
+|   ground-other   |  2.73 | 33.72 |
+|       hill       |  6.49 |  8.11 |
+|      house       | 11.24 |  31.0 |
+|      leaves      |  8.12 | 10.04 |
+|      light       |  3.82 |  28.9 |
+|       mat        |  0.56 |  3.05 |
+|      metal       |  4.17 |  4.79 |
+|   mirror-stuff   | 13.66 | 16.54 |
+|       moss       |  0.0  |  0.0  |
+|     mountain     |  36.2 | 63.28 |
+|       mud        |  0.1  |  0.3  |
+|      napkin      |  9.42 | 38.63 |
+|       net        |  10.3 | 26.53 |
+|      paper       |  13.6 | 27.21 |
+|     pavement     | 31.98 | 49.88 |
+|      pillow      |  4.89 | 17.66 |
+|   plant-other    |  5.22 |  7.53 |
+|     plastic      |  3.63 |  3.82 |
+|     platform     |  5.93 |  9.06 |
+|   playingfield   |  0.16 |  0.16 |
+|     railing      |  4.4  | 13.11 |
+|     railroad     | 38.05 | 83.97 |
+|      river       | 42.06 | 60.21 |
+|       road       | 31.45 | 40.13 |
+|       rock       | 30.84 | 44.13 |
+|       roof       |  4.55 | 29.64 |
+|       rug        | 17.78 | 22.65 |
+|      salad       | 11.35 |  26.4 |
+|       sand       | 43.89 | 54.79 |
+|       sea        | 50.22 | 60.42 |
+|      shelf       |  14.7 |  17.1 |
+|    sky-other     | 48.04 | 57.94 |
+|    skyscraper    | 22.42 | 39.36 |
+|       snow       | 71.93 | 86.97 |
+|   solid-other    |  0.09 |  0.47 |
+|      stairs      |  9.34 | 15.26 |
+|      stone       |  7.48 | 11.77 |
+|      straw       | 15.68 |  20.4 |
+| structural-other |  0.17 |  0.36 |
+|      table       |  6.44 |  8.89 |
+|       tent       |  6.21 | 12.84 |
+|  textile-other   |  4.33 |  6.38 |
+|      towel       |  9.87 | 43.06 |
+|       tree       | 34.98 | 38.35 |
+|    vegetable     | 14.84 | 44.37 |
+|    wall-brick    | 29.32 | 40.51 |
+|  wall-concrete   |  3.17 |  3.25 |
+|    wall-other    |  6.28 | 11.84 |
+|    wall-panel    |  1.98 |  2.58 |
+|    wall-stone    | 23.97 |  35.5 |
+|    wall-tile     | 40.89 | 60.34 |
+|    wall-wood     |  11.9 | 12.91 |
+|   water-other    | 16.23 | 54.66 |
+|    waterdrops    |  0.04 |  0.45 |
+|   window-blind   | 35.57 |  47.0 |
+|   window-other   | 25.96 | 47.84 |
+|       wood       |  7.61 | 23.83 |
++------------------+-------+-------+
+[2026-03-03 00:46:44 CLIP_DINOiser] (logging.py 102): INFO Summary:
+[2026-03-03 00:46:44 CLIP_DINOiser] (logging.py 102): INFO 
++-------+------+------+
+|  aAcc | mIoU | mAcc |
++-------+------+------+
+| 38.89 | 24.7 | 41.5 |
++-------+------+------+
+[2026-03-03 00:46:44 CLIP_DINOiser] (feature_experiment_pipeline.py 358): INFO Results saved to knn_local_density/high.json
+[2026-03-03 00:46:53 CLIP_DINOiser] (feature_experiment_pipeline.py 236): INFO [DataPrep] feature='knn_local_density_faiss', pool=20000, tier=1000, strategy='mixed'
+[2026-03-03 00:49:17 CLIP_DINOiser] (feature_experiment_pipeline.py 309): INFO Training on 1000 images. Selectoin meta: {'seed': 0, 'feature_name': 'knn_local_density_faiss', 'feature_kwargs': {'cache_dir': 'visual_embedding', 'emb_file': 'visual_emb.npy', 'paths_file': 'clip_paths_abs.json', 'k': 50, 'metric': 'cosine', 'mode': 'inv_mean_dist', 'include_self': False, 'normalize_for_cosine': True, 'use_gpu': False, 'radius': 0.2}, 'pool_n': 20000, 'tier_n': 1000, 'subset_strategy': 'mixed', 'counts': {'pool': 20000, 'low': 1000, 'high': 1000, 'mixed': 1000, 'random': 1000, 'train': 1000}}
+[2026-03-03 00:51:28 CLIP_DINOiser] (feature_experiment_pipeline.py 346): INFO Training finished. Running evaluation...
+[2026-03-03 00:56:06 CLIP_DINOiser] (logging.py 102): INFO per class results:
+[2026-03-03 00:56:06 CLIP_DINOiser] (logging.py 102): INFO 
++------------------+-------+-------+
+|      Class       |  IoU  |  Acc  |
++------------------+-------+-------+
+|      person      | 12.76 | 13.41 |
+|     bicycle      | 54.53 | 83.48 |
+|       car        | 43.19 | 74.93 |
+|    motorcycle    | 67.71 |  86.9 |
+|     airplane     | 41.63 | 89.48 |
+|       bus        | 62.58 | 82.97 |
+|      train       | 54.02 |  68.2 |
+|      truck       | 36.95 |  46.3 |
+|       boat       | 32.89 | 79.47 |
+|  traffic light   | 21.23 | 71.04 |
+|   fire hydrant   | 54.11 | 81.45 |
+|    stop sign     | 61.24 | 90.86 |
+|  parking meter   | 27.28 | 35.83 |
+|      bench       | 36.02 | 46.64 |
+|       bird       | 56.97 | 86.83 |
+|       cat        | 70.33 | 87.78 |
+|       dog        | 61.39 | 81.12 |
+|      horse       | 62.05 | 85.57 |
+|      sheep       |  74.2 | 88.52 |
+|       cow        | 65.49 | 81.47 |
+|     elephant     | 81.13 |  91.7 |
+|       bear       | 79.49 | 89.27 |
+|      zebra       |  79.3 |  92.1 |
+|     giraffe      | 48.08 | 87.27 |
+|     backpack     |  8.07 |  57.4 |
+|     umbrella     | 34.38 | 70.34 |
+|     handbag      | 11.06 | 15.23 |
+|       tie        |  1.03 | 50.47 |
+|     suitcase     | 46.41 | 52.83 |
+|     frisbee      | 14.15 | 52.92 |
+|       skis       |  8.46 | 62.29 |
+|    snowboard     | 14.82 | 65.06 |
+|   sports ball    |  2.58 | 61.17 |
+|       kite       |  30.7 | 52.04 |
+|   baseball bat   |  6.1  | 10.39 |
+|  baseball glove  | 21.18 | 48.74 |
+|    skateboard    | 18.57 | 55.55 |
+|    surfboard     | 29.21 |  74.4 |
+|  tennis racket   |  7.11 | 49.93 |
+|      bottle      | 24.59 | 53.84 |
+|    wine glass    | 30.25 | 73.73 |
+|       cup        | 17.56 | 24.99 |
+|       fork       | 16.74 |  19.1 |
+|      knife       |  5.88 |  7.98 |
+|      spoon       | 17.77 | 33.71 |
+|       bowl       |  13.3 | 17.36 |
+|      banana      | 39.03 | 49.02 |
+|      apple       | 11.44 |  12.8 |
+|     sandwich     | 13.72 | 14.93 |
+|      orange      | 23.72 |  27.2 |
+|     broccoli     | 19.64 | 21.18 |
+|      carrot      |  31.2 | 32.18 |
+|     hot dog      |  34.0 | 39.78 |
+|      pizza       | 44.47 | 53.11 |
+|      donut       | 50.75 | 55.11 |
+|       cake       | 47.79 | 68.76 |
+|      chair       | 15.76 | 17.17 |
+|      couch       | 47.04 | 58.32 |
+|   potted plant   |  9.62 | 13.17 |
+|       bed        | 48.72 | 60.74 |
+|   dining table   | 10.07 | 10.96 |
+|      toilet      |  31.5 | 75.16 |
+|        tv        | 29.64 | 37.47 |
+|      laptop      | 44.22 | 64.65 |
+|      mouse       | 22.11 | 47.36 |
+|      remote      | 14.34 | 67.49 |
+|     keyboard     | 42.42 | 62.47 |
+|    cell phone    | 31.15 | 56.51 |
+|    microwave     | 23.96 |  31.7 |
+|       oven       | 23.72 | 69.31 |
+|     toaster      | 19.53 | 50.07 |
+|       sink       | 31.26 | 54.88 |
+|   refrigerator   | 49.31 | 61.22 |
+|       book       | 27.84 | 33.17 |
+|      clock       | 44.39 |  82.9 |
+|       vase       | 30.37 | 52.95 |
+|     scissors     | 51.16 | 61.07 |
+|    teddy bear    | 62.71 | 74.37 |
+|    hair drier    |  1.84 | 17.67 |
+|    toothbrush    | 25.87 | 58.51 |
+|      banner      |  2.13 | 75.01 |
+|     blanket      |  6.16 | 19.45 |
+|      branch      |  6.09 | 41.16 |
+|      bridge      | 24.67 | 39.98 |
+|  building-other  | 30.81 | 54.85 |
+|       bush       | 11.76 |  33.7 |
+|     cabinet      | 25.21 | 35.94 |
+|       cage       |  5.43 |  6.56 |
+|    cardboard     | 22.53 | 26.66 |
+|      carpet      | 40.55 | 54.55 |
+|  ceiling-other   | 28.21 | 43.48 |
+|   ceiling-tile   |  7.33 | 22.73 |
+|      cloth       |  0.48 |  1.67 |
+|     clothes      |  4.07 | 28.11 |
+|      clouds      | 32.57 | 37.12 |
+|     counter      |  10.4 | 33.68 |
+|     cupboard     |  4.27 | 20.39 |
+|     curtain      | 33.19 | 40.26 |
+|    desk-stuff    | 23.18 | 37.85 |
+|       dirt       | 13.95 | 15.95 |
+|    door-stuff    | 14.58 | 20.24 |
+|      fence       | 27.18 |  51.0 |
+|   floor-marble   |  5.8  | 10.13 |
+|   floor-other    |  9.07 | 39.35 |
+|   floor-stone    |  1.74 |  3.03 |
+|    floor-tile    |  36.1 | 42.57 |
+|    floor-wood    |  23.8 | 29.22 |
+|      flower      |  31.0 | 42.61 |
+|       fog        | 13.42 | 17.78 |
+|    food-other    | 11.53 | 73.79 |
+|      fruit       | 17.83 | 64.81 |
+| furniture-other  |  5.67 |  9.0  |
+|      grass       | 50.08 | 63.69 |
+|      gravel      | 14.06 | 25.77 |
+|   ground-other   |  2.72 | 32.43 |
+|       hill       |  6.4  |  8.02 |
+|      house       | 11.22 | 31.12 |
+|      leaves      |  7.96 |  9.87 |
+|      light       |  4.05 |  30.7 |
+|       mat        |  0.6  |  3.37 |
+|      metal       |  4.15 |  4.79 |
+|   mirror-stuff   | 13.57 | 16.41 |
+|       moss       |  0.0  |  0.0  |
+|     mountain     | 37.04 | 62.97 |
+|       mud        |  0.12 |  0.38 |
+|      napkin      |  9.49 | 39.25 |
+|       net        | 10.58 | 28.75 |
+|      paper       |  13.5 | 26.87 |
+|     pavement     | 32.42 | 50.52 |
+|      pillow      |  5.44 | 20.65 |
+|   plant-other    |  5.06 |  7.33 |
+|     plastic      |  4.23 |  4.51 |
+|     platform     |  5.63 |  8.52 |
+|   playingfield   |  0.17 |  0.18 |
+|     railing      |  5.25 | 16.19 |
+|     railroad     | 38.65 | 83.83 |
+|      river       | 42.82 | 60.36 |
+|       road       | 31.71 | 40.58 |
+|       rock       | 31.44 | 44.87 |
+|       roof       |  4.63 | 29.73 |
+|       rug        | 18.35 | 23.61 |
+|      salad       |  10.9 | 25.65 |
+|       sand       | 44.55 | 55.22 |
+|       sea        | 51.01 | 61.29 |
+|      shelf       | 14.87 | 17.39 |
+|    sky-other     | 48.06 | 57.64 |
+|    skyscraper    | 22.33 | 39.82 |
+|       snow       | 71.63 | 86.28 |
+|   solid-other    |  0.09 |  0.46 |
+|      stairs      | 10.85 | 18.15 |
+|      stone       |  7.26 | 11.59 |
+|      straw       | 15.78 | 20.37 |
+| structural-other |  0.15 |  0.32 |
+|      table       |  6.91 |  9.68 |
+|       tent       |  6.04 | 12.74 |
+|  textile-other   |  4.16 |  6.1  |
+|      towel       |  9.7  | 43.72 |
+|       tree       | 35.88 | 39.49 |
+|    vegetable     | 14.84 | 44.26 |
+|    wall-brick    | 29.79 | 41.41 |
+|  wall-concrete   |  3.23 |  3.31 |
+|    wall-other    |  6.33 | 11.97 |
+|    wall-panel    |  2.07 |  2.73 |
+|    wall-stone    | 24.51 |  36.5 |
+|    wall-tile     | 40.16 | 60.68 |
+|    wall-wood     | 12.46 | 13.55 |
+|   water-other    | 16.42 | 55.16 |
+|    waterdrops    |  0.01 |  0.12 |
+|   window-blind   | 35.13 | 48.05 |
+|   window-other   | 25.97 | 47.18 |
+|       wood       |  7.65 | 24.81 |
++------------------+-------+-------+
+[2026-03-03 00:56:06 CLIP_DINOiser] (logging.py 102): INFO Summary:
+[2026-03-03 00:56:06 CLIP_DINOiser] (logging.py 102): INFO 
++-------+-------+-------+
+|  aAcc |  mIoU |  mAcc |
++-------+-------+-------+
+| 39.04 | 24.79 | 41.92 |
++-------+-------+-------+
+[2026-03-03 00:56:06 CLIP_DINOiser] (feature_experiment_pipeline.py 358): INFO Results saved to knn_local_density/mixed.json
+[2026-03-03 00:56:14 CLIP_DINOiser] (feature_experiment_pipeline.py 236): INFO [DataPrep] feature='knn_local_density_faiss', pool=20000, tier=1000, strategy='random'
+[2026-03-03 00:58:39 CLIP_DINOiser] (feature_experiment_pipeline.py 309): INFO Training on 1000 images. Selectoin meta: {'seed': 0, 'feature_name': 'knn_local_density_faiss', 'feature_kwargs': {'cache_dir': 'visual_embedding', 'emb_file': 'visual_emb.npy', 'paths_file': 'clip_paths_abs.json', 'k': 50, 'metric': 'cosine', 'mode': 'inv_mean_dist', 'include_self': False, 'normalize_for_cosine': True, 'use_gpu': False, 'radius': 0.2}, 'pool_n': 20000, 'tier_n': 1000, 'subset_strategy': 'random', 'counts': {'pool': 20000, 'low': 1000, 'high': 1000, 'mixed': 1000, 'random': 1000, 'train': 1000}}
+[2026-03-03 01:00:49 CLIP_DINOiser] (feature_experiment_pipeline.py 346): INFO Training finished. Running evaluation...
+[2026-03-03 01:05:09 CLIP_DINOiser] (logging.py 102): INFO per class results:
+[2026-03-03 01:05:09 CLIP_DINOiser] (logging.py 102): INFO 
++------------------+-------+-------+
+|      Class       |  IoU  |  Acc  |
++------------------+-------+-------+
+|      person      | 12.72 | 13.37 |
+|     bicycle      | 54.34 | 83.35 |
+|       car        | 43.44 | 74.54 |
+|    motorcycle    | 67.72 | 86.97 |
+|     airplane     | 41.69 | 88.89 |
+|       bus        | 62.49 | 82.76 |
+|      train       | 53.85 | 67.97 |
+|      truck       | 36.79 | 46.04 |
+|       boat       | 32.83 | 79.63 |
+|  traffic light   | 21.71 | 70.78 |
+|   fire hydrant   | 54.64 | 80.77 |
+|    stop sign     | 61.37 | 91.09 |
+|  parking meter   | 27.81 | 36.18 |
+|      bench       | 35.94 | 45.98 |
+|       bird       |  56.7 | 87.04 |
+|       cat        | 70.29 | 87.73 |
+|       dog        | 60.95 | 80.46 |
+|      horse       | 62.15 |  85.1 |
+|      sheep       | 74.43 | 88.29 |
+|       cow        | 65.54 | 80.94 |
+|     elephant     |  81.3 | 91.66 |
+|       bear       | 79.16 | 88.94 |
+|      zebra       | 79.56 | 91.98 |
+|     giraffe      | 47.94 | 87.09 |
+|     backpack     |  8.2  | 57.94 |
+|     umbrella     | 34.43 | 70.24 |
+|     handbag      | 10.82 | 14.87 |
+|       tie        |  1.05 | 50.48 |
+|     suitcase     | 46.77 | 53.18 |
+|     frisbee      | 14.74 | 53.03 |
+|       skis       |  8.73 | 59.85 |
+|    snowboard     | 15.25 | 63.47 |
+|   sports ball    |  2.57 | 61.14 |
+|       kite       | 31.24 | 52.19 |
+|   baseball bat   |  5.89 | 10.65 |
+|  baseball glove  | 21.48 | 48.82 |
+|    skateboard    | 18.24 | 54.77 |
+|    surfboard     | 27.78 | 74.47 |
+|  tennis racket   |  7.08 | 49.97 |
+|      bottle      | 24.46 | 53.75 |
+|    wine glass    | 30.12 | 73.55 |
+|       cup        | 17.34 | 24.53 |
+|       fork       | 16.53 | 18.73 |
+|      knife       |  6.22 |  8.44 |
+|      spoon       | 17.74 | 33.41 |
+|       bowl       | 13.09 | 17.06 |
+|      banana      | 40.85 |  51.5 |
+|      apple       | 11.93 | 13.26 |
+|     sandwich     | 14.02 | 15.29 |
+|      orange      | 24.85 | 28.64 |
+|     broccoli     | 21.28 | 23.01 |
+|      carrot      | 31.53 | 32.48 |
+|     hot dog      | 34.06 | 39.76 |
+|      pizza       | 44.12 |  52.6 |
+|      donut       | 51.04 | 55.29 |
+|       cake       | 46.95 | 67.98 |
+|      chair       |  15.4 | 16.73 |
+|      couch       | 46.86 | 58.16 |
+|   potted plant   |  9.37 | 12.86 |
+|       bed        | 49.14 | 61.44 |
+|   dining table   | 10.13 | 11.05 |
+|      toilet      | 31.17 | 74.46 |
+|        tv        | 29.56 | 37.31 |
+|      laptop      | 43.77 | 63.22 |
+|      mouse       | 21.78 | 46.26 |
+|      remote      |  14.3 |  67.4 |
+|     keyboard     | 41.63 | 62.61 |
+|    cell phone    | 31.08 | 55.58 |
+|    microwave     | 23.82 | 31.41 |
+|       oven       | 23.74 | 69.22 |
+|     toaster      | 19.29 | 49.52 |
+|       sink       | 31.03 | 54.62 |
+|   refrigerator   | 48.93 | 60.72 |
+|       book       | 27.36 | 32.38 |
+|      clock       | 44.37 | 83.15 |
+|       vase       | 30.92 | 53.35 |
+|     scissors     | 50.45 |  60.4 |
+|    teddy bear    | 62.07 | 73.42 |
+|    hair drier    |  1.8  | 17.49 |
+|    toothbrush    | 25.47 | 56.21 |
+|      banner      |  2.14 |  75.5 |
+|     blanket      |  6.03 | 18.95 |
+|      branch      |  6.03 | 40.03 |
+|      bridge      | 24.96 | 40.11 |
+|  building-other  |  30.5 |  54.3 |
+|       bush       |  11.8 | 34.18 |
+|     cabinet      | 25.09 |  35.9 |
+|       cage       |  5.41 |  6.5  |
+|    cardboard     | 22.66 | 27.11 |
+|      carpet      | 40.21 | 53.79 |
+|  ceiling-other   | 28.41 | 43.84 |
+|   ceiling-tile   |  7.25 |  22.2 |
+|      cloth       |  0.45 |  1.58 |
+|     clothes      |  4.09 | 28.11 |
+|      clouds      | 32.27 | 36.71 |
+|     counter      | 10.12 | 32.92 |
+|     cupboard     |  4.19 |  19.7 |
+|     curtain      | 32.98 | 40.07 |
+|    desk-stuff    | 23.29 | 38.08 |
+|       dirt       | 14.31 | 16.36 |
+|    door-stuff    | 14.64 | 20.46 |
+|      fence       | 26.21 | 48.55 |
+|   floor-marble   |  5.5  |  9.54 |
+|   floor-other    |  9.02 | 39.79 |
+|   floor-stone    |  1.67 |  2.91 |
+|    floor-tile    | 35.88 | 42.05 |
+|    floor-wood    | 22.86 | 27.99 |
+|      flower      | 31.42 | 43.49 |
+|       fog        | 13.07 | 17.27 |
+|    food-other    | 11.45 | 73.98 |
+|      fruit       | 17.98 | 63.53 |
+| furniture-other  |  5.65 |  9.0  |
+|      grass       | 49.69 | 63.75 |
+|      gravel      | 14.23 | 26.04 |
+|   ground-other   |  2.73 | 32.89 |
+|       hill       |  6.55 |  8.18 |
+|      house       | 11.36 | 31.42 |
+|      leaves      |  8.42 | 10.42 |
+|      light       |  3.93 | 30.33 |
+|       mat        |  0.61 |  3.36 |
+|      metal       |  4.13 |  4.76 |
+|   mirror-stuff   |  13.9 | 16.79 |
+|       moss       |  0.0  |  0.0  |
+|     mountain     | 36.59 |  62.8 |
+|       mud        |  0.15 |  0.46 |
+|      napkin      |  9.59 | 39.76 |
+|       net        |  9.98 | 26.44 |
+|      paper       | 13.41 | 26.85 |
+|     pavement     | 32.35 | 50.65 |
+|      pillow      |  5.0  | 18.16 |
+|   plant-other    |  4.92 |  7.1  |
+|     plastic      |  4.02 |  4.27 |
+|     platform     |  5.94 |  9.07 |
+|   playingfield   |  0.17 |  0.17 |
+|     railing      |  4.96 | 15.19 |
+|     railroad     | 38.51 | 84.19 |
+|      river       |  42.8 | 60.49 |
+|       road       | 31.59 | 40.42 |
+|       rock       | 31.41 | 45.03 |
+|       roof       |  4.56 | 29.71 |
+|       rug        | 18.02 | 23.16 |
+|      salad       | 10.77 | 25.32 |
+|       sand       | 44.43 | 55.45 |
+|       sea        | 50.55 | 61.03 |
+|      shelf       | 14.99 | 17.56 |
+|    sky-other     | 47.89 | 57.58 |
+|    skyscraper    | 22.43 | 39.57 |
+|       snow       | 71.75 | 87.15 |
+|   solid-other    |  0.09 |  0.48 |
+|      stairs      |  11.2 | 18.59 |
+|      stone       |  7.31 | 11.58 |
+|      straw       | 15.74 |  20.5 |
+| structural-other |  0.15 |  0.33 |
+|      table       |  6.75 |  9.43 |
+|       tent       |  6.02 | 12.55 |
+|  textile-other   |  4.18 |  6.16 |
+|      towel       |  9.63 | 43.87 |
+|       tree       | 35.43 | 38.82 |
+|    vegetable     | 14.75 |  43.7 |
+|    wall-brick    |  29.2 | 41.23 |
+|  wall-concrete   |  3.29 |  3.37 |
+|    wall-other    |  6.33 |  11.8 |
+|    wall-panel    |  2.13 |  2.79 |
+|    wall-stone    | 24.34 | 36.47 |
+|    wall-tile     | 40.25 | 60.45 |
+|    wall-wood     | 12.04 | 13.11 |
+|   water-other    | 16.56 | 55.03 |
+|    waterdrops    |  0.02 |  0.27 |
+|   window-blind   | 34.72 | 46.66 |
+|   window-other   | 25.51 | 46.53 |
+|       wood       |  7.76 | 24.98 |
++------------------+-------+-------+
+[2026-03-03 01:05:09 CLIP_DINOiser] (logging.py 102): INFO Summary:
+[2026-03-03 01:05:09 CLIP_DINOiser] (logging.py 102): INFO 
++-------+-------+-------+
+|  aAcc |  mIoU |  mAcc |
++-------+-------+-------+
+| 38.92 | 24.75 | 41.75 |
++-------+-------+-------+
+[2026-03-03 01:05:10 CLIP_DINOiser] (feature_experiment_pipeline.py 358): INFO Results saved to knn_local_density/random.json

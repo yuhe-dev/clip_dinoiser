@@ -1,0 +1,8 @@
+{
+  "emb": "visual_emb_200.npy",
+  "k": 20,
+  "niter": 20,
+  "seed": 0,
+  "use_gpu": false,
+  "note": "centroids are L2-normalized; use IndexFlatIP for cosine similarity"
+}
