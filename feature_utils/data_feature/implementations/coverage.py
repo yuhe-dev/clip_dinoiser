@@ -206,6 +206,10 @@ class KNNLocalDensityCLIPFaiss(CoverageDimension):
             return float(1.0 / (self.eps + np.mean(dists)))
         else:  # radius_count
             return float(np.sum(dists <= self.radius))
+
+    def get_vector_score(self, image, mask=None, meta=None) -> np.ndarray:
+        # Compatibility vectorization; neighbor-distance histogram encoding can replace this later.
+        return np.asarray([self.get_score(image, mask=mask, meta=meta)], dtype=np.float32)
         
 
 
@@ -322,3 +326,7 @@ class PrototypeMarginCLIPFaiss(CoverageDimension):
         d2 = 1.0 - float(sims[1])
         margin = d2 - d1
         return float(margin)
+
+    def get_vector_score(self, image=None, mask=None, meta=None) -> np.ndarray:
+        # Compatibility vectorization; top-m distance profile encoding can replace this later.
+        return np.asarray([self.get_score(image=image, mask=mask, meta=meta)], dtype=np.float32)

@@ -99,6 +99,15 @@ class SmallObjectRatioCOCOStuff(DifficultyDimension):
         if total_area == 0:
             return 0.0
         return float(small_area / (total_area + 1e-8))
+
+    def get_vector_score(
+        self,
+        image: np.ndarray,
+        mask: Optional[np.ndarray] = None,
+        meta: Optional[Dict[str, Any]] = None
+    ) -> np.ndarray:
+        # Compatibility vectorization; multi-threshold vectorization can replace this later.
+        return np.asarray([self.get_score(image, mask, meta=meta)], dtype=np.float32)
     
 class SemanticAmbiguityCLIP(DifficultyDimension):
     """
@@ -294,3 +303,12 @@ class SemanticAmbiguityCLIP(DifficultyDimension):
             total_w += w
 
         return float(total_gap / (total_w + 1e-8))
+
+    def get_vector_score(
+        self,
+        image: np.ndarray,
+        mask: Optional[np.ndarray] = None,
+        meta: Optional[Dict[str, Any]] = None
+    ) -> np.ndarray:
+        # Compatibility vectorization; region-gap histogram encoding can replace this later.
+        return np.asarray([self.get_score(image, mask, meta=meta)], dtype=np.float32)

@@ -8,9 +8,63 @@ class LaplacianSharpness(QualityDimension):
         super().__init__("laplacian")
 
     def get_score(self, image: np.ndarray, mask: Optional[np.ndarray] = None, meta=None) -> float:
-        """计算图像的拉普拉斯方差，反映清晰度"""
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         return float(cv2.Laplacian(gray, cv2.CV_64F).var())
+
+    def get_vector_score(
+        self,
+        image: np.ndarray,
+        mask: Optional[np.ndarray] = None,
+        meta=None
+    ) -> np.ndarray:
+        """
+        Vectorize Laplacian sharpness with configurable histogram encoding.
+        Defaults follow current Cycle-10 setup:
+        patch_size=32, stride=16, num_bins=16, use_log=True, l1_normalize=True.
+        """
+        meta = meta or {}
+        patch_size = int(meta.get("patch_size", 32))
+        stride = int(meta.get("stride", 16))
+        num_bins = int(meta.get("num_bins", 16))
+        use_log = bool(meta.get("use_log", True))
+        l1_normalize = bool(meta.get("l1_normalize", True))
+        hist_range = meta.get("hist_range", None)
+
+        if patch_size <= 0 or stride <= 0 or num_bins <= 0:
+            raise ValueError("patch_size, stride, and num_bins must be positive.")
+
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        h, w = gray.shape[:2]
+
+        patch_scores = []
+        if h < patch_size or w < patch_size:
+            patch_scores.append(float(cv2.Laplacian(gray, cv2.CV_64F).var()))
+        else:
+            for y in range(0, h - patch_size + 1, stride):
+                for x in range(0, w - patch_size + 1, stride):
+                    patch = gray[y:y + patch_size, x:x + patch_size]
+                    patch_scores.append(float(cv2.Laplacian(patch, cv2.CV_64F).var()))
+
+        scores = np.asarray(patch_scores, dtype=np.float32)
+        if use_log:
+            scores = np.log1p(np.maximum(scores, 0.0))
+
+        if hist_range is None:
+            s_min = float(scores.min()) if scores.size > 0 else 0.0
+            s_max = float(scores.max()) if scores.size > 0 else 1.0
+            if s_max <= s_min:
+                s_max = s_min + 1e-6
+            hist_range = (s_min, s_max)
+
+        hist, _ = np.histogram(scores, bins=num_bins, range=hist_range)
+        vec = hist.astype(np.float32)
+
+        if l1_normalize:
+            denom = float(vec.sum())
+            if denom > 0:
+                vec = vec / denom
+
+        return vec
 
 class BoundaryGradientAdherence(QualityDimension):
     """
@@ -58,6 +112,15 @@ class BoundaryGradientAdherence(QualityDimension):
         adherence_score = np.sum(magnitude * boundary_mask) / boundary_pixel_count
         
         return float(adherence_score)
+
+    def get_vector_score(
+        self,
+        image: np.ndarray,
+        mask: Optional[np.ndarray] = None,
+        meta=None
+    ) -> np.ndarray:
+        # Compatibility vectorization; dedicated histogram encoding can be added later.
+        return np.asarray([self.get_score(image, mask, meta=meta)], dtype=np.float32)
 
 class WeakTexturePCANoise(QualityDimension):
     """
@@ -197,3 +260,12 @@ class WeakTexturePCANoise(QualityDimension):
         sigma = float(np.sqrt(max(sigma2, self.eps)))
 
         return sigma
+
+    def get_vector_score(
+        self,
+        image: np.ndarray,
+        mask: Optional[np.ndarray] = None,
+        meta=None
+    ) -> np.ndarray:
+        # Compatibility vectorization; dedicated patch-histogram encoding can be added later.
+        return np.asarray([self.get_score(image, mask, meta=meta)], dtype=np.float32)
