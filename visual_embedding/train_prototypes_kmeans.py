@@ -8,7 +8,7 @@ def l2_normalize(x: np.ndarray, eps: float = 1e-12) -> np.ndarray:
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--emb", default="visual_emb_200.npy")
+    ap.add_argument("--emb", default="visual_emb.npy")
     ap.add_argument("--out_prefix", default="prototypes")
     ap.add_argument("--k", type=int, default=200)
     ap.add_argument("--niter", type=int, default=25)

@@ -23,3 +23,5 @@
 [2026-03-02 23:53:17 CLIP_DINOiser] (feature_experiment_pipeline.py 236): INFO [DataPrep] feature='knn_local_density_faiss', pool=200, tier=100, strategy='mixed'
 [2026-03-02 23:54:30 CLIP_DINOiser] (feature_experiment_pipeline.py 236): INFO [DataPrep] feature='knn_local_density_faiss', pool=200, tier=100, strategy='mixed'
 [2026-03-02 23:54:33 CLIP_DINOiser] (feature_experiment_pipeline.py 309): INFO Training on 100 images. Selectoin meta: {'seed': 0, 'feature_name': 'knn_local_density_faiss', 'feature_kwargs': {}, 'pool_n': 200, 'tier_n': 100, 'subset_strategy': 'mixed', 'counts': {'pool': 200, 'low': 100, 'high': 100, 'mixed': 100, 'random': 100, 'train': 100}}
+[2026-03-03 12:05:22 CLIP_DINOiser] (feature_experiment_pipeline.py 236): INFO [DataPrep] feature='laplacian', pool=20000, tier=100, strategy='mixed'
+[2026-03-03 12:07:12 CLIP_DINOiser] (feature_experiment_pipeline.py 309): INFO Training on 100 images. Selectoin meta: {'seed': 0, 'feature_name': 'laplacian', 'feature_kwargs': {}, 'pool_n': 20000, 'tier_n': 100, 'subset_strategy': 'mixed', 'counts': {'pool': 20000, 'low': 100, 'high': 100, 'mixed': 100, 'random': 100, 'train': 100}}

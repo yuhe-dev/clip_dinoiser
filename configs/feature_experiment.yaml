@@ -31,9 +31,9 @@ train:
 output: "test" # CHANGE to your results folder
 
 experiment:
-  feature_name: "knn_local_density_faiss"
+  feature_name: "laplacian"
   feature_kwargs: {}
-  sample_count: 200
+  sample_count: 20000
   subset_strategy: "mixed" # low/high/mixed/random
   visualize: True
 
