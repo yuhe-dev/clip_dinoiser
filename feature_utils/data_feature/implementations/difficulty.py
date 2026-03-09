@@ -4,6 +4,7 @@ from typing import Optional, Dict, Any, Iterable, List
 from ..dimensions import DifficultyDimension
 import torch
 import torch.nn.functional as F
+from PIL import Image
 
 
 class SmallObjectRatioCOCOStuff(DifficultyDimension):
@@ -248,7 +249,7 @@ class SemanticAmbiguityCLIP(DifficultyDimension):
         crop_rgb = np.ascontiguousarray(crop_rgb)
 
         if self.preprocess is not None:
-            image_tensor = self.preprocess(crop_rgb)
+            image_tensor = self.preprocess(Image.fromarray(crop_rgb))
         else:
             image_tensor = torch.from_numpy(crop_rgb.transpose(2, 0, 1)).float() / 255.0
 

@@ -3,6 +3,7 @@ import sys
 import types
 import unittest
 from collections import deque
+from PIL import Image
 
 import numpy as np
 import torch
@@ -141,7 +142,7 @@ class TestDifficultyVectorization(unittest.TestCase):
         metric = SemanticAmbiguityCLIP(
             clip_model=ToyClipModel(),
             tokenizer=lambda texts: texts,
-            preprocess=lambda crop: torch.from_numpy(crop.transpose(2, 0, 1)).float(),
+            preprocess=lambda crop: torch.from_numpy(np.asarray(crop).copy().transpose(2, 0, 1)).float(),
             device="cpu",
             thing_id_start=0,
             num_things=2,
@@ -160,6 +161,32 @@ class TestDifficultyVectorization(unittest.TestCase):
         self.assertEqual(values.ndim, 1)
         self.assertEqual(values.shape[0], 2)
         self.assertTrue(np.all(values >= 0.0))
+
+    def test_semantic_gap_preprocess_accepts_pil_images(self):
+        def pil_preprocess(crop):
+            self.assertIsInstance(crop, Image.Image)
+            arr = np.asarray(crop, dtype=np.float32)
+            return torch.from_numpy(arr.transpose(2, 0, 1))
+
+        metric = SemanticAmbiguityCLIP(
+            clip_model=ToyClipModel(),
+            tokenizer=lambda texts: texts,
+            preprocess=pil_preprocess,
+            device="cpu",
+            thing_id_start=0,
+            num_things=2,
+            default_ignore_index=255,
+            use_things_only=False,
+            min_region_pixels=4,
+            max_regions_per_image=10,
+        )
+        values = metric.get_vector_score(
+            self._make_image(),
+            mask=self._make_region_mask(),
+            meta={"class_names": ["cat", "dog"]},
+        )
+
+        self.assertEqual(values.shape[0], 2)
 
     def test_empirical_iou_vector_score_returns_per_class_ious(self):
         gt_mask = np.full((4, 4), 255, dtype=np.uint8)
