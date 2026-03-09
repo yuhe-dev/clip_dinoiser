@@ -3,6 +3,7 @@ import numpy as np
 from typing import Optional, Dict, Any, Iterable, List
 from ..dimensions import DifficultyDimension
 import torch
+import torch.nn.functional as F
 
 
 class SmallObjectRatioCOCOStuff(DifficultyDimension):
@@ -25,6 +26,7 @@ class SmallObjectRatioCOCOStuff(DifficultyDimension):
         num_things: int = 80,
         default_ignore_index: Optional[int] = 255,  # 164k: 255, 10k often: 0
         use_things_only: bool = True,
+        thresholds: Optional[List[float]] = None,
     ):
         super().__init__("small_object_ratio")
         self.tau_ratio = float(tau_ratio)
@@ -33,6 +35,9 @@ class SmallObjectRatioCOCOStuff(DifficultyDimension):
         self.num_things = int(num_things)
         self.default_ignore_index = default_ignore_index
         self.use_things_only = bool(use_things_only)
+        if thresholds is None:
+            thresholds = np.geomspace(0.001, 0.05, 16).astype(np.float32).tolist()
+        self.thresholds = [float(v) for v in thresholds]
 
     def _infer_ignore_index(self, m: np.ndarray, meta: Dict[str, Any]) -> Optional[int]:
         # Priority: meta > constructor default > auto-detect
@@ -106,8 +111,49 @@ class SmallObjectRatioCOCOStuff(DifficultyDimension):
         mask: Optional[np.ndarray] = None,
         meta: Optional[Dict[str, Any]] = None
     ) -> np.ndarray:
-        # Compatibility vectorization; multi-threshold vectorization can replace this later.
-        return np.asarray([self.get_score(image, mask, meta=meta)], dtype=np.float32)
+        if mask is None:
+            return np.zeros((len(self.thresholds),), dtype=np.float32)
+        meta = meta or {}
+
+        m = mask.astype(np.int32)
+        H, W = m.shape[:2]
+        image_area = float(max(H * W, 1))
+        ignore_index = self._infer_ignore_index(m, meta)
+        valid = (m != ignore_index) if ignore_index is not None else np.ones_like(m, dtype=bool)
+
+        if meta.get("class_ids", None) is not None:
+            use_ids: Iterable[int] = meta["class_ids"]
+        elif self.use_things_only:
+            use_ids = meta.get("thing_ids", None) or self._default_thing_ids()
+        else:
+            use_ids = np.unique(m[valid]).tolist()
+
+        area_ratios: List[float] = []
+        for cid in use_ids:
+            cid = int(cid)
+            if ignore_index is not None and cid == int(ignore_index):
+                continue
+            binm = (m == cid) & valid
+            if not binm.any():
+                continue
+            num, _, stats, _ = cv2.connectedComponentsWithStats(
+                binm.astype(np.uint8),
+                connectivity=self.connectivity
+            )
+            if num <= 1:
+                continue
+            areas = stats[1:, cv2.CC_STAT_AREA].astype(np.float32)
+            area_ratios.extend((areas / image_area).tolist())
+
+        if not area_ratios:
+            return np.zeros((len(self.thresholds),), dtype=np.float32)
+
+        ratios = np.asarray(area_ratios, dtype=np.float32)
+        values = [
+            float(np.mean(ratios < threshold))
+            for threshold in self.thresholds
+        ]
+        return np.asarray(values, dtype=np.float32)
     
 class SemanticAmbiguityCLIP(DifficultyDimension):
     """
@@ -137,6 +183,7 @@ class SemanticAmbiguityCLIP(DifficultyDimension):
         min_region_pixels: int = 256,     # ignore tiny regions to reduce noise
         crop_expand: float = 0.1,         # expand bbox for context
         max_regions_per_image: int = 20,  # cap for speed
+        preprocess=None,
     ):
         super().__init__("semantic_ambiguity_clip")
         self.clip_model = clip_model
@@ -150,6 +197,7 @@ class SemanticAmbiguityCLIP(DifficultyDimension):
         self.min_region_pixels = int(min_region_pixels)
         self.crop_expand = float(crop_expand)
         self.max_regions_per_image = int(max_regions_per_image)
+        self.preprocess = preprocess
 
         self._text_cache: Dict[str, torch.Tensor] = {}
 
@@ -177,7 +225,12 @@ class SemanticAmbiguityCLIP(DifficultyDimension):
         # Expected: return a normalized embedding vector [D]
         if hasattr(self.clip_model, "encode_text"):
             # open_clip style
-            tokens = self.tokenizer([text]).to(self.device) if self.tokenizer is not None else text
+            if self.tokenizer is not None:
+                tokens = self.tokenizer([text])
+                if hasattr(tokens, "to"):
+                    tokens = tokens.to(self.device)
+            else:
+                tokens = text
             t = self.clip_model.encode_text(tokens)
         else:
             # transformers style placeholder
@@ -190,15 +243,25 @@ class SemanticAmbiguityCLIP(DifficultyDimension):
 
     @torch.no_grad()
     def _encode_image_crop(self, crop_rgb: np.ndarray) -> torch.Tensor:
-        # ---- You must adapt this block to your CLIP implementation ----
-        # Expected: return a normalized embedding vector [D]
-        # crop_rgb is HxWx3 in RGB uint8
-        if hasattr(self.clip_model, "encode_image"):
-            # open_clip style: needs preprocessing -> tensor
-            # You likely already have a preprocess transform in your project.
-            raise RuntimeError("Please adapt _encode_image_crop() with your preprocess.")
+        if not hasattr(self.clip_model, "encode_image"):
+            raise RuntimeError("clip_model must provide encode_image().")
+        crop_rgb = np.ascontiguousarray(crop_rgb)
+
+        if self.preprocess is not None:
+            image_tensor = self.preprocess(crop_rgb)
         else:
-            raise RuntimeError("Please adapt _encode_image_crop() to your CLIP implementation.")
+            image_tensor = torch.from_numpy(crop_rgb.transpose(2, 0, 1)).float() / 255.0
+
+        if not torch.is_tensor(image_tensor):
+            image_tensor = torch.as_tensor(image_tensor)
+        if image_tensor.ndim == 3:
+            image_tensor = image_tensor.unsqueeze(0)
+        image_tensor = image_tensor.to(self.device)
+
+        v = self.clip_model.encode_image(image_tensor)
+        v = v.float()
+        v = v / (v.norm(dim=-1, keepdim=True) + 1e-12)
+        return v.squeeze(0)
 
     def _bbox_from_mask(self, binm: np.ndarray):
         ys, xs = np.where(binm)
@@ -310,5 +373,169 @@ class SemanticAmbiguityCLIP(DifficultyDimension):
         mask: Optional[np.ndarray] = None,
         meta: Optional[Dict[str, Any]] = None
     ) -> np.ndarray:
-        # Compatibility vectorization; region-gap histogram encoding can replace this later.
-        return np.asarray([self.get_score(image, mask, meta=meta)], dtype=np.float32)
+        if mask is None or image is None:
+            return np.asarray([], dtype=np.float32)
+        meta = meta or {}
+
+        m = mask.astype(np.int32)
+        H, W = m.shape[:2]
+        ignore_index = self._infer_ignore_index(m, meta)
+        valid = (m != ignore_index) if ignore_index is not None else np.ones_like(m, dtype=bool)
+        class_names = meta.get("class_names", None)
+        if class_names is None:
+            raise ValueError("SemanticAmbiguityCLIP requires meta['class_names'] (aligned with trainIds).")
+
+        if meta.get("class_ids", None) is not None:
+            use_ids: Iterable[int] = meta["class_ids"]
+        elif self.use_things_only:
+            use_ids = meta.get("thing_ids", None) or self._default_thing_ids()
+        else:
+            use_ids = np.unique(m[valid]).tolist()
+
+        rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        id_to_text = meta.get("id_to_text", {}) or {}
+        regions = []
+        for cid in use_ids:
+            cid = int(cid)
+            if ignore_index is not None and cid == int(ignore_index):
+                continue
+            binm = (m == cid) & valid
+            area = int(binm.sum())
+            if area < self.min_region_pixels:
+                continue
+            bbox = self._bbox_from_mask(binm)
+            if bbox is None:
+                continue
+            bbox = self._expand_bbox(bbox, W=W, H=H)
+            regions.append((cid, area, bbox))
+
+        if len(regions) == 0:
+            return np.asarray([], dtype=np.float32)
+
+        regions.sort(key=lambda x: x[1], reverse=True)
+        regions = regions[: self.max_regions_per_image]
+
+        gaps: List[float] = []
+        for cid, _, (x0, y0, x1, y1) in regions:
+            name = class_names[cid]
+            text = id_to_text.get(cid, self.prompt_template.format(name))
+            t = self._encode_text(text)
+            crop = rgb[y0:y1+1, x0:x1+1, :]
+            v = self._encode_image_crop(crop)
+            gap = float(1.0 - torch.sum(v * t).item())
+            gaps.append(gap)
+        return np.asarray(gaps, dtype=np.float32)
+
+
+class EmpiricalDifficultyMaskClip(DifficultyDimension):
+    def __init__(
+        self,
+        predictor=None,
+        model_cfg=None,
+        class_names: Optional[List[str]] = None,
+        device: str = "cuda",
+        default_ignore_index: Optional[int] = 255,
+    ):
+        super().__init__("empirical_iou_maskclip")
+        self.predictor = predictor
+        self.model_cfg = model_cfg
+        self.class_names = class_names
+        self.device = device
+        self.default_ignore_index = default_ignore_index
+        self._model = None
+
+    def _infer_ignore_index(self, m: np.ndarray, meta: Dict[str, Any]) -> Optional[int]:
+        if "ignore_index" in meta and meta["ignore_index"] is not None:
+            return int(meta["ignore_index"])
+        if self.default_ignore_index is not None:
+            return int(self.default_ignore_index)
+        vals = np.unique(m)
+        if 255 in vals:
+            return 255
+        if 0 in vals and vals.max() > 170:
+            return 0
+        return None
+
+    def _ensure_model(self, meta: Dict[str, Any]):
+        if self.predictor is not None or self._model is not None:
+            return
+        if self.model_cfg is None:
+            raise ValueError("EmpiricalDifficultyMaskClip requires either predictor or model_cfg.")
+
+        from omegaconf import OmegaConf
+        from clip_dinoiser.models import build_model
+
+        cfg = OmegaConf.load(self.model_cfg) if isinstance(self.model_cfg, str) else self.model_cfg
+        class_names = meta.get("class_names", None) or self.class_names
+        if class_names is None:
+            raise ValueError("EmpiricalDifficultyMaskClip requires class_names to build MaskClip.")
+        model = build_model(cfg.model, class_names=class_names)
+        model.eval()
+        model.to(self.device)
+        self._model = model
+
+    @torch.no_grad()
+    def _predict_mask(self, image: np.ndarray, meta: Dict[str, Any]) -> np.ndarray:
+        if self.predictor is not None:
+            pred = self.predictor(image, meta=meta)
+            return np.asarray(pred, dtype=np.int32)
+
+        self._ensure_model(meta)
+        rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        tensor = torch.from_numpy(rgb.transpose(2, 0, 1)).float().unsqueeze(0) / 255.0
+        tensor = tensor.to(self.device)
+        logits = self._model(tensor)
+        if logits.shape[-2:] != image.shape[:2]:
+            logits = F.interpolate(logits, size=image.shape[:2], mode="bilinear", align_corners=False)
+        pred = logits.argmax(dim=1).squeeze(0).detach().cpu().numpy().astype(np.int32)
+        return pred
+
+    def _compute_per_class_ious(
+        self,
+        pred_mask: np.ndarray,
+        gt_mask: np.ndarray,
+        meta: Dict[str, Any],
+    ) -> np.ndarray:
+        gt = gt_mask.astype(np.int32)
+        pred = pred_mask.astype(np.int32)
+        ignore_index = self._infer_ignore_index(gt, meta)
+        valid = (gt != ignore_index) if ignore_index is not None else np.ones_like(gt, dtype=bool)
+        valid_classes = np.unique(gt[valid]).tolist()
+        ious: List[float] = []
+        for cid in valid_classes:
+            cid = int(cid)
+            pred_c = (pred == cid) & valid
+            gt_c = (gt == cid) & valid
+            union = np.logical_or(pred_c, gt_c).sum()
+            if union == 0:
+                continue
+            intersection = np.logical_and(pred_c, gt_c).sum()
+            ious.append(float(intersection / (union + 1e-8)))
+        return np.asarray(ious, dtype=np.float32)
+
+    def get_score(
+        self,
+        image: np.ndarray,
+        mask: Optional[np.ndarray] = None,
+        meta: Optional[Dict[str, Any]] = None
+    ) -> float:
+        if image is None or mask is None:
+            return 0.0
+        meta = meta or {}
+        pred = self._predict_mask(image, meta=meta)
+        ious = self._compute_per_class_ious(pred, mask, meta)
+        if ious.size == 0:
+            return 0.0
+        return float(np.mean(ious))
+
+    def get_vector_score(
+        self,
+        image: np.ndarray,
+        mask: Optional[np.ndarray] = None,
+        meta: Optional[Dict[str, Any]] = None
+    ) -> np.ndarray:
+        if image is None or mask is None:
+            return np.asarray([], dtype=np.float32)
+        meta = meta or {}
+        pred = self._predict_mask(image, meta=meta)
+        return self._compute_per_class_ious(pred, mask, meta)
