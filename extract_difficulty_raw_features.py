@@ -119,7 +119,7 @@ def extract_difficulty_records(
     from open_clip import create_model_from_pretrained, get_tokenizer
     from tqdm import tqdm
 
-    from clip_dinoiser.feature_utils.data_feature.implementations.difficulty import (
+    from feature_utils.data_feature.implementations.difficulty import (
         EmpiricalDifficultyMaskClip,
         SemanticAmbiguityCLIP,
         SmallObjectRatioCOCOStuff,

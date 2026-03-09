@@ -97,7 +97,7 @@ def extract_quality_records(
     import cv2
     from tqdm import tqdm
 
-    from clip_dinoiser.feature_utils.data_feature.implementations.quality import (
+    from feature_utils.data_feature.implementations.quality import (
         BoundaryGradientAdherence,
         LaplacianSharpness,
         WeakTexturePCANoise,
