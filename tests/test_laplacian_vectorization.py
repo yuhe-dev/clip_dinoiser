@@ -50,28 +50,40 @@ class TestLaplacianVectorization(unittest.TestCase):
         img = np.stack([base, np.flipud(base), base], axis=-1)
         return img
 
-    def test_vector_score_default_shape_and_l1_norm(self):
+    def test_vector_score_returns_raw_patch_scores(self):
         metric = LaplacianSharpness()
         v = metric.get_vector_score(self._make_image())
 
-        self.assertEqual(v.shape, (16,))
+        self.assertEqual(v.dtype, np.float32)
+        self.assertEqual(v.ndim, 1)
+        self.assertEqual(v.shape, (25,))
         self.assertTrue(np.all(v >= 0.0))
-        self.assertAlmostEqual(float(v.sum()), 1.0, places=6)
 
-    def test_vector_score_configurable_bins_and_patch(self):
+    def test_vector_score_respects_patch_sampling(self):
         metric = LaplacianSharpness()
         v = metric.get_vector_score(
             self._make_image(128, 128),
             meta={
                 "patch_size": 16,
                 "stride": 8,
-                "num_bins": 8,
             },
         )
 
-        self.assertEqual(v.shape, (8,))
+        self.assertEqual(v.dtype, np.float32)
+        self.assertEqual(v.ndim, 1)
+        self.assertEqual(v.shape, (225,))
         self.assertTrue(np.all(v >= 0.0))
-        self.assertAlmostEqual(float(v.sum()), 1.0, places=6)
+
+    def test_vector_score_falls_back_to_single_global_score_for_small_images(self):
+        metric = LaplacianSharpness()
+        v = metric.get_vector_score(
+            self._make_image(16, 16),
+            meta={"patch_size": 32, "stride": 16},
+        )
+
+        self.assertEqual(v.dtype, np.float32)
+        self.assertEqual(v.shape, (1,))
+        self.assertGreaterEqual(float(v[0]), 0.0)
 
 
 if __name__ == "__main__":
