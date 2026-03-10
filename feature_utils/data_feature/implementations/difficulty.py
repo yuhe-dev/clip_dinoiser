@@ -464,7 +464,7 @@ class EmpiricalDifficultyMaskClip(DifficultyDimension):
             raise ValueError("EmpiricalDifficultyMaskClip requires either predictor or model_cfg.")
 
         from omegaconf import OmegaConf
-        from clip_dinoiser.models import build_model
+        from models import build_model
 
         cfg = OmegaConf.load(self.model_cfg) if isinstance(self.model_cfg, str) else self.model_cfg
         class_names = meta.get("class_names", None) or self.class_names
