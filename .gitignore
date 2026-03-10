@@ -1,5 +1,6 @@
 # dataset files
 data/
+.worktrees/
 
 # models/FOUND
 models/FOUND
