@@ -1,0 +1,13 @@
+{
+  "subset_root": "/home/yuhe/clip_dinoiser/data/coco_stuff50k",
+  "index_path": "/home/yuhe/clip_dinoiser/data/coco_stuff50k/sample_index.npy",
+  "embedding_meta": {
+    "clip_model": "ViT-B-16",
+    "clip_pretrained": "laion2b_s34b_b88k",
+    "device": "cuda",
+    "batch_size": 64
+  },
+  "embedding_file": "visual_emb.npy",
+  "paths_file": "clip_paths_abs.json",
+  "num_samples": 50000
+}

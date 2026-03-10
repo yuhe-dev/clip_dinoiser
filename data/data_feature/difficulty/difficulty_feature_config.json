@@ -1,0 +1,19 @@
+{
+  "subset_root": "/home/yuhe/clip_dinoiser/data/coco_stuff50k",
+  "index_path": "/home/yuhe/clip_dinoiser/data/coco_stuff50k/sample_index.npy",
+  "feature_meta": {
+    "model_cfg": "configs/maskclip.yaml",
+    "clip_model": "ViT-B-16",
+    "clip_pretrained": "laion2b_s34b_b88k",
+    "device": "cuda",
+    "clip_device": "cuda",
+    "maskclip_device": "cuda",
+    "ignore_index": 255,
+    "min_region_pixels": 256,
+    "max_regions_per_image": 20,
+    "use_things_only": false
+  },
+  "class_names_count": 171,
+  "records_file": "difficulty_raw_features.npy",
+  "stats_file": "difficulty_global_stats.json"
+}

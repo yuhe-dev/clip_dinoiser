@@ -1,0 +1,38 @@
+{
+  "num_samples": 50000,
+  "features": {
+    "laplacian_raw": {
+      "global_min": 0.0,
+      "global_max": 242145.640625,
+      "global_mean": 2796.2216796875,
+      "global_std": 4934.8359375,
+      "total_values": 49859896,
+      "empty_samples": 0,
+      "length_min": 6,
+      "length_max": 1521,
+      "length_mean": 997.19792
+    },
+    "noise_pca_raw": {
+      "global_min": 0.0,
+      "global_max": 99.57257080078125,
+      "global_mean": 10.052967071533203,
+      "global_std": 8.662618637084961,
+      "total_values": 49859896,
+      "empty_samples": 0,
+      "length_min": 6,
+      "length_max": 1521,
+      "length_mean": 997.19792
+    },
+    "bga_raw": {
+      "global_min": 0.0,
+      "global_max": 1.0,
+      "global_mean": 0.16497275233268738,
+      "global_std": 0.1777038425207138,
+      "total_values": 560245465,
+      "empty_samples": 25,
+      "length_min": 0,
+      "length_max": 41143,
+      "length_mean": 11204.9093
+    }
+  }
+}

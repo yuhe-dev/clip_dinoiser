@@ -1,0 +1,38 @@
+{
+  "num_samples": 50000,
+  "features": {
+    "small_ratio_raw": {
+      "global_min": 0.0,
+      "global_max": 1.0,
+      "global_mean": 0.4095717668533325,
+      "global_std": 0.3551356792449951,
+      "total_values": 800000,
+      "empty_samples": 0,
+      "length_min": 16,
+      "length_max": 16,
+      "length_mean": 16.0
+    },
+    "visual_semantic_gap_raw": {
+      "global_min": 0.6194312572479248,
+      "global_max": 1.0208444595336914,
+      "global_mean": 0.8133649230003357,
+      "global_std": 0.05328211933374405,
+      "total_values": 386883,
+      "empty_samples": 3,
+      "length_min": 0,
+      "length_max": 20,
+      "length_mean": 7.73766
+    },
+    "empirical_iou_raw": {
+      "global_min": 0.0,
+      "global_max": 1.0,
+      "global_mean": 0.15891453623771667,
+      "global_std": 0.20583780109882355,
+      "total_values": 407348,
+      "empty_samples": 3,
+      "length_min": 0,
+      "length_max": 38,
+      "length_mean": 8.14696
+    }
+  }
+}

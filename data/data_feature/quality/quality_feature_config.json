@@ -1,0 +1,10 @@
+{
+  "subset_root": "/home/yuhe/clip_dinoiser/data/coco_stuff50k",
+  "index_path": "/home/yuhe/clip_dinoiser/data/coco_stuff50k/sample_index.npy",
+  "feature_meta": {
+    "patch_size": 32,
+    "stride": 16
+  },
+  "records_file": "quality_raw_features.npy",
+  "stats_file": "quality_global_stats.json"
+}

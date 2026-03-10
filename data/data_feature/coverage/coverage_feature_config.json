@@ -1,0 +1,15 @@
+{
+  "subset_root": "/home/yuhe/clip_dinoiser/data/coco_stuff50k",
+  "index_path": "/home/yuhe/clip_dinoiser/data/coco_stuff50k/sample_index.npy",
+  "feature_meta": {
+    "embeddings_file": "visual_emb.npy",
+    "paths_file": "clip_paths_abs.json",
+    "centroid_file": "prototypes_k200.npy",
+    "knn_k": 50,
+    "knn_metric": "cosine",
+    "prototype_top_m": 50,
+    "normalize_for_cosine": true
+  },
+  "records_file": "coverage_raw_features.npy",
+  "stats_file": "coverage_global_stats.json"
+}

@@ -1,5 +1,10 @@
 # dataset files
-data/
+data/cityscapes
+data/coco_object
+data/coco_stuff50k
+data/coco_stuff164k
+data/imagenet
+data/data_feature/quality/quality_raw_features.npy
 .worktrees/
 
 # models/FOUND

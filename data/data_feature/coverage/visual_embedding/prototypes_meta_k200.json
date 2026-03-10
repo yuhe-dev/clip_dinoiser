@@ -1,0 +1,11 @@
+{
+  "prototype_meta": {
+    "k": 200,
+    "niter": 25,
+    "seed": 0,
+    "use_gpu": false
+  },
+  "embeddings_file": "visual_emb.npy",
+  "paths_file": "clip_paths_abs.json",
+  "centroid_file": "prototypes_k200.npy"
+}

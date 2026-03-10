@@ -1,0 +1,27 @@
+{
+  "num_samples": 50000,
+  "features": {
+    "knn_neighbor_distances_raw": {
+      "global_min": -1.1920928955078125e-07,
+      "global_max": 0.699625551700592,
+      "global_mean": 0.289040207862854,
+      "global_std": 0.0916757881641388,
+      "total_values": 2500000,
+      "empty_samples": 0,
+      "length_min": 50,
+      "length_max": 50,
+      "length_mean": 50.0
+    },
+    "prototype_distances_raw": {
+      "global_min": 0.03292512893676758,
+      "global_max": 0.8163467049598694,
+      "global_mean": 0.46734708547592163,
+      "global_std": 0.09191986918449402,
+      "total_values": 2500000,
+      "empty_samples": 0,
+      "length_min": 50,
+      "length_max": 50,
+      "length_mean": 50.0
+    }
+  }
+}
