@@ -155,28 +155,22 @@ class KNNLocalDensityCLIPFaiss(CoverageDimension):
         scores, idxs = self._index.search(q, topk)  # type: ignore
         return scores[0], idxs[0]
 
-    def get_score(self, image, mask=None, meta=None) -> float:
-        """
-        image/mask are unused; we use meta['img_path'] to find embedding row.
-        """
-        meta = meta or {}
+    def _get_neighbor_distances(self, meta: Dict[str, Any]) -> np.ndarray:
         self._lazy_init()
 
         idx = self._lookup_index(meta)
         if idx is None:
-            return 0.0
+            return np.asarray([], dtype=np.float32)
 
         assert self._Z is not None
 
-        q = self._Z[idx:idx+1].astype(np.float32)
+        q = self._Z[idx:idx + 1].astype(np.float32)
         if self.metric == "cosine" and self.normalize_for_cosine:
             q = self._l2_normalize(q, eps=self.eps)
 
-        # request extra neighbor if we might drop self
         topk = min(self.k + (1 if not self.include_self else 0), self._Z.shape[0])
         scores, nbrs = self._search(q, topk=topk)
 
-        # drop invalid (-1)
         valid = nbrs >= 0
         scores = scores[valid]
         nbrs = nbrs[valid]
@@ -184,21 +178,25 @@ class KNNLocalDensityCLIPFaiss(CoverageDimension):
         if not self.include_self:
             keep = nbrs != idx
             scores = scores[keep]
-            nbrs = nbrs[keep]
 
         if scores.size == 0:
-            return 0.0
+            return np.asarray([], dtype=np.float32)
 
         scores = scores[: self.k]
-
-        # convert FAISS output -> distance array dists
         if self.metric == "cosine":
-            # scores = inner product similarity in [-1, 1] (for normalized vectors)
-            sims = scores
-            dists = 1.0 - sims  # cosine distance
+            dists = 1.0 - scores
         else:
-            # scores = squared L2 distance
             dists = np.sqrt(np.maximum(scores, 0.0))
+        return np.asarray(dists, dtype=np.float32)
+
+    def get_score(self, image, mask=None, meta=None) -> float:
+        """
+        image/mask are unused; we use meta['img_path'] to find embedding row.
+        """
+        meta = meta or {}
+        dists = self._get_neighbor_distances(meta)
+        if dists.size == 0:
+            return 0.0
 
         if self.mode == "mean_dist":
             return float(np.mean(dists))
@@ -208,8 +206,8 @@ class KNNLocalDensityCLIPFaiss(CoverageDimension):
             return float(np.sum(dists <= self.radius))
 
     def get_vector_score(self, image, mask=None, meta=None) -> np.ndarray:
-        # Compatibility vectorization; neighbor-distance histogram encoding can replace this later.
-        return np.asarray([self.get_score(image, mask=mask, meta=meta)], dtype=np.float32)
+        meta = meta or {}
+        return self._get_neighbor_distances(meta)
         
 
 
@@ -232,6 +230,7 @@ class PrototypeMarginCLIPFaiss(CoverageDimension):
         emb_file: str = "visual_emb.npy",
         paths_file: str = "clip_paths_abs.json",
         centroid_file: str = "prototypes_k200.npy",
+        top_m: int = 2,
         normalize: bool = True,
         eps: float = 1e-12,
         use_gpu: bool = False,
@@ -244,6 +243,7 @@ class PrototypeMarginCLIPFaiss(CoverageDimension):
         self.centroid_path = os.path.join(cache_dir, centroid_file)
 
         self.normalize = bool(normalize)
+        self.top_m = int(top_m)
         self.eps = float(eps)
         self.use_gpu = bool(use_gpu)
         self.gpu_id = int(gpu_id)
@@ -253,6 +253,9 @@ class PrototypeMarginCLIPFaiss(CoverageDimension):
         self._path2idx: Optional[Dict[str, int]] = None
         self._centroid_index = None
         self._D: Optional[int] = None
+
+        if self.top_m <= 0:
+            raise ValueError("top_m must be > 0")
 
     @staticmethod
     def _l2_normalize(X: np.ndarray, eps: float = 1e-12) -> np.ndarray:
@@ -301,32 +304,43 @@ class PrototypeMarginCLIPFaiss(CoverageDimension):
         p = meta.get("img_path") or meta.get("path")
         if p is None:
             return None
-        return self._path2idx.get(p, None)
+        cands = [p, os.path.abspath(p), os.path.relpath(os.path.abspath(p))]
+        for cand in cands:
+            idx = self._path2idx.get(cand)
+            if idx is not None:
+                return idx
+        return None
 
-    def get_score(self, image=None, mask=None, meta=None) -> float:
-        meta = meta or {}
+    def _get_top_m_distances(self, meta: Dict[str, Any]) -> np.ndarray:
         self._lazy_init()
 
         idx = self._lookup_idx(meta)
         if idx is None:
-            return 0.0
+            return np.asarray([], dtype=np.float32)
 
         assert self._Z is not None
+        assert self._C is not None
         assert self._centroid_index is not None
 
-        q = self._Z[idx:idx+1]  # [1,D]
-        # search top2 centroids
-        sims, cidx = self._centroid_index.search(q, 2)  # sims: [1,2]
-        sims = sims[0]
-        if sims.shape[0] < 2:
+        q = self._Z[idx:idx + 1]
+        topk = min(self.top_m, self._C.shape[0])
+        sims, _ = self._centroid_index.search(q, topk)
+        if sims.size == 0:
+            return np.asarray([], dtype=np.float32)
+        dists = 1.0 - sims[0]
+        return np.asarray(dists, dtype=np.float32)
+
+    def get_score(self, image=None, mask=None, meta=None) -> float:
+        meta = meta or {}
+        dists = self._get_top_m_distances(meta)
+        if dists.shape[0] < 2:
             return 0.0
 
-        # cosine distance
-        d1 = 1.0 - float(sims[0])
-        d2 = 1.0 - float(sims[1])
+        d1 = float(dists[0])
+        d2 = float(dists[1])
         margin = d2 - d1
         return float(margin)
 
     def get_vector_score(self, image=None, mask=None, meta=None) -> np.ndarray:
-        # Compatibility vectorization; top-m distance profile encoding can replace this later.
-        return np.asarray([self.get_score(image=image, mask=mask, meta=meta)], dtype=np.float32)
+        meta = meta or {}
+        return self._get_top_m_distances(meta)
