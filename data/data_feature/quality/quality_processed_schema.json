@@ -1,0 +1,112 @@
+{
+  "schema_version": "quality.v1",
+  "purpose": "Describe within-image quality distributions rather than collapsing quality to a single scalar.",
+  "features": {
+    "laplacian": {
+      "raw_key": "laplacian_raw",
+      "encoding": "distribution",
+      "value_transform": "log1p",
+      "num_bins": 12,
+      "range_mode": "robust_global",
+      "range_params": {
+        "lower_quantile": 0.01,
+        "upper_quantile": 0.99
+      },
+      "hist_normalization": "l1",
+      "hist_field": "hist",
+      "support_fields": [
+        "empty_flag",
+        "num_values",
+        "log_num_values"
+      ],
+      "summary_fields": {
+        "mean": "mean of transformed values",
+        "std": "standard deviation of transformed values",
+        "q10": "10th percentile of transformed values",
+        "q50": "50th percentile of transformed values",
+        "q90": "90th percentile of transformed values",
+        "low_sharpness_mass": "sum of histogram bins 0-2",
+        "high_sharpness_mass": "sum of histogram bins 9-11"
+      },
+      "model_input_fields": [
+        "hist",
+        "log_num_values",
+        "empty_flag",
+        "q50",
+        "q90",
+        "low_sharpness_mass"
+      ]
+    },
+    "noise_pca": {
+      "raw_key": "noise_pca_raw",
+      "encoding": "distribution",
+      "value_transform": "log1p",
+      "num_bins": 12,
+      "range_mode": "robust_global",
+      "range_params": {
+        "lower_quantile": 0.01,
+        "upper_quantile": 0.99
+      },
+      "hist_normalization": "l1",
+      "hist_field": "hist",
+      "support_fields": [
+        "empty_flag",
+        "num_values",
+        "log_num_values"
+      ],
+      "summary_fields": {
+        "mean": "mean of transformed values",
+        "std": "standard deviation of transformed values",
+        "q10": "10th percentile of transformed values",
+        "q50": "50th percentile of transformed values",
+        "q90": "90th percentile of transformed values",
+        "low_noise_mass": "sum of histogram bins 0-2",
+        "high_noise_mass": "sum of histogram bins 9-11"
+      },
+      "model_input_fields": [
+        "hist",
+        "log_num_values",
+        "empty_flag",
+        "q50",
+        "q90",
+        "high_noise_mass"
+      ]
+    },
+    "bga": {
+      "raw_key": "bga_raw",
+      "encoding": "distribution",
+      "value_transform": "identity",
+      "num_bins": 8,
+      "range_mode": "fixed",
+      "range_params": {
+        "min": 0.0,
+        "max": 1.0
+      },
+      "hist_normalization": "l1",
+      "hist_field": "hist",
+      "support_fields": [
+        "empty_flag",
+        "num_values",
+        "log_num_values"
+      ],
+      "summary_fields": {
+        "mean": "mean of raw values",
+        "std": "standard deviation of raw values",
+        "q10": "10th percentile of raw values",
+        "q50": "50th percentile of raw values",
+        "q90": "90th percentile of raw values",
+        "low_bga_mass": "sum of histogram bins 0-1",
+        "high_bga_mass": "sum of histogram bins 6-7"
+      },
+      "model_input_fields": [
+        "hist",
+        "log_num_values",
+        "empty_flag",
+        "q10",
+        "q50",
+        "low_bga_mass",
+        "high_bga_mass"
+      ]
+    }
+  }
+}
