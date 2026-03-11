@@ -1,0 +1,99 @@
+{
+  "schema_version": "difficulty.v1",
+  "purpose": "Preserve heterogeneous difficulty semantics: profile-style small-object structure plus event-distribution difficulty values.",
+  "features": {
+    "small_ratio": {
+      "raw_key": "small_ratio_raw",
+      "encoding": "profile",
+      "value_transform": "identity",
+      "profile_length": 16,
+      "profile_field": "profile",
+      "derived_profile_field": "delta_profile",
+      "support_fields": [
+        "empty_flag",
+        "num_values",
+        "log_num_values"
+      ],
+      "summary_fields": {
+        "first_active_bin": "index of the first non-zero delta bin normalized to [0, 1]",
+        "mass_small_extreme": "sum of delta_profile bins 0-3",
+        "mass_small_mid": "sum of delta_profile bins 4-9"
+      },
+      "model_input_fields": [
+        "delta_profile",
+        "log_num_values",
+        "empty_flag",
+        "mass_small_extreme",
+        "mass_small_mid"
+      ]
+    },
+    "visual_semantic_gap": {
+      "raw_key": "visual_semantic_gap_raw",
+      "encoding": "distribution",
+      "value_transform": "log1p",
+      "num_bins": 12,
+      "range_mode": "robust_global",
+      "range_params": {
+        "lower_quantile": 0.01,
+        "upper_quantile": 0.99
+      },
+      "hist_normalization": "l1",
+      "hist_field": "hist",
+      "support_fields": [
+        "empty_flag",
+        "num_values",
+        "log_num_values"
+      ],
+      "summary_fields": {
+        "mean": "mean of transformed values",
+        "std": "standard deviation of transformed values",
+        "q50": "50th percentile of transformed values",
+        "q90": "90th percentile of transformed values",
+        "high_gap_mass": "sum of histogram bins 9-11"
+      },
+      "model_input_fields": [
+        "hist",
+        "log_num_values",
+        "empty_flag",
+        "q50",
+        "q90",
+        "high_gap_mass"
+      ]
+    },
+    "empirical_iou": {
+      "raw_key": "empirical_iou_raw",
+      "encoding": "distribution",
+      "value_transform": "identity",
+      "num_bins": 8,
+      "range_mode": "fixed",
+      "range_params": {
+        "min": 0.0,
+        "max": 1.0
+      },
+      "hist_normalization": "l1",
+      "hist_field": "hist",
+      "support_fields": [
+        "empty_flag",
+        "num_values",
+        "log_num_values"
+      ],
+      "summary_fields": {
+        "mean": "mean of raw values",
+        "std": "standard deviation of raw values",
+        "q10": "10th percentile of raw values",
+        "q50": "50th percentile of raw values",
+        "low_iou_mass": "sum of histogram bins 0-1",
+        "high_iou_mass": "sum of histogram bins 6-7"
+      },
+      "model_input_fields": [
+        "hist",
+        "log_num_values",
+        "empty_flag",
+        "q10",
+        "q50",
+        "low_iou_mass",
+        "high_iou_mass"
+      ]
+    }
+  }
+}

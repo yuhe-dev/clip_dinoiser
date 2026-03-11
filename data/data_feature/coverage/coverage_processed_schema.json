@@ -1,0 +1,69 @@
+{
+  "schema_version": "coverage.v1",
+  "purpose": "Preserve rank-aware embedding-space geometry for local density and prototype coverage instead of re-binning already aligned profiles.",
+  "features": {
+    "knn_local_density": {
+      "raw_key": "knn_neighbor_distances_raw",
+      "encoding": "profile",
+      "value_transform": "identity_clamp_nonnegative",
+      "profile_length_source": "feature_meta.knn_k",
+      "profile_field": "profile",
+      "derived_profile_field": "delta_profile",
+      "support_fields": [
+        "empty_flag",
+        "num_values",
+        "log_num_values"
+      ],
+      "summary_fields": {
+        "mean": "mean neighbor distance",
+        "std": "standard deviation of neighbor distances",
+        "q10": "10th percentile neighbor distance",
+        "q50": "50th percentile neighbor distance",
+        "q90": "90th percentile neighbor distance",
+        "nearest_distance": "profile[0]",
+        "farthest_distance": "profile[-1]",
+        "density_score": "1 / (eps + mean)"
+      },
+      "model_input_fields": [
+        "profile",
+        "q10",
+        "q50",
+        "q90",
+        "nearest_distance",
+        "density_score"
+      ]
+    },
+    "prototype_distance": {
+      "raw_key": "prototype_distances_raw",
+      "encoding": "profile",
+      "value_transform": "identity_clamp_nonnegative",
+      "profile_length_source": "feature_meta.prototype_top_m",
+      "profile_field": "profile",
+      "derived_profile_field": "delta_profile",
+      "support_fields": [
+        "empty_flag",
+        "num_values",
+        "log_num_values"
+      ],
+      "summary_fields": {
+        "mean": "mean prototype distance",
+        "std": "standard deviation of prototype distances",
+        "q10": "10th percentile prototype distance",
+        "q50": "50th percentile prototype distance",
+        "q90": "90th percentile prototype distance",
+        "nearest_prototype_distance": "profile[0]",
+        "prototype_margin_top2": "profile[1] - profile[0]",
+        "prototype_margin_top5": "profile[4] - profile[0]"
+      },
+      "model_input_fields": [
+        "profile",
+        "q10",
+        "q50",
+        "q90",
+        "nearest_prototype_distance",
+        "prototype_margin_top2",
+        "prototype_margin_top5"
+      ]
+    }
+  }
+}

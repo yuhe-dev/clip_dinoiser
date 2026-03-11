@@ -1,0 +1,17 @@
+{
+  "num_samples": 50000,
+  "features": {
+    "knn_local_density": {
+      "empty_samples": 0,
+      "num_values_min": 50,
+      "num_values_max": 50,
+      "num_values_mean": 50.0
+    },
+    "prototype_distance": {
+      "empty_samples": 0,
+      "num_values_min": 50,
+      "num_values_max": 50,
+      "num_values_mean": 50.0
+    }
+  }
+}
