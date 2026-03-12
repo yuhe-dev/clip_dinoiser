@@ -1,7 +1,7 @@
 import argparse
 import json
 import os
-from typing import Dict, List, Sequence
+from typing import Dict, List, Optional, Sequence
 
 import numpy as np
 from PIL import Image
@@ -33,7 +33,7 @@ def _load_mask(annotation_path: str) -> np.ndarray:
 def backfill_small_ratio_counts_for_records(
     records: Sequence[Dict[str, object]],
     subset_root: str,
-    thresholds: Sequence[float] | None = None,
+    thresholds: Optional[Sequence[float]] = None,
     ignore_index: int = 255,
     use_things_only: bool = False,
     verify_profile: bool = False,

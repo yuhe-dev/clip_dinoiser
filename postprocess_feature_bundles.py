@@ -3,7 +3,7 @@ import json
 import math
 import os
 import re
-from typing import Dict, Iterable, List, Sequence
+from typing import Dict, Iterable, List, Optional, Sequence
 
 import numpy as np
 
@@ -160,7 +160,7 @@ def encode_profile_feature(
     raw_values: np.ndarray,
     feature_spec: Dict[str, object],
     feature_name: str = "",
-    source_num_values: int | None = None,
+    source_num_values: Optional[int] = None,
 ) -> Dict[str, object]:
     profile = apply_value_transform(np.asarray(raw_values, dtype=np.float32), str(feature_spec.get("value_transform", "identity")))
     profile = np.asarray(profile, dtype=np.float32)
