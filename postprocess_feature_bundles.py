@@ -8,10 +8,22 @@ from typing import Callable, Dict, Iterable, List, Optional, Sequence
 
 import numpy as np
 
+from feature_utils.data_feature.bundle import (
+    ProcessedBundleIO,
+    ProcessedFeatureBundle,
+    RawFeatureBundle,
+    build_processed_feature_summary,
+)
+from feature_utils.data_feature.postprocess import (
+    DistributionFeatureEncoder,
+    FeaturePostprocessor,
+    ProfileFeatureEncoder,
+    SchemaResolver,
+)
+
 
 def load_schema(schema_path: str) -> Dict[str, object]:
-    with open(schema_path, "r", encoding="utf-8") as f:
-        return json.load(f)
+    return SchemaResolver().load_unified_schema(schema_path)
 
 
 def load_raw_records(records_path: str) -> List[Dict[str, object]]:
@@ -35,33 +47,9 @@ def apply_value_transform(values: np.ndarray, transform_name: str) -> np.ndarray
 
 
 def fit_distribution_bin_edges(raw_arrays: Sequence[np.ndarray], feature_spec: Dict[str, object]) -> np.ndarray:
-    transformed = [
-        apply_value_transform(np.asarray(arr, dtype=np.float32), str(feature_spec.get("value_transform", "identity")))
-        for arr in raw_arrays
-        if np.asarray(arr).size > 0
-    ]
-    num_bins = int(feature_spec["num_bins"])
-    range_mode = str(feature_spec["range_mode"])
-    range_params = dict(feature_spec.get("range_params", {}))
-
-    if range_mode == "fixed":
-        low = float(range_params["min"])
-        high = float(range_params["max"])
-    elif range_mode == "robust_global":
-        if not transformed:
-            low, high = 0.0, 1.0
-        else:
-            merged = np.concatenate(transformed, axis=0)
-            low = float(np.quantile(merged, float(range_params.get("lower_quantile", 0.01))))
-            high = float(np.quantile(merged, float(range_params.get("upper_quantile", 0.99))))
-    else:
-        raise ValueError(f"Unsupported range_mode='{range_mode}'")
-
-    if not np.isfinite(low) or not np.isfinite(high):
-        low, high = 0.0, 1.0
-    if high <= low:
-        high = low + 1.0
-    return np.linspace(low, high, num_bins + 1, dtype=np.float32)
+    encoder = DistributionFeatureEncoder(feature_spec)
+    encoder.fit(raw_arrays)
+    return np.asarray(encoder.bin_edges, dtype=np.float32)
 
 
 def _parse_bin_range(description: str) -> range:
@@ -97,32 +85,9 @@ def _distribution_summary(values: np.ndarray, hist: np.ndarray, summary_fields: 
 
 
 def encode_distribution_feature(raw_values: np.ndarray, feature_spec: Dict[str, object], bin_edges: np.ndarray) -> Dict[str, object]:
-    values = apply_value_transform(np.asarray(raw_values, dtype=np.float32), str(feature_spec.get("value_transform", "identity")))
-    num_values = int(values.size)
-    empty_flag = int(num_values == 0)
-    num_bins = int(feature_spec["num_bins"])
-
-    if num_values == 0:
-        hist = np.zeros((num_bins,), dtype=np.float32)
-    else:
-        clipped = np.clip(values, float(bin_edges[0]), float(bin_edges[-1]))
-        counts, _ = np.histogram(clipped, bins=bin_edges)
-        hist = counts.astype(np.float32)
-        total = float(hist.sum())
-        if total > 0:
-            hist /= total
-
-    summary = _distribution_summary(values, hist, dict(feature_spec.get("summary_fields", {})))
-    return {
-        "encoding": "distribution",
-        "value_transform": str(feature_spec.get("value_transform", "identity")),
-        "empty_flag": empty_flag,
-        "num_values": num_values,
-        "log_num_values": float(math.log1p(num_values)),
-        "hist": hist,
-        "summary": summary,
-        "model_input_fields": list(feature_spec.get("model_input_fields", [])),
-    }
+    encoder = DistributionFeatureEncoder(feature_spec)
+    encoder.bin_edges = np.asarray(bin_edges, dtype=np.float32)
+    return encoder.transform(raw_values, {})
 
 
 def _profile_summary(profile: np.ndarray, delta_profile: np.ndarray, summary_fields: Dict[str, str]) -> Dict[str, float]:
@@ -163,29 +128,16 @@ def encode_profile_feature(
     feature_name: str = "",
     source_num_values: Optional[int] = None,
 ) -> Dict[str, object]:
-    profile = apply_value_transform(np.asarray(raw_values, dtype=np.float32), str(feature_spec.get("value_transform", "identity")))
-    profile = np.asarray(profile, dtype=np.float32)
-    if profile.size == 0:
-        delta_profile = np.asarray([], dtype=np.float32)
+    del feature_name
+    record = {}
+    if source_num_values is not None:
+        temp_spec = dict(feature_spec)
+        temp_spec["source_count_key"] = "__source_num_values__"
+        record["__source_num_values__"] = int(source_num_values)
+        encoder = ProfileFeatureEncoder(temp_spec)
     else:
-        delta_profile = np.empty_like(profile)
-        delta_profile[0] = profile[0]
-        if profile.size > 1:
-            delta_profile[1:] = np.maximum(profile[1:] - profile[:-1], 0.0)
-
-    num_values = int(source_num_values) if source_num_values is not None else int(profile.size)
-    summary = _profile_summary(profile, delta_profile, dict(feature_spec.get("summary_fields", {})))
-    return {
-        "encoding": "profile",
-        "value_transform": str(feature_spec.get("value_transform", "identity")),
-        "empty_flag": int(num_values == 0),
-        "num_values": num_values,
-        "log_num_values": float(math.log1p(num_values)),
-        "profile": profile,
-        "delta_profile": delta_profile,
-        "summary": summary,
-        "model_input_fields": list(feature_spec.get("model_input_fields", [])),
-    }
+        encoder = ProfileFeatureEncoder(feature_spec)
+    return encoder.transform(raw_values, record)
 
 
 def process_dimension_records(
@@ -195,74 +147,23 @@ def process_dimension_records(
     progress_interval: int = 100,
     log_fn: Callable[[str], None] = print,
 ) -> List[Dict[str, object]]:
-    feature_specs = dict(dimension_schema.get("features", {}))
-    bin_edges_by_feature: Dict[str, np.ndarray] = {}
-    label = dimension_name or str(dimension_schema.get("schema_version", "dimension"))
-    total_records = int(len(raw_records))
-    log_fn(f"[postprocess] {label}: preparing {total_records} raw records")
-
-    for feature_name, feature_spec in feature_specs.items():
-        spec = dict(feature_spec)
-        if spec["encoding"] != "distribution":
-            continue
-        raw_key = str(spec["raw_key"])
-        log_fn(f"[postprocess] {label}: fitting bin edges for {feature_name}")
-        arrays = [np.asarray(record.get(raw_key, np.asarray([], dtype=np.float32)), dtype=np.float32) for record in raw_records]
-        bin_edges_by_feature[feature_name] = fit_distribution_bin_edges(arrays, spec)
-
-    processed: List[Dict[str, object]] = []
-    for idx, record in enumerate(raw_records, start=1):
-        feature_blocks: Dict[str, object] = {}
-        for feature_name, feature_spec in feature_specs.items():
-            spec = dict(feature_spec)
-            raw = np.asarray(record.get(spec["raw_key"], np.asarray([], dtype=np.float32)), dtype=np.float32)
-            if spec["encoding"] == "distribution":
-                feature_blocks[feature_name] = encode_distribution_feature(raw, spec, bin_edges_by_feature[feature_name])
-            elif spec["encoding"] == "profile":
-                source_count_key = spec.get("source_count_key")
-                source_num_values = None
-                if source_count_key:
-                    raw_count = record.get(str(source_count_key))
-                    if raw_count is not None:
-                        source_num_values = int(raw_count)
-                feature_blocks[feature_name] = encode_profile_feature(
-                    raw,
-                    spec,
-                    feature_name=feature_name,
-                    source_num_values=source_num_values,
-                )
-            else:
-                raise ValueError(f"Unsupported encoding='{spec['encoding']}'")
-
-        processed.append(
-            {
-                "image_rel": record.get("image_rel", ""),
-                "annotation_rel": record.get("annotation_rel", ""),
-                "schema_version": str(dimension_schema["schema_version"]),
-                "features": feature_blocks,
-            }
-        )
-        if progress_interval > 0 and (idx == total_records or idx % progress_interval == 0):
-            log_fn(f"[postprocess] {label}: processed {idx}/{total_records} records")
-    return processed
+    raw_bundle = RawFeatureBundle(
+        dimension_name=dimension_name or str(dimension_schema.get("schema_version", "dimension")),
+        records=list(raw_records),
+        stats={"num_samples": len(raw_records), "features": {}},
+        feature_config={},
+    )
+    bundle = FeaturePostprocessor().process_bundle(
+        raw_bundle,
+        dimension_schema,
+        progress_interval=progress_interval,
+        log_fn=log_fn,
+    )
+    return bundle.records
 
 
 def compute_processed_summary(processed_records: Sequence[Dict[str, object]]) -> Dict[str, object]:
-    summary: Dict[str, object] = {"num_samples": int(len(processed_records)), "features": {}}
-    if not processed_records:
-        return summary
-
-    feature_names = list(processed_records[0]["features"].keys())
-    for feature_name in feature_names:
-        empty_flags = [int(record["features"][feature_name]["empty_flag"]) for record in processed_records]
-        num_values = [int(record["features"][feature_name]["num_values"]) for record in processed_records]
-        summary["features"][feature_name] = {
-            "empty_samples": int(sum(empty_flags)),
-            "num_values_min": int(min(num_values)) if num_values else 0,
-            "num_values_max": int(max(num_values)) if num_values else 0,
-            "num_values_mean": float(np.mean(num_values)) if num_values else 0.0,
-        }
-    return summary
+    return build_processed_feature_summary(processed_records)
 
 
 def save_processed_bundle(
@@ -275,37 +176,21 @@ def save_processed_bundle(
     source_config_path: str,
     schema_source_path: str,
 ) -> Dict[str, str]:
-    os.makedirs(output_root, exist_ok=True)
-    records_path = os.path.join(output_root, f"{dimension_name}_processed_features.npy")
-    schema_path = os.path.join(output_root, f"{dimension_name}_processed_schema.json")
-    config_path = os.path.join(output_root, f"{dimension_name}_processing_config.json")
-    summary_path = os.path.join(output_root, f"{dimension_name}_processed_summary.json")
-
-    np.save(records_path, np.asarray(list(processed_records), dtype=object), allow_pickle=True)
-    with open(schema_path, "w", encoding="utf-8") as f:
-        json.dump(dimension_schema, f, indent=2, ensure_ascii=False)
-
-    config = {
-        "dimension": dimension_name,
-        "schema_version": dimension_schema["schema_version"],
-        "source_records_path": source_records_path,
-        "source_stats_path": source_stats_path,
-        "source_config_path": source_config_path,
-        "schema_source_path": schema_source_path,
-    }
-    with open(config_path, "w", encoding="utf-8") as f:
-        json.dump(config, f, indent=2, ensure_ascii=False)
-
-    summary = compute_processed_summary(processed_records)
-    with open(summary_path, "w", encoding="utf-8") as f:
-        json.dump(summary, f, indent=2, ensure_ascii=False)
-
-    return {
-        "records_path": records_path,
-        "schema_path": schema_path,
-        "config_path": config_path,
-        "summary_path": summary_path,
-    }
+    bundle = ProcessedFeatureBundle(
+        dimension_name=dimension_name,
+        records=list(processed_records),
+        schema=dimension_schema,
+        processing_config={
+            "dimension": dimension_name,
+            "schema_version": dimension_schema["schema_version"],
+            "source_records_path": source_records_path,
+            "source_stats_path": source_stats_path,
+            "source_config_path": source_config_path,
+            "schema_source_path": schema_source_path,
+        },
+        summary=compute_processed_summary(processed_records),
+    )
+    return ProcessedBundleIO().save(bundle, output_root)
 
 
 def process_dimension_bundle(
