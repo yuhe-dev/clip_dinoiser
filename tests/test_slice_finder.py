@@ -94,6 +94,41 @@ class SliceFinderTests(unittest.TestCase):
         self.assertEqual(int(result.hard_assignment[2]), int(result.hard_assignment[3]))
         self.assertNotEqual(int(result.hard_assignment[0]), int(result.hard_assignment[2]))
 
+    def test_gmm_log_prob_matches_vectorized_reference_formula(self):
+        matrix = np.asarray(
+            [
+                [0.0, 1.0, 2.0],
+                [1.5, -0.5, 0.25],
+                [3.0, 2.0, -1.0],
+            ],
+            dtype=np.float32,
+        )
+        means = np.asarray(
+            [
+                [0.2, 0.9, 1.8],
+                [2.5, 1.0, -0.2],
+            ],
+            dtype=np.float64,
+        )
+        covars = np.asarray(
+            [
+                [1.1, 0.8, 1.3],
+                [0.9, 1.4, 0.7],
+            ],
+            dtype=np.float64,
+        )
+        finder = GMMSliceFinder(num_slices=2, seed=0, max_iters=5, covariance_type="diag")
+
+        actual = finder._estimate_log_prob(matrix.astype(np.float64), means, covars)
+
+        diff = matrix.astype(np.float64)[:, None, :] - means[None, :, :]
+        precision = 1.0 / covars[None, :, :]
+        quadratic = (diff * diff * precision).sum(axis=2)
+        log_det = np.log(covars).sum(axis=1)
+        expected = -0.5 * (matrix.shape[1] * np.log(2.0 * np.pi) + log_det[None, :] + quadratic)
+
+        np.testing.assert_allclose(actual, expected, atol=1e-8, rtol=1e-8)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -145,7 +145,7 @@ class GMMSliceFinder:
 
             nk = nk + 1e-12
             weights = (nk / float(n_samples)).astype(np.float64)
-            weighted_sum = np.einsum("nk,nd->kd", responsibilities, X, optimize=True)
+            weighted_sum = responsibilities.T @ X
             means = (weighted_sum / nk[:, None]).astype(np.float64)
 
             for k in range(self.num_slices):
@@ -162,11 +162,15 @@ class GMMSliceFinder:
 
     def _estimate_log_prob(self, X: np.ndarray, means: np.ndarray, covars: np.ndarray) -> np.ndarray:
         n_features = X.shape[1]
-        diff = X[:, None, :] - means[None, :, :]
-        precision = 1.0 / np.clip(covars[None, :, :], self.reg_covar, None)
-        quadratic = (diff * diff * precision).sum(axis=2)
-        log_det = np.log(np.clip(covars, self.reg_covar, None)).sum(axis=1)
-        return (-0.5 * (n_features * np.log(2.0 * np.pi) + log_det[None, :] + quadratic)).astype(np.float64)
+        log_prob = np.empty((X.shape[0], self.num_slices), dtype=np.float64)
+        constant = n_features * np.log(2.0 * np.pi)
+        for k in range(self.num_slices):
+            safe_covar = np.clip(covars[k], self.reg_covar, None)
+            diff = X - means[k]
+            quadratic = np.sum((diff * diff) / safe_covar[None, :], axis=1, dtype=np.float64)
+            log_det = float(np.log(safe_covar).sum())
+            log_prob[:, k] = -0.5 * (constant + log_det + quadratic)
+        return log_prob
 
     @staticmethod
     def _logsumexp(values: np.ndarray, axis: int) -> np.ndarray:
