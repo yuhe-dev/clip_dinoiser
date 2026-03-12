@@ -75,6 +75,8 @@ class SliceFinderTests(unittest.TestCase):
         np.testing.assert_allclose(result.membership.sum(axis=1), np.ones(4, dtype=np.float32), atol=1e-5)
         self.assertEqual(result.centers.shape, (2, 2))
         self.assertEqual(result.slice_weights.shape, (2,))
+        self.assertEqual(result.diagnostics["input_shape"], [4, 2])
+        self.assertIn("log_likelihood_trace", result.diagnostics)
 
     def test_gmm_groups_nearby_points_into_same_dominant_slice(self):
         matrix = np.asarray(
@@ -128,6 +130,25 @@ class SliceFinderTests(unittest.TestCase):
         expected = -0.5 * (matrix.shape[1] * np.log(2.0 * np.pi) + log_det[None, :] + quadratic)
 
         np.testing.assert_allclose(actual, expected, atol=1e-8, rtol=1e-8)
+
+    def test_soft_kmeans_returns_basic_diagnostics(self):
+        matrix = np.asarray(
+            [
+                [0.0, 0.0],
+                [0.1, 0.0],
+                [5.0, 5.0],
+                [5.1, 5.2],
+            ],
+            dtype=np.float32,
+        )
+        finder = SoftKMeansSliceFinder(num_slices=2, seed=0, max_iters=10, temperature=1.0)
+
+        result = finder.fit(matrix, sample_ids=["a", "b", "c", "d"])
+
+        self.assertEqual(result.diagnostics["input_shape"], [4, 2])
+        self.assertTrue(result.diagnostics["input_all_finite"])
+        self.assertGreaterEqual(result.diagnostics["membership_row_sum_min"], 0.9999)
+        self.assertLessEqual(result.diagnostics["membership_row_sum_max"], 1.0001)
 
 
 if __name__ == "__main__":

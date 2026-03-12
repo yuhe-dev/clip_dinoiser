@@ -261,6 +261,24 @@ class ProcessedFeatureAssemblerTests(unittest.TestCase):
         self.assertIn("numpy._core", sys.modules)
         self.assertIn("numpy._core.multiarray", sys.modules)
 
+    def test_debug_summary_reports_block_and_flat_statistics(self):
+        quality_records, difficulty_records, coverage_records = self._build_records()
+
+        assembler = ProcessedFeatureAssembler.from_processed_records(
+            quality_records=quality_records,
+            difficulty_records=difficulty_records,
+            coverage_records=coverage_records,
+            schema=TEST_SCHEMA,
+        )
+
+        summary = assembler.get_debug_summary()
+
+        self.assertEqual(summary["sample_count"], 2)
+        self.assertEqual(summary["flat_shape"], [2, 12])
+        self.assertTrue(summary["flat_all_finite"])
+        self.assertEqual(summary["blocks"]["quality.laplacian"]["shape"], [2, 4])
+        self.assertTrue(summary["blocks"]["quality.laplacian"]["all_finite"])
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import json
+import os
+
 import numpy as np
 
 from .assembler import ProcessedFeatureAssembler
@@ -56,6 +59,57 @@ class SliceFeatureProjector:
             matrix=combined.astype(np.float32),
             sample_ids=list(assembler.sample_ids),
             block_ranges=block_ranges,
+        )
+
+    def get_debug_summary(self, projected: ProjectedSliceFeatures) -> dict[str, object]:
+        blocks: dict[str, dict[str, object]] = {}
+        for name, (start, end) in projected.block_ranges.items():
+            block = projected.matrix[:, start:end]
+            blocks[name] = {
+                "shape": list(block.shape),
+                "all_finite": bool(np.isfinite(block).all()),
+                "min": float(np.min(block)),
+                "max": float(np.max(block)),
+                "mean": float(np.mean(block)),
+                "std": float(np.std(block)),
+            }
+
+        return {
+            "sample_count": len(projected.sample_ids),
+            "matrix_shape": list(projected.matrix.shape),
+            "all_finite": bool(np.isfinite(projected.matrix).all()),
+            "block_ranges": {name: [start, end] for name, (start, end) in projected.block_ranges.items()},
+            "blocks": blocks,
+        }
+
+    def save(self, projected: ProjectedSliceFeatures, output_dir: str) -> None:
+        os.makedirs(output_dir, exist_ok=True)
+        np.savez(
+            os.path.join(output_dir, "projected_features.npz"),
+            matrix=projected.matrix,
+            sample_ids=np.asarray(projected.sample_ids, dtype=object),
+        )
+        meta = {
+            "sample_ids": list(projected.sample_ids),
+            "block_ranges": {name: [start, end] for name, (start, end) in projected.block_ranges.items()},
+            "config": {
+                "scalar_scaler": self.scalar_scaler,
+                "block_weighting": self.block_weighting,
+                "pca_components": self.pca_components,
+            },
+        }
+        with open(os.path.join(output_dir, "projected_features_meta.json"), "w", encoding="utf-8") as f:
+            json.dump(meta, f, indent=2, ensure_ascii=False)
+
+    @staticmethod
+    def load(output_dir: str) -> ProjectedSliceFeatures:
+        payload = np.load(os.path.join(output_dir, "projected_features.npz"), allow_pickle=True)
+        with open(os.path.join(output_dir, "projected_features_meta.json"), "r", encoding="utf-8") as f:
+            meta = json.load(f)
+        return ProjectedSliceFeatures(
+            matrix=np.asarray(payload["matrix"], dtype=np.float32),
+            sample_ids=[str(sample_id) for sample_id in payload["sample_ids"].tolist()],
+            block_ranges={name: (int(bounds[0]), int(bounds[1])) for name, bounds in meta["block_ranges"].items()},
         )
 
     @staticmethod

@@ -111,11 +111,19 @@ class ProcessedFeatureAssembler:
         difficulty_path: str,
         coverage_path: str,
         schema_path: str,
+        limit_samples: int | None = None,
     ) -> "ProcessedFeatureAssembler":
+        quality_records = _load_records(quality_path)
+        difficulty_records = _load_records(difficulty_path)
+        coverage_records = _load_records(coverage_path)
+        if limit_samples is not None:
+            quality_records = quality_records[:limit_samples]
+            difficulty_records = difficulty_records[:limit_samples]
+            coverage_records = coverage_records[:limit_samples]
         return cls.from_processed_records(
-            quality_records=_load_records(quality_path),
-            difficulty_records=_load_records(difficulty_path),
-            coverage_records=_load_records(coverage_path),
+            quality_records=quality_records,
+            difficulty_records=difficulty_records,
+            coverage_records=coverage_records,
             schema=_load_json(schema_path),
         )
 
@@ -191,6 +199,29 @@ class ProcessedFeatureAssembler:
                 }
                 for name in self._block_order
             },
+        }
+
+    def get_debug_summary(self) -> dict[str, object]:
+        flat = self.get_flat_view()
+        blocks: dict[str, dict[str, object]] = {}
+        for name in self._block_order:
+            matrix = self._blocks[name].matrix
+            blocks[name] = {
+                "shape": list(matrix.shape),
+                "all_finite": bool(np.isfinite(matrix).all()),
+                "min": float(np.min(matrix)),
+                "max": float(np.max(matrix)),
+                "mean": float(np.mean(matrix)),
+            }
+
+        return {
+            "sample_count": self.sample_count,
+            "flat_shape": list(flat.shape),
+            "flat_all_finite": bool(np.isfinite(flat).all()),
+            "flat_min": float(np.min(flat)) if flat.size else 0.0,
+            "flat_max": float(np.max(flat)) if flat.size else 0.0,
+            "flat_mean": float(np.mean(flat)) if flat.size else 0.0,
+            "blocks": blocks,
         }
 
     def save(self, output_dir: str) -> None:

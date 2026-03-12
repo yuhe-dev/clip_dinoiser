@@ -1,5 +1,6 @@
 import os
 import sys
+import tempfile
 import unittest
 
 import numpy as np
@@ -132,6 +133,29 @@ class SliceFeatureProjectorTests(unittest.TestCase):
         self.assertAlmostEqual(float(result.matrix[0, 0]), 0.1 / np.sqrt(4), places=6)
         self.assertAlmostEqual(float(result.matrix[0, 4]), 0.2 / np.sqrt(5), places=6)
         self.assertAlmostEqual(float(result.matrix[0, 9]), 0.6 / np.sqrt(3), places=6)
+
+    def test_projected_features_can_be_saved_loaded_and_summarized(self):
+        assembler = self._build_assembler()
+        projector = SliceFeatureProjector(
+            scalar_scaler="zscore",
+            block_weighting="equal_by_block",
+            pca_components=None,
+        )
+
+        projected = projector.fit_transform(assembler)
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            projector.save(projected, tmpdir)
+            restored = projector.load(tmpdir)
+
+            np.testing.assert_allclose(restored.matrix, projected.matrix)
+            self.assertEqual(restored.sample_ids, projected.sample_ids)
+            self.assertEqual(restored.block_ranges, projected.block_ranges)
+
+            summary = projector.get_debug_summary(restored)
+            self.assertEqual(summary["matrix_shape"], [2, 12])
+            self.assertTrue(summary["all_finite"])
+            self.assertEqual(summary["blocks"]["quality.laplacian"]["shape"], [2, 4])
 
 
 if __name__ == "__main__":

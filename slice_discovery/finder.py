@@ -16,7 +16,12 @@ def _validate_input_matrix(matrix: np.ndarray, sample_ids: list[str], num_slices
     return X
 
 
-def _finalize_result(sample_ids: list[str], membership: np.ndarray, centers: np.ndarray) -> SliceFindingResult:
+def _finalize_result(
+    sample_ids: list[str],
+    membership: np.ndarray,
+    centers: np.ndarray,
+    diagnostics: dict[str, object] | None = None,
+) -> SliceFindingResult:
     hard_assignment = membership.argmax(axis=1).astype(np.int64)
     slice_weights = membership.mean(axis=0).astype(np.float32)
     return SliceFindingResult(
@@ -25,6 +30,7 @@ def _finalize_result(sample_ids: list[str], membership: np.ndarray, centers: np.
         hard_assignment=hard_assignment,
         slice_weights=slice_weights,
         centers=centers.astype(np.float32),
+        diagnostics=dict(diagnostics or {}),
     )
 
 
@@ -72,7 +78,14 @@ class SoftKMeansSliceFinder:
                 break
             centers = new_centers.astype(np.float32)
 
-        return _finalize_result(sample_ids, membership, centers)
+        row_sums = membership.sum(axis=1)
+        diagnostics = {
+            "input_shape": [int(X.shape[0]), int(X.shape[1])],
+            "input_all_finite": bool(np.isfinite(X).all()),
+            "membership_row_sum_min": float(np.min(row_sums)),
+            "membership_row_sum_max": float(np.max(row_sums)),
+        }
+        return _finalize_result(sample_ids, membership, centers, diagnostics=diagnostics)
 
     @staticmethod
     def _squared_distances(X: np.ndarray, centers: np.ndarray) -> np.ndarray:
@@ -117,6 +130,7 @@ class GMMSliceFinder:
         prev_log_likelihood = None
         responsibilities = np.full((n_samples, self.num_slices), 1.0 / self.num_slices, dtype=np.float64)
         min_component_mass = 1e-6
+        log_likelihood_trace: list[float] = []
 
         for _ in range(self.max_iters):
             log_prob = self._estimate_log_prob(X, means, covars)
@@ -154,11 +168,20 @@ class GMMSliceFinder:
             covars = np.maximum(covars, self.reg_covar).astype(np.float64)
 
             log_likelihood = float(log_norm.sum())
+            log_likelihood_trace.append(log_likelihood)
             if prev_log_likelihood is not None and abs(log_likelihood - prev_log_likelihood) <= self.tol:
                 break
             prev_log_likelihood = log_likelihood
 
-        return _finalize_result(sample_ids, responsibilities, means)
+        row_sums = responsibilities.sum(axis=1)
+        diagnostics = {
+            "input_shape": [int(X.shape[0]), int(X.shape[1])],
+            "input_all_finite": bool(np.isfinite(X).all()),
+            "membership_row_sum_min": float(np.min(row_sums)),
+            "membership_row_sum_max": float(np.max(row_sums)),
+            "log_likelihood_trace": log_likelihood_trace,
+        }
+        return _finalize_result(sample_ids, responsibilities, means, diagnostics=diagnostics)
 
     def _estimate_log_prob(self, X: np.ndarray, means: np.ndarray, covars: np.ndarray) -> np.ndarray:
         n_features = X.shape[1]

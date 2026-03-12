@@ -28,3 +28,4 @@ class SliceFindingResult:
     hard_assignment: np.ndarray
     slice_weights: np.ndarray
     centers: np.ndarray
+    diagnostics: dict[str, object] | None = None
