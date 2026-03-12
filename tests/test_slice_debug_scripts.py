@@ -14,6 +14,8 @@ if ROOT not in sys.path:
 
 
 from clip_dinoiser.run_slice_assembler_debug import main as assembler_main
+from clip_dinoiser.run_slice_assembler_probe import main as assembler_probe_main
+from clip_dinoiser.run_slice_bundle_probe import main as probe_main
 from clip_dinoiser.run_slice_cluster_debug import main as cluster_main
 from clip_dinoiser.run_slice_projector_debug import main as projector_main
 from tests.test_processed_feature_assembler import TEST_SCHEMA
@@ -174,6 +176,63 @@ class SliceDebugScriptTests(unittest.TestCase):
             self.assertTrue(os.path.exists(os.path.join(output_dir, "assembled_features_meta.json")))
             self.assertTrue(os.path.exists(os.path.join(output_dir, "assembler_debug.json")))
 
+    def test_bundle_probe_script_reports_stage_statuses(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            data_root, schema_path = self._write_fixture_bundle(tmpdir)
+            output_path = os.path.join(tmpdir, "bundle_probe.json")
+
+            exit_code = probe_main(
+                [
+                    "--data-root",
+                    data_root,
+                    "--schema-path",
+                    schema_path,
+                    "--output-path",
+                    output_path,
+                ]
+            )
+
+            self.assertEqual(exit_code, 0)
+            self.assertTrue(os.path.exists(output_path))
+
+            with open(output_path, "r", encoding="utf-8") as f:
+                payload = json.load(f)
+            self.assertEqual(payload["stages"]["schema"]["status"], "ok")
+            self.assertEqual(payload["stages"]["quality"]["status"], "ok")
+            self.assertEqual(payload["stages"]["difficulty"]["status"], "ok")
+            self.assertEqual(payload["stages"]["coverage"]["status"], "ok")
+
+    def test_assembler_probe_script_reports_substage_statuses(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            data_root, schema_path = self._write_fixture_bundle(tmpdir)
+            output_path = os.path.join(tmpdir, "assembler_probe.json")
+
+            exit_code = assembler_probe_main(
+                [
+                    "--data-root",
+                    data_root,
+                    "--schema-path",
+                    schema_path,
+                    "--output-path",
+                    output_path,
+                ]
+            )
+
+            self.assertEqual(exit_code, 0)
+            self.assertTrue(os.path.exists(output_path))
+
+            with open(output_path, "r", encoding="utf-8") as f:
+                payload = json.load(f)
+            self.assertEqual(payload["stages"]["load_quality"]["status"], "ok")
+            self.assertEqual(payload["stages"]["load_difficulty"]["status"], "ok")
+            self.assertEqual(payload["stages"]["load_coverage"]["status"], "ok")
+            self.assertEqual(payload["stages"]["validate_alignment"]["status"], "ok")
+            self.assertEqual(payload["stages"]["build_quality_blocks"]["status"], "ok")
+            self.assertEqual(payload["stages"]["build_difficulty_blocks"]["status"], "ok")
+            self.assertEqual(payload["stages"]["build_coverage_blocks"]["status"], "ok")
+            self.assertEqual(payload["stages"]["flat_view"]["status"], "ok")
+            self.assertEqual(payload["stages"]["save"]["status"], "ok")
+
     def test_projector_debug_script_writes_artifacts(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             data_root, schema_path = self._write_fixture_bundle(tmpdir)
@@ -273,6 +332,7 @@ class SliceDebugScriptTests(unittest.TestCase):
 
     def test_debug_scripts_can_run_help_without_package_context(self):
         script_names = [
+            "run_slice_bundle_probe.py",
             "run_slice_assembler_debug.py",
             "run_slice_projector_debug.py",
             "run_slice_cluster_debug.py",
