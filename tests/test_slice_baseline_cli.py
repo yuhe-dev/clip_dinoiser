@@ -1,5 +1,6 @@
 import json
 import os
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -181,6 +182,21 @@ class SliceBaselineCliTests(unittest.TestCase):
             self.assertEqual(meta["finder"], "soft_kmeans")
             self.assertEqual(meta["num_slices"], 2)
             self.assertEqual(meta["sample_count"], 3)
+
+    def test_script_file_can_run_help_without_package_context(self):
+        script_path = os.path.join(ROOT, "clip_dinoiser", "run_slice_finding_baseline.py")
+        env = dict(os.environ)
+        env.pop("PYTHONPATH", None)
+
+        result = subprocess.run(
+            [sys.executable, script_path, "--help"],
+            capture_output=True,
+            text=True,
+            env=env,
+        )
+
+        self.assertEqual(result.returncode, 0, msg=result.stderr)
+        self.assertIn("Run the slice discovery baseline pipeline", result.stdout)
 
 
 if __name__ == "__main__":

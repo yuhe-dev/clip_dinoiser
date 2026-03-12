@@ -3,12 +3,21 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import sys
 
 import numpy as np
 
-from .slice_discovery.assembler import ProcessedFeatureAssembler
-from .slice_discovery.finder import GMMSliceFinder, SoftKMeansSliceFinder
-from .slice_discovery.projector import SliceFeatureProjector
+if __package__ in {None, ""}:
+    SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+    if SCRIPT_DIR not in sys.path:
+        sys.path.insert(0, SCRIPT_DIR)
+    from slice_discovery.assembler import ProcessedFeatureAssembler
+    from slice_discovery.finder import GMMSliceFinder, SoftKMeansSliceFinder
+    from slice_discovery.projector import SliceFeatureProjector
+else:
+    from .slice_discovery.assembler import ProcessedFeatureAssembler
+    from .slice_discovery.finder import GMMSliceFinder, SoftKMeansSliceFinder
+    from .slice_discovery.projector import SliceFeatureProjector
 
 
 def build_argparser() -> argparse.ArgumentParser:
