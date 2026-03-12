@@ -179,11 +179,13 @@ def extract_difficulty_records(
             "ignore_index": int(feature_meta.get("ignore_index", 255)),
             "use_things_only": bool(feature_meta.get("use_things_only", False)),
         }
+        small_ratio_profile, small_ratio_count = small_ratio.get_profile_and_count(image, mask=mask, meta=meta)
         extracted.append(
             {
                 "image_rel": image_rel,
                 "annotation_rel": annotation_rel,
-                "small_ratio_raw": small_ratio.get_vector_score(image, mask=mask, meta=meta).astype(np.float32),
+                "small_ratio_raw": small_ratio_profile.astype(np.float32),
+                "small_ratio_num_values": int(small_ratio_count),
                 "visual_semantic_gap_raw": semantic_gap.get_vector_score(image, mask=mask, meta=meta).astype(np.float32),
                 "empirical_iou_raw": empirical_iou.get_vector_score(image, mask=mask, meta=meta).astype(np.float32),
             }

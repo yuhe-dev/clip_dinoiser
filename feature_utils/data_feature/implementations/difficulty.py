@@ -1,10 +1,75 @@
-import cv2
 import numpy as np
 from typing import Optional, Dict, Any, Iterable, List
 from ..dimensions import DifficultyDimension
 import torch
 import torch.nn.functional as F
 from PIL import Image
+from collections import deque
+
+try:
+    import cv2  # type: ignore
+except ModuleNotFoundError:
+    class _CV2Fallback:
+        COLOR_BGR2RGB = 4
+        CC_STAT_AREA = 4
+
+        @staticmethod
+        def cvtColor(image: np.ndarray, code: int) -> np.ndarray:
+            if code != _CV2Fallback.COLOR_BGR2RGB:
+                raise ValueError(f"Unsupported fallback cvtColor code: {code}")
+            if image.ndim != 3 or image.shape[2] < 3:
+                raise ValueError("Fallback cvtColor expects an HxWx3 image array.")
+            return image[..., ::-1]
+
+        @staticmethod
+        def connectedComponentsWithStats(binm: np.ndarray, connectivity: int = 8):
+            binary = np.asarray(binm, dtype=np.uint8) > 0
+            h, w = binary.shape
+            labels = np.zeros((h, w), dtype=np.int32)
+            stats = [[0, 0, 0, 0, 0]]
+            centroids = [[0.0, 0.0]]
+            label_id = 1
+            neighbors = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+            if int(connectivity) == 8:
+                neighbors += [(-1, -1), (-1, 1), (1, -1), (1, 1)]
+
+            for y in range(h):
+                for x in range(w):
+                    if not binary[y, x] or labels[y, x] != 0:
+                        continue
+                    queue = deque([(y, x)])
+                    labels[y, x] = label_id
+                    coords = []
+                    while queue:
+                        cy, cx = queue.popleft()
+                        coords.append((cy, cx))
+                        for dy, dx in neighbors:
+                            ny, nx = cy + dy, cx + dx
+                            if 0 <= ny < h and 0 <= nx < w and binary[ny, nx] and labels[ny, nx] == 0:
+                                labels[ny, nx] = label_id
+                                queue.append((ny, nx))
+                    ys = np.asarray([coord[0] for coord in coords], dtype=np.float32)
+                    xs = np.asarray([coord[1] for coord in coords], dtype=np.float32)
+                    stats.append(
+                        [
+                            int(xs.min()),
+                            int(ys.min()),
+                            int(xs.max() - xs.min() + 1),
+                            int(ys.max() - ys.min() + 1),
+                            int(len(coords)),
+                        ]
+                    )
+                    centroids.append([float(xs.mean()), float(ys.mean())])
+                    label_id += 1
+
+            return (
+                label_id,
+                labels,
+                np.asarray(stats, dtype=np.int32),
+                np.asarray(centroids, dtype=np.float32),
+            )
+
+    cv2 = _CV2Fallback()
 
 
 class SmallObjectRatioCOCOStuff(DifficultyDimension):
@@ -56,6 +121,62 @@ class SmallObjectRatioCOCOStuff(DifficultyDimension):
 
     def _default_thing_ids(self) -> List[int]:
         return list(range(self.thing_id_start, self.thing_id_start + self.num_things))
+
+    def _collect_area_ratios(
+        self,
+        mask: Optional[np.ndarray],
+        meta: Optional[Dict[str, Any]] = None
+    ) -> np.ndarray:
+        if mask is None:
+            return np.asarray([], dtype=np.float32)
+        meta = meta or {}
+
+        m = mask.astype(np.int32)
+        H, W = m.shape[:2]
+        image_area = float(max(H * W, 1))
+        ignore_index = self._infer_ignore_index(m, meta)
+        valid = (m != ignore_index) if ignore_index is not None else np.ones_like(m, dtype=bool)
+
+        if meta.get("class_ids", None) is not None:
+            use_ids: Iterable[int] = meta["class_ids"]
+        elif self.use_things_only:
+            use_ids = meta.get("thing_ids", None) or self._default_thing_ids()
+        else:
+            use_ids = np.unique(m[valid]).tolist()
+
+        area_ratios: List[float] = []
+        for cid in use_ids:
+            cid = int(cid)
+            if ignore_index is not None and cid == int(ignore_index):
+                continue
+            binm = (m == cid) & valid
+            if not binm.any():
+                continue
+            num, _, stats, _ = cv2.connectedComponentsWithStats(
+                binm.astype(np.uint8),
+                connectivity=self.connectivity
+            )
+            if num <= 1:
+                continue
+            areas = stats[1:, cv2.CC_STAT_AREA].astype(np.float32)
+            area_ratios.extend((areas / image_area).tolist())
+
+        return np.asarray(area_ratios, dtype=np.float32)
+
+    def get_profile_and_count(
+        self,
+        image: np.ndarray,
+        mask: Optional[np.ndarray] = None,
+        meta: Optional[Dict[str, Any]] = None
+    ) -> tuple[np.ndarray, int]:
+        ratios = self._collect_area_ratios(mask=mask, meta=meta)
+        if ratios.size == 0:
+            return np.zeros((len(self.thresholds),), dtype=np.float32), 0
+        values = [
+            float(np.mean(ratios < threshold))
+            for threshold in self.thresholds
+        ]
+        return np.asarray(values, dtype=np.float32), int(ratios.size)
 
     def get_score(
         self,
@@ -112,49 +233,8 @@ class SmallObjectRatioCOCOStuff(DifficultyDimension):
         mask: Optional[np.ndarray] = None,
         meta: Optional[Dict[str, Any]] = None
     ) -> np.ndarray:
-        if mask is None:
-            return np.zeros((len(self.thresholds),), dtype=np.float32)
-        meta = meta or {}
-
-        m = mask.astype(np.int32)
-        H, W = m.shape[:2]
-        image_area = float(max(H * W, 1))
-        ignore_index = self._infer_ignore_index(m, meta)
-        valid = (m != ignore_index) if ignore_index is not None else np.ones_like(m, dtype=bool)
-
-        if meta.get("class_ids", None) is not None:
-            use_ids: Iterable[int] = meta["class_ids"]
-        elif self.use_things_only:
-            use_ids = meta.get("thing_ids", None) or self._default_thing_ids()
-        else:
-            use_ids = np.unique(m[valid]).tolist()
-
-        area_ratios: List[float] = []
-        for cid in use_ids:
-            cid = int(cid)
-            if ignore_index is not None and cid == int(ignore_index):
-                continue
-            binm = (m == cid) & valid
-            if not binm.any():
-                continue
-            num, _, stats, _ = cv2.connectedComponentsWithStats(
-                binm.astype(np.uint8),
-                connectivity=self.connectivity
-            )
-            if num <= 1:
-                continue
-            areas = stats[1:, cv2.CC_STAT_AREA].astype(np.float32)
-            area_ratios.extend((areas / image_area).tolist())
-
-        if not area_ratios:
-            return np.zeros((len(self.thresholds),), dtype=np.float32)
-
-        ratios = np.asarray(area_ratios, dtype=np.float32)
-        values = [
-            float(np.mean(ratios < threshold))
-            for threshold in self.thresholds
-        ]
-        return np.asarray(values, dtype=np.float32)
+        profile, _ = self.get_profile_and_count(image=image, mask=mask, meta=meta)
+        return profile
     
 class SemanticAmbiguityCLIP(DifficultyDimension):
     """

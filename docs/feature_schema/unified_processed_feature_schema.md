@@ -210,6 +210,7 @@ Recommended downstream use:
 ### `small_ratio`
 
 - Raw source: `small_ratio_raw`
+- Source count field: `small_ratio_num_values`
 - Meaning: cumulative ratio curve of small-object prevalence across thresholds
 - Encoding: profile
 - Transform: identity
@@ -230,7 +231,7 @@ Derived fields:
 Field details:
 
 - `num_values`
-  Number of valid connected components or object regions that contributed to the profile.
+  Number of valid connected components or object regions that contributed to the profile. In processed bundles this should come from the raw field `small_ratio_num_values`, not from the profile length.
 - `log_num_values`
   `log1p(num_values)`. This is the numerically safer version for downstream input.
 - `profile`

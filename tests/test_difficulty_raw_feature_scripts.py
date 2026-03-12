@@ -31,6 +31,7 @@ class TestDifficultyRawFeatureScripts(unittest.TestCase):
                 "image_rel": "images/train2017/0001.jpg",
                 "annotation_rel": "annotations/train2017/0001_labelTrainIds.png",
                 "small_ratio_raw": np.asarray([0.1] * 16, dtype=np.float32),
+                "small_ratio_num_values": 7,
                 "visual_semantic_gap_raw": np.asarray([0.2, 0.6], dtype=np.float32),
                 "empirical_iou_raw": np.asarray([0.3, 0.8], dtype=np.float32),
             },
@@ -38,6 +39,7 @@ class TestDifficultyRawFeatureScripts(unittest.TestCase):
                 "image_rel": "images/train2017/0002.jpg",
                 "annotation_rel": "annotations/train2017/0002_labelTrainIds.png",
                 "small_ratio_raw": np.asarray([0.0] * 16, dtype=np.float32),
+                "small_ratio_num_values": 0,
                 "visual_semantic_gap_raw": np.asarray([0.4], dtype=np.float32),
                 "empirical_iou_raw": np.asarray([], dtype=np.float32),
             },
@@ -84,6 +86,7 @@ class TestDifficultyRawFeatureScripts(unittest.TestCase):
 
             loaded_records = np.load(records_path, allow_pickle=True)
             self.assertEqual(len(loaded_records), 2)
+            self.assertEqual(int(loaded_records[0]["small_ratio_num_values"]), 7)
 
             with open(stats_path, "r", encoding="utf-8") as f:
                 loaded_stats = json.loads(f.read())

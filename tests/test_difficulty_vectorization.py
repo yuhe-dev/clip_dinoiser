@@ -138,6 +138,24 @@ class TestDifficultyVectorization(unittest.TestCase):
         self.assertTrue(np.all(values <= 1.0))
         self.assertTrue(np.all(values[1:] >= values[:-1]))
 
+    def test_small_ratio_profile_and_count_returns_connected_component_count(self):
+        metric = SmallObjectRatioCOCOStuff(
+            thresholds=np.geomspace(0.001, 0.2, 16).tolist(),
+            thing_id_start=0,
+            num_things=3,
+            default_ignore_index=255,
+            use_things_only=False,
+        )
+
+        profile, count = metric.get_profile_and_count(
+            self._make_image(10, 10),
+            mask=self._make_small_ratio_mask(),
+        )
+
+        self.assertEqual(profile.shape, (16,))
+        self.assertEqual(count, 3)
+        self.assertTrue(np.all(profile[1:] >= profile[:-1]))
+
     def test_semantic_gap_vector_score_returns_region_gap_values(self):
         metric = SemanticAmbiguityCLIP(
             clip_model=ToyClipModel(),

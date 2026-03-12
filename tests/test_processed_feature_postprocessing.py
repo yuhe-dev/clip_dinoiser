@@ -88,6 +88,7 @@ class TestProcessedFeaturePostprocessing(unittest.TestCase):
             "features": {
                 "small_ratio": {
                     "raw_key": "small_ratio_raw",
+                    "source_count_key": "small_ratio_num_values",
                     "encoding": "profile",
                     "value_transform": "identity",
                     "derived_profile_field": "delta_profile",
@@ -120,6 +121,7 @@ class TestProcessedFeaturePostprocessing(unittest.TestCase):
                 "image_rel": "images/train2017/0001.jpg",
                 "annotation_rel": "annotations/train2017/0001_labelTrainIds.png",
                 "small_ratio_raw": np.asarray([0.0, 0.2, 0.6, 1.0], dtype=np.float32),
+                "small_ratio_num_values": 3,
                 "empirical_iou_raw": np.asarray([0.2, 0.8], dtype=np.float32)
             }
         ]
@@ -128,6 +130,7 @@ class TestProcessedFeaturePostprocessing(unittest.TestCase):
         self.assertEqual(len(processed), 1)
         self.assertIn("small_ratio", processed[0]["features"])
         self.assertIn("empirical_iou", processed[0]["features"])
+        self.assertEqual(processed[0]["features"]["small_ratio"]["num_values"], 3)
 
         with tempfile.TemporaryDirectory() as tmpdir:
             result = save_processed_bundle(

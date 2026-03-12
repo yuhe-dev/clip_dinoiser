@@ -156,7 +156,12 @@ def _profile_summary(profile: np.ndarray, delta_profile: np.ndarray, summary_fie
     return summary
 
 
-def encode_profile_feature(raw_values: np.ndarray, feature_spec: Dict[str, object], feature_name: str = "") -> Dict[str, object]:
+def encode_profile_feature(
+    raw_values: np.ndarray,
+    feature_spec: Dict[str, object],
+    feature_name: str = "",
+    source_num_values: int | None = None,
+) -> Dict[str, object]:
     profile = apply_value_transform(np.asarray(raw_values, dtype=np.float32), str(feature_spec.get("value_transform", "identity")))
     profile = np.asarray(profile, dtype=np.float32)
     if profile.size == 0:
@@ -167,7 +172,7 @@ def encode_profile_feature(raw_values: np.ndarray, feature_spec: Dict[str, objec
         if profile.size > 1:
             delta_profile[1:] = np.maximum(profile[1:] - profile[:-1], 0.0)
 
-    num_values = int(profile.size)
+    num_values = int(source_num_values) if source_num_values is not None else int(profile.size)
     summary = _profile_summary(profile, delta_profile, dict(feature_spec.get("summary_fields", {})))
     return {
         "encoding": "profile",
@@ -203,7 +208,18 @@ def process_dimension_records(raw_records: Sequence[Dict[str, object]], dimensio
             if spec["encoding"] == "distribution":
                 feature_blocks[feature_name] = encode_distribution_feature(raw, spec, bin_edges_by_feature[feature_name])
             elif spec["encoding"] == "profile":
-                feature_blocks[feature_name] = encode_profile_feature(raw, spec, feature_name=feature_name)
+                source_count_key = spec.get("source_count_key")
+                source_num_values = None
+                if source_count_key:
+                    raw_count = record.get(str(source_count_key))
+                    if raw_count is not None:
+                        source_num_values = int(raw_count)
+                feature_blocks[feature_name] = encode_profile_feature(
+                    raw,
+                    spec,
+                    feature_name=feature_name,
+                    source_num_values=source_num_values,
+                )
             else:
                 raise ValueError(f"Unsupported encoding='{spec['encoding']}'")
 

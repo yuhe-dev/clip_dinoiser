@@ -167,6 +167,7 @@
       "features": {
         "small_ratio": {
           "raw_key": "small_ratio_raw",
+          "source_count_key": "small_ratio_num_values",
           "encoding": "profile",
           "value_transform": "identity",
           "profile_length": 16,
