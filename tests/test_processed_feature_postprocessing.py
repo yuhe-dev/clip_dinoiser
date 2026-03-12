@@ -126,11 +126,20 @@ class TestProcessedFeaturePostprocessing(unittest.TestCase):
             }
         ]
 
-        processed = process_dimension_records(records, dimension_schema)
+        logs = []
+        processed = process_dimension_records(
+            records,
+            dimension_schema,
+            dimension_name="difficulty",
+            progress_interval=1,
+            log_fn=logs.append,
+        )
         self.assertEqual(len(processed), 1)
         self.assertIn("small_ratio", processed[0]["features"])
         self.assertIn("empirical_iou", processed[0]["features"])
         self.assertEqual(processed[0]["features"]["small_ratio"]["num_values"], 3)
+        self.assertTrue(any("fitting bin edges for empirical_iou" in msg for msg in logs))
+        self.assertTrue(any("processed 1/1 records" in msg for msg in logs))
 
         with tempfile.TemporaryDirectory() as tmpdir:
             result = save_processed_bundle(

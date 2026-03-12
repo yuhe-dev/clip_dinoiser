@@ -37,16 +37,20 @@ class TestBackfillSmallRatioCounts(unittest.TestCase):
                 }
             ]
 
+            logs = []
             updated = backfill_small_ratio_counts_for_records(
                 records=records,
                 subset_root=subset_root,
                 thresholds=np.geomspace(0.001, 0.2, 16).tolist(),
                 ignore_index=255,
                 use_things_only=False,
+                progress_interval=1,
+                log_fn=logs.append,
             )
 
             self.assertEqual(len(updated), 1)
             self.assertEqual(updated[0]["small_ratio_num_values"], 3)
+            self.assertTrue(any("processed 1/1" in msg for msg in logs))
 
 
 if __name__ == "__main__":
