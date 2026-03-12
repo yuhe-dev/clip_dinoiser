@@ -1,8 +1,8 @@
 {
   "dimension": "difficulty",
   "schema_version": "difficulty.v1",
-  "source_records_path": "/Users/yuhe/research/UIST 2026/clip_dinoiser/data/data_feature/difficulty/difficulty_raw_features.npy",
-  "source_stats_path": "/Users/yuhe/research/UIST 2026/clip_dinoiser/data/data_feature/difficulty/difficulty_global_stats.json",
-  "source_config_path": "/Users/yuhe/research/UIST 2026/clip_dinoiser/data/data_feature/difficulty/difficulty_feature_config.json",
-  "schema_source_path": "/Users/yuhe/research/UIST 2026/clip_dinoiser/docs/feature_schema/unified_processed_feature_schema.json"
+  "source_records_path": "/home/yuhe/clip_dinoiser/data/data_feature/difficulty/difficulty_raw_features.npy",
+  "source_stats_path": "/home/yuhe/clip_dinoiser/data/data_feature/difficulty/difficulty_global_stats.json",
+  "source_config_path": "/home/yuhe/clip_dinoiser/data/data_feature/difficulty/difficulty_feature_config.json",
+  "schema_source_path": "/home/yuhe/clip_dinoiser/docs/feature_schema/unified_processed_feature_schema.json"
 }

@@ -2,10 +2,10 @@
   "num_samples": 50000,
   "features": {
     "small_ratio": {
-      "empty_samples": 0,
-      "num_values_min": 16,
-      "num_values_max": 16,
-      "num_values_mean": 16.0
+      "empty_samples": 3,
+      "num_values_min": 0,
+      "num_values_max": 192,
+      "num_values_mean": 23.57388
     },
     "visual_semantic_gap": {
       "empty_samples": 3,
