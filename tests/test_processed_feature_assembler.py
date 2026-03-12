@@ -12,7 +12,10 @@ if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
 
-from clip_dinoiser.slice_discovery.assembler import ProcessedFeatureAssembler
+from clip_dinoiser.slice_discovery.assembler import (
+    ProcessedFeatureAssembler,
+    _ensure_numpy_pickle_compat,
+)
 
 
 TEST_SCHEMA = {
@@ -251,6 +254,12 @@ class ProcessedFeatureAssemblerTests(unittest.TestCase):
 
             self.assertEqual(assembler.sample_count, 2)
             self.assertEqual(assembler.list_blocks()[0], "quality.laplacian")
+
+    def test_numpy_pickle_compat_registers_numpy_core_aliases(self):
+        _ensure_numpy_pickle_compat()
+
+        self.assertIn("numpy._core", sys.modules)
+        self.assertIn("numpy._core.multiarray", sys.modules)
 
 
 if __name__ == "__main__":

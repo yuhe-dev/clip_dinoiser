@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import json
 import os
+import sys
+from importlib import import_module
 
 import numpy as np
 
@@ -13,7 +15,25 @@ def _load_json(path: str) -> dict[str, object]:
         return json.load(f)
 
 
+def _ensure_numpy_pickle_compat() -> None:
+    # Object-array .npy bundles may be pickled against NumPy 2 module paths
+    # such as `numpy._core.*`; older runtime environments only expose
+    # `numpy.core.*`, so we register aliases before `np.load(..., allow_pickle=True)`.
+    try:
+        core_module = import_module("numpy._core")
+    except ModuleNotFoundError:
+        core_module = import_module("numpy.core")
+        sys.modules.setdefault("numpy._core", core_module)
+
+    try:
+        multiarray_module = import_module("numpy._core.multiarray")
+    except ModuleNotFoundError:
+        multiarray_module = import_module("numpy.core.multiarray")
+        sys.modules.setdefault("numpy._core.multiarray", multiarray_module)
+
+
 def _load_records(path: str) -> list[dict[str, object]]:
+    _ensure_numpy_pickle_compat()
     records = np.load(path, allow_pickle=True)
     return [dict(record) for record in records.tolist()]
 
