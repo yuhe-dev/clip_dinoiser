@@ -1,0 +1,93 @@
+{
+  "sample_count": 50000,
+  "flat_shape": [
+    50000,
+    210
+  ],
+  "flat_all_finite": true,
+  "flat_min": 0.0,
+  "flat_max": 13.021154403686523,
+  "flat_mean": 0.49589115381240845,
+  "blocks": {
+    "quality.laplacian": {
+      "shape": [
+        50000,
+        17
+      ],
+      "all_finite": true,
+      "min": 0.0,
+      "max": 11.399292945861816,
+      "mean": 1.351291298866272
+    },
+    "quality.noise_pca": {
+      "shape": [
+        50000,
+        17
+      ],
+      "all_finite": true,
+      "min": 0.0,
+      "max": 7.327780723571777,
+      "mean": 0.7711714506149292
+    },
+    "quality.bga": {
+      "shape": [
+        50000,
+        14
+      ],
+      "all_finite": true,
+      "min": 0.0,
+      "max": 10.624833106994629,
+      "mean": 0.7933766841888428
+    },
+    "difficulty.small_ratio": {
+      "shape": [
+        50000,
+        20
+      ],
+      "all_finite": true,
+      "min": 0.0,
+      "max": 5.26269006729126,
+      "mean": 0.19996623694896698
+    },
+    "difficulty.visual_semantic_gap": {
+      "shape": [
+        50000,
+        17
+      ],
+      "all_finite": true,
+      "min": 0.0,
+      "max": 3.044522523880005,
+      "mean": 0.25936129689216614
+    },
+    "difficulty.empirical_iou": {
+      "shape": [
+        50000,
+        14
+      ],
+      "all_finite": true,
+      "min": 0.0,
+      "max": 3.6635615825653076,
+      "mean": 0.2836751341819763
+    },
+    "coverage.knn_local_density": {
+      "shape": [
+        50000,
+        55
+      ],
+      "all_finite": true,
+      "min": 0.0,
+      "max": 13.021154403686523,
+      "mean": 0.35252976417541504
+    },
+    "coverage.prototype_distance": {
+      "shape": [
+        50000,
+        56
+      ],
+      "all_finite": true,
+      "min": 2.1457672119140625e-06,
+      "max": 0.8163467049598694,
+      "mean": 0.4496224522590637
+    }
+  }
+}
