@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import Callable
+
 import numpy as np
 
 from .types import SliceFindingResult
@@ -54,7 +56,12 @@ class SoftKMeansSliceFinder:
         if self.temperature <= 0:
             raise ValueError("temperature must be positive")
 
-    def fit(self, matrix: np.ndarray, sample_ids: list[str]) -> SliceFindingResult:
+    def fit(
+        self,
+        matrix: np.ndarray,
+        sample_ids: list[str],
+        progress_callback: Callable[[dict[str, object]], None] | None = None,
+    ) -> SliceFindingResult:
         X = _validate_input_matrix(matrix, sample_ids, self.num_slices)
 
         rng = np.random.default_rng(self.seed)
@@ -63,7 +70,7 @@ class SoftKMeansSliceFinder:
 
         membership = np.full((X.shape[0], self.num_slices), 1.0 / self.num_slices, dtype=np.float32)
 
-        for _ in range(self.max_iters):
+        for iteration in range(self.max_iters):
             distances = self._squared_distances(X, centers)
             logits = -distances / self.temperature
             logits -= logits.max(axis=1, keepdims=True)
@@ -72,8 +79,18 @@ class SoftKMeansSliceFinder:
 
             weights = membership.sum(axis=0, keepdims=True).T
             new_centers = (membership.T @ X) / np.clip(weights, 1e-12, None)
+            max_center_delta = float(np.max(np.abs(new_centers - centers)))
+            if progress_callback is not None:
+                progress_callback(
+                    {
+                        "finder": "soft_kmeans",
+                        "iteration": int(iteration + 1),
+                        "max_iters": int(self.max_iters),
+                        "max_center_delta": max_center_delta,
+                    }
+                )
 
-            if np.max(np.abs(new_centers - centers)) <= self.tol:
+            if max_center_delta <= self.tol:
                 centers = new_centers.astype(np.float32)
                 break
             centers = new_centers.astype(np.float32)
@@ -115,7 +132,12 @@ class GMMSliceFinder:
         if self.covariance_type != "diag":
             raise ValueError("Only diag covariance_type is currently supported")
 
-    def fit(self, matrix: np.ndarray, sample_ids: list[str]) -> SliceFindingResult:
+    def fit(
+        self,
+        matrix: np.ndarray,
+        sample_ids: list[str],
+        progress_callback: Callable[[dict[str, object]], None] | None = None,
+    ) -> SliceFindingResult:
         X = _validate_input_matrix(matrix, sample_ids, self.num_slices).astype(np.float64, copy=False)
         n_samples, n_features = X.shape
 
@@ -132,7 +154,7 @@ class GMMSliceFinder:
         min_component_mass = 1e-6
         log_likelihood_trace: list[float] = []
 
-        for _ in range(self.max_iters):
+        for iteration in range(self.max_iters):
             log_prob = self._estimate_log_prob(X, means, covars)
             log_weighted = log_prob + np.log(np.clip(weights[None, :], 1e-12, None))
             log_norm = self._logsumexp(log_weighted, axis=1)
@@ -169,6 +191,15 @@ class GMMSliceFinder:
 
             log_likelihood = float(log_norm.sum())
             log_likelihood_trace.append(log_likelihood)
+            if progress_callback is not None:
+                progress_callback(
+                    {
+                        "finder": "gmm",
+                        "iteration": int(iteration + 1),
+                        "max_iters": int(self.max_iters),
+                        "log_likelihood": log_likelihood,
+                    }
+                )
             if prev_log_likelihood is not None and abs(log_likelihood - prev_log_likelihood) <= self.tol:
                 break
             prev_log_likelihood = log_likelihood

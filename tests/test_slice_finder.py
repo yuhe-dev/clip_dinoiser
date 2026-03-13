@@ -15,6 +15,26 @@ from clip_dinoiser.slice_discovery.types import SliceFindingResult
 
 
 class SliceFinderTests(unittest.TestCase):
+    def test_soft_kmeans_reports_progress_via_callback(self):
+        matrix = np.asarray(
+            [
+                [0.0, 0.0],
+                [0.1, 0.0],
+                [5.0, 5.0],
+                [5.1, 5.2],
+            ],
+            dtype=np.float32,
+        )
+        events: list[dict[str, object]] = []
+        finder = SoftKMeansSliceFinder(num_slices=2, seed=0, max_iters=5, temperature=1.0)
+
+        finder.fit(matrix, sample_ids=["a", "b", "c", "d"], progress_callback=events.append)
+
+        self.assertGreaterEqual(len(events), 1)
+        self.assertEqual(events[0]["finder"], "soft_kmeans")
+        self.assertIn("iteration", events[0])
+        self.assertIn("max_center_delta", events[0])
+
     def test_soft_kmeans_returns_membership_rows_that_sum_to_one(self):
         matrix = np.asarray(
             [
@@ -95,6 +115,26 @@ class SliceFinderTests(unittest.TestCase):
         self.assertEqual(int(result.hard_assignment[0]), int(result.hard_assignment[1]))
         self.assertEqual(int(result.hard_assignment[2]), int(result.hard_assignment[3]))
         self.assertNotEqual(int(result.hard_assignment[0]), int(result.hard_assignment[2]))
+
+    def test_gmm_reports_progress_via_callback(self):
+        matrix = np.asarray(
+            [
+                [0.0, 0.0],
+                [0.1, -0.1],
+                [5.0, 5.1],
+                [5.2, 4.9],
+            ],
+            dtype=np.float32,
+        )
+        events: list[dict[str, object]] = []
+        finder = GMMSliceFinder(num_slices=2, seed=0, max_iters=5, covariance_type="diag")
+
+        finder.fit(matrix, sample_ids=["a", "b", "c", "d"], progress_callback=events.append)
+
+        self.assertGreaterEqual(len(events), 1)
+        self.assertEqual(events[0]["finder"], "gmm")
+        self.assertIn("iteration", events[0])
+        self.assertIn("log_likelihood", events[0])
 
     def test_gmm_log_prob_matches_vectorized_reference_formula(self):
         matrix = np.asarray(

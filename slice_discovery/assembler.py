@@ -31,24 +31,11 @@ def _ensure_numpy_pickle_compat() -> None:
         multiarray_module = import_module("numpy.core.multiarray")
         sys.modules.setdefault("numpy._core.multiarray", multiarray_module)
 
-
-def _debug_print(message: str) -> None:
-    print(message, file=sys.stderr, flush=True)
-
-
 def _load_records(path: str) -> list[dict[str, object]]:
-    _debug_print(f"[load_records] start path={path}")
-    _debug_print("[load_records] before compat")
     _ensure_numpy_pickle_compat()
-    _debug_print("[load_records] after compat")
-    _debug_print("[load_records] before np.load")
     records = np.load(path, allow_pickle=True)
-    _debug_print(f"[load_records] after np.load dtype={records.dtype} shape={records.shape}")
-    _debug_print("[load_records] before tolist")
     record_list = records.tolist()
-    _debug_print(f"[load_records] after tolist len={len(record_list)}")
     dict_records = [dict(record) for record in record_list]
-    _debug_print(f"[load_records] after dict cast len={len(dict_records)}")
     return dict_records
 
 

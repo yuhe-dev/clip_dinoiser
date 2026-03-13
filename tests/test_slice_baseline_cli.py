@@ -4,6 +4,8 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from contextlib import redirect_stderr
+from io import StringIO
 
 import numpy as np
 
@@ -153,21 +155,25 @@ class SliceBaselineCliTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmpdir:
             data_root, schema_path = self._write_fixture_bundle(tmpdir)
             output_dir = os.path.join(tmpdir, "artifacts")
+            stderr = StringIO()
 
-            exit_code = main(
-                [
-                    "--data-root",
-                    data_root,
-                    "--schema-path",
-                    schema_path,
-                    "--output-dir",
-                    output_dir,
-                    "--finder",
-                    "soft_kmeans",
-                    "--num-slices",
-                    "2",
-                ]
-            )
+            with redirect_stderr(stderr):
+                exit_code = main(
+                    [
+                        "--data-root",
+                        data_root,
+                        "--schema-path",
+                        schema_path,
+                        "--output-dir",
+                        output_dir,
+                        "--finder",
+                        "soft_kmeans",
+                        "--num-slices",
+                        "2",
+                        "--max-iters",
+                        "5",
+                    ]
+                )
 
             self.assertEqual(exit_code, 0)
             self.assertTrue(os.path.exists(os.path.join(output_dir, "slice_result.npz")))
@@ -182,6 +188,13 @@ class SliceBaselineCliTests(unittest.TestCase):
             self.assertEqual(meta["finder"], "soft_kmeans")
             self.assertEqual(meta["num_slices"], 2)
             self.assertEqual(meta["sample_count"], 3)
+
+            progress_output = stderr.getvalue()
+            self.assertIn("[slice_baseline] loading processed bundles", progress_output)
+            self.assertIn("[slice_baseline] assembling sample-level features", progress_output)
+            self.assertIn("[slice_baseline] projecting features", progress_output)
+            self.assertIn("[slice_baseline] clustering with soft_kmeans", progress_output)
+            self.assertIn("[slice_baseline] soft_kmeans iter", progress_output)
 
     def test_script_file_can_run_help_without_package_context(self):
         script_path = os.path.join(ROOT, "clip_dinoiser", "run_slice_finding_baseline.py")

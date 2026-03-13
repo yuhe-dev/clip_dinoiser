@@ -1,14 +1,10 @@
 from __future__ import annotations
 
 import argparse
-import faulthandler
 import json
 import os
 import subprocess
 import sys
-
-faulthandler.enable()
-print("[run_slice_bundle_probe] start", file=sys.stderr, flush=True)
 
 if __package__ in {None, ""}:
     SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -23,8 +19,6 @@ else:
 
     ensure_numpy_pickle_compat()
     from .slice_discovery.assembler import _load_json, _load_records
-
-print("[run_slice_bundle_probe] imports done", file=sys.stderr, flush=True)
 
 
 def build_argparser() -> argparse.ArgumentParser:
@@ -118,7 +112,6 @@ def run(args: argparse.Namespace) -> int:
 def main(argv: list[str] | None = None) -> int:
     parser = build_argparser()
     args = parser.parse_args(argv)
-    print("[run_slice_bundle_probe] args parsed", file=sys.stderr, flush=True)
     return run(args)
 
 

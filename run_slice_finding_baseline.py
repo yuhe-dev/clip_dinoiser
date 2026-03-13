@@ -57,25 +57,52 @@ def _build_finder(args: argparse.Namespace):
     )
 
 
+def _progress(message: str) -> None:
+    print(f"[slice_baseline] {message}", file=sys.stderr, flush=True)
+
+
+def _make_progress_callback(finder_name: str):
+    def _callback(event: dict[str, object]) -> None:
+        iteration = int(event["iteration"])
+        max_iters = int(event["max_iters"])
+        if finder_name == "gmm":
+            log_likelihood = float(event["log_likelihood"])
+            _progress(f"gmm iter {iteration}/{max_iters} log_likelihood={log_likelihood:.6f}")
+        else:
+            max_center_delta = float(event["max_center_delta"])
+            _progress(f"soft_kmeans iter {iteration}/{max_iters} max_center_delta={max_center_delta:.6f}")
+
+    return _callback
+
+
 def run(args: argparse.Namespace) -> int:
     data_root = os.path.abspath(args.data_root)
     schema_path = os.path.abspath(args.schema_path)
     output_dir = os.path.abspath(args.output_dir)
 
+    _progress("loading processed bundles")
     assembler = ProcessedFeatureAssembler.from_processed_paths(
         quality_path=os.path.join(data_root, "quality", "quality_processed_features.npy"),
         difficulty_path=os.path.join(data_root, "difficulty", "difficulty_processed_features.npy"),
         coverage_path=os.path.join(data_root, "coverage", "coverage_processed_features.npy"),
         schema_path=schema_path,
     )
+    _progress("assembling sample-level features")
     projector = SliceFeatureProjector(
         scalar_scaler=args.scalar_scaler,
         block_weighting=args.block_weighting,
     )
+    _progress("projecting features")
     projected = projector.fit_transform(assembler)
     finder = _build_finder(args)
-    result = finder.fit(projected.matrix, assembler.sample_ids)
+    _progress(f"clustering with {args.finder}")
+    result = finder.fit(
+        projected.matrix,
+        assembler.sample_ids,
+        progress_callback=_make_progress_callback(args.finder),
+    )
 
+    _progress("writing artifacts")
     os.makedirs(output_dir, exist_ok=True)
     np.savez(
         os.path.join(output_dir, "slice_result.npz"),
