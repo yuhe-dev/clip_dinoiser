@@ -1,0 +1,45 @@
+{
+  "finder": "soft_kmeans",
+  "num_slices": 8,
+  "sample_count": 50000,
+  "schema_path": "/home/yuhe/clip_dinoiser/docs/feature_schema/unified_processed_feature_schema.json",
+  "data_root": "/home/yuhe/clip_dinoiser/data/data_feature",
+  "projector": {
+    "scalar_scaler": "zscore",
+    "block_weighting": "equal_by_block"
+  },
+  "block_ranges": {
+    "quality.laplacian": [
+      0,
+      17
+    ],
+    "quality.noise_pca": [
+      17,
+      34
+    ],
+    "quality.bga": [
+      34,
+      48
+    ],
+    "difficulty.small_ratio": [
+      48,
+      68
+    ],
+    "difficulty.visual_semantic_gap": [
+      68,
+      85
+    ],
+    "difficulty.empirical_iou": [
+      85,
+      99
+    ],
+    "coverage.knn_local_density": [
+      99,
+      154
+    ],
+    "coverage.prototype_distance": [
+      154,
+      210
+    ]
+  }
+}
