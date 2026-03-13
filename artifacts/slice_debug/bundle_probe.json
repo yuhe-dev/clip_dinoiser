@@ -1,0 +1,38 @@
+{
+  "data_root": "/home/yuhe/clip_dinoiser/data/data_feature",
+  "schema_path": "/home/yuhe/clip_dinoiser/docs/feature_schema/unified_processed_feature_schema.json",
+  "stages": {
+    "schema": {
+      "returncode": 0,
+      "stdout": "{\"stage\": \"schema\", \"status\": \"ok\", \"schema_version\": \"processed_feature_bundle.v1\"}",
+      "stderr": "",
+      "status": "ok",
+      "details": {
+        "stage": "schema",
+        "status": "ok",
+        "schema_version": "processed_feature_bundle.v1"
+      }
+    },
+    "quality": {
+      "returncode": -11,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/yuhe/clip_dinoiser/run_slice_bundle_probe.py\", line 111, in <module>",
+      "status": "crashed",
+      "signal": 11
+    },
+    "difficulty": {
+      "returncode": -11,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/yuhe/clip_dinoiser/run_slice_bundle_probe.py\", line 111, in <module>",
+      "status": "crashed",
+      "signal": 11
+    },
+    "coverage": {
+      "returncode": -11,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/yuhe/clip_dinoiser/run_slice_bundle_probe.py\", line 111, in <module>",
+      "status": "crashed",
+      "signal": 11
+    }
+  }
+}
