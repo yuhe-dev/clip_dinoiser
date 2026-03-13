@@ -66,27 +66,6 @@ class SliceReportExporter:
             )
 
         selected_sample_ids = set()
-        samples = []
-        for index, sample_id in enumerate(sample_ids):
-            order = np.argsort(-membership[index]).astype(int).tolist()
-            image_url = sample_id
-            if image_root is not None:
-                image_url = self._copy_sample_image(
-                    image_root=image_root,
-                    output_dir=output_dir,
-                    sample_id=sample_id,
-                )
-            samples.append(
-                {
-                    "sample_id": sample_id,
-                    "image_rel": sample_id,
-                    "image_url": image_url,
-                    "hard_assignment": int(hard_assignment[index]),
-                    "max_membership": float(membership[index].max()),
-                    "membership_vector": membership[index].astype(float).tolist(),
-                    "slice_rankings": order,
-                }
-            )
 
         feature_schema = {
             "block_order": list(projected.block_ranges.keys()),
@@ -154,6 +133,30 @@ class SliceReportExporter:
             slice_info["center_samples"] = center_samples
             slice_info["ambiguous_samples"] = ambiguous_samples
             enriched_slices.append(slice_info)
+
+        samples = []
+        for index, sample_id in enumerate(sample_ids):
+            order = np.argsort(-membership[index]).astype(int).tolist()
+            image_url = ""
+            if image_root is None:
+                image_url = sample_id
+            elif sample_id in selected_sample_ids:
+                image_url = self._copy_sample_image(
+                    image_root=image_root,
+                    output_dir=output_dir,
+                    sample_id=sample_id,
+                )
+            samples.append(
+                {
+                    "sample_id": sample_id,
+                    "image_rel": sample_id,
+                    "image_url": image_url,
+                    "hard_assignment": int(hard_assignment[index]),
+                    "max_membership": float(membership[index].max()),
+                    "membership_vector": membership[index].astype(float).tolist(),
+                    "slice_rankings": order,
+                }
+            )
 
         self._write_json(os.path.join(output_dir, "run_summary.json"), run_summary)
         self._write_json(os.path.join(output_dir, "slices.json"), enriched_slices)

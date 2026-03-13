@@ -3,6 +3,7 @@ import os
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 import numpy as np
 
@@ -128,6 +129,91 @@ class SliceReportExportTests(unittest.TestCase):
             self.assertEqual(feature_schema["block_order"][0], "quality.laplacian")
             self.assertIn("quality.laplacian", feature_schema["blocks"])
             self.assertTrue(os.path.exists(os.path.join(report_dir, "thumbnails")))
+
+    def test_report_export_only_copies_images_referenced_by_slice_views(self):
+        fixture_builder = SliceDebugScriptTests()
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            data_root, schema_path = fixture_builder._write_fixture_bundle(tmpdir)
+            assembled_dir = os.path.join(tmpdir, "assembled")
+            projected_dir = os.path.join(tmpdir, "projected")
+            cluster_dir = os.path.join(tmpdir, "cluster")
+            report_dir = os.path.join(tmpdir, "report")
+
+            from clip_dinoiser.run_slice_assembler_debug import main as assembler_main
+            from clip_dinoiser.run_slice_projector_debug import main as projector_main
+
+            assembler_main(
+                [
+                    "--data-root",
+                    data_root,
+                    "--schema-path",
+                    schema_path,
+                    "--output-dir",
+                    assembled_dir,
+                ]
+            )
+            projector_main(
+                [
+                    "--assembled-dir",
+                    assembled_dir,
+                    "--output-dir",
+                    projected_dir,
+                    "--scalar-scaler",
+                    "zscore",
+                    "--block-weighting",
+                    "equal_by_block",
+                ]
+            )
+            cluster_main(
+                [
+                    "--projected-dir",
+                    projected_dir,
+                    "--output-dir",
+                    cluster_dir,
+                    "--finder",
+                    "gmm",
+                    "--num-slices",
+                    "2",
+                ]
+            )
+            image_root = self._write_dummy_images(tmpdir)
+
+            def _only_first_sample(sample_ids, scores, descending, top_k=12):
+                del scores, descending, top_k
+                return [sample_ids[0]]
+
+            with patch(
+                "clip_dinoiser.slice_discovery.report_exporter.SliceReportExporter._top_sample_ids",
+                side_effect=_only_first_sample,
+            ):
+                exit_code = export_main(
+                    [
+                        "--projected-dir",
+                        projected_dir,
+                        "--cluster-dir",
+                        cluster_dir,
+                        "--output-dir",
+                        report_dir,
+                        "--image-root",
+                        image_root,
+                    ]
+                )
+
+            self.assertEqual(exit_code, 0)
+
+            thumbnail_files = []
+            for root, _, files in os.walk(os.path.join(report_dir, "thumbnails")):
+                for name in files:
+                    thumbnail_files.append(os.path.relpath(os.path.join(root, name), os.path.join(report_dir, "thumbnails")))
+
+            self.assertEqual(sorted(thumbnail_files), ["images/train2017/0001.jpg"])
+
+            with open(os.path.join(report_dir, "samples.json"), "r", encoding="utf-8") as f:
+                samples = json.load(f)
+
+            non_empty_urls = [sample["image_url"] for sample in samples if sample["image_url"]]
+            self.assertEqual(non_empty_urls, ["./thumbnails/images/train2017/0001.jpg"])
 
 
 if __name__ == "__main__":
