@@ -52,9 +52,6 @@ def _load_records(path: str) -> list[dict[str, object]]:
     return dict_records
 
 
-_ensure_numpy_pickle_compat()
-
-
 class ProcessedFeatureAssembler:
     def __init__(
         self,

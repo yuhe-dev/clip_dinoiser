@@ -13,8 +13,14 @@ if __package__ in {None, ""}:
     SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
     if SCRIPT_DIR not in sys.path:
         sys.path.insert(0, SCRIPT_DIR)
+    from slice_discovery.runtime_compat import ensure_numpy_pickle_compat
+
+    ensure_numpy_pickle_compat()
     from slice_discovery.assembler import ProcessedFeatureAssembler
 else:
+    from .slice_discovery.runtime_compat import ensure_numpy_pickle_compat
+
+    ensure_numpy_pickle_compat()
     from .slice_discovery.assembler import ProcessedFeatureAssembler
 
 print("[run_slice_assembler_debug] imports done", file=sys.stderr, flush=True)
