@@ -1,0 +1,54 @@
+{
+  "block_order": [
+    "quality.laplacian",
+    "quality.noise_pca",
+    "quality.bga",
+    "difficulty.small_ratio",
+    "difficulty.visual_semantic_gap",
+    "difficulty.empirical_iou",
+    "coverage.knn_local_density",
+    "coverage.prototype_distance"
+  ],
+  "blocks": {
+    "quality.laplacian": {
+      "start": 0,
+      "end": 17,
+      "width": 17
+    },
+    "quality.noise_pca": {
+      "start": 17,
+      "end": 34,
+      "width": 17
+    },
+    "quality.bga": {
+      "start": 34,
+      "end": 48,
+      "width": 14
+    },
+    "difficulty.small_ratio": {
+      "start": 48,
+      "end": 68,
+      "width": 20
+    },
+    "difficulty.visual_semantic_gap": {
+      "start": 68,
+      "end": 85,
+      "width": 17
+    },
+    "difficulty.empirical_iou": {
+      "start": 85,
+      "end": 99,
+      "width": 14
+    },
+    "coverage.knn_local_density": {
+      "start": 99,
+      "end": 154,
+      "width": 55
+    },
+    "coverage.prototype_distance": {
+      "start": 154,
+      "end": 210,
+      "width": 56
+    }
+  }
+}

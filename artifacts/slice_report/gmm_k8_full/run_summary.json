@@ -1,0 +1,76 @@
+{
+  "run_id": "gmm_k8_full",
+  "finder": "gmm",
+  "num_slices": 8,
+  "sample_count": 50000,
+  "block_order": [
+    "quality.laplacian",
+    "quality.noise_pca",
+    "quality.bga",
+    "difficulty.small_ratio",
+    "difficulty.visual_semantic_gap",
+    "difficulty.empirical_iou",
+    "coverage.knn_local_density",
+    "coverage.prototype_distance"
+  ],
+  "block_ranges": {
+    "quality.laplacian": [
+      0,
+      17
+    ],
+    "quality.noise_pca": [
+      17,
+      34
+    ],
+    "quality.bga": [
+      34,
+      48
+    ],
+    "difficulty.small_ratio": [
+      48,
+      68
+    ],
+    "difficulty.visual_semantic_gap": [
+      68,
+      85
+    ],
+    "difficulty.empirical_iou": [
+      85,
+      99
+    ],
+    "coverage.knn_local_density": [
+      99,
+      154
+    ],
+    "coverage.prototype_distance": [
+      154,
+      210
+    ]
+  },
+  "slice_weights": [
+    0.15500496327877045,
+    0.13218088448047638,
+    0.10767031461000443,
+    0.1626928746700287,
+    0.10934686660766602,
+    0.08890591561794281,
+    0.09786800295114517,
+    0.14633016288280487
+  ],
+  "hard_assignment_counts": [
+    7752,
+    6607,
+    5383,
+    8137,
+    5471,
+    4443,
+    4888,
+    7319
+  ],
+  "membership_health": {
+    "row_sum_min": 0.9999999403953552,
+    "row_sum_max": 1.0,
+    "avg_max_membership": 0.9967470169067383,
+    "avg_entropy": 0.007909330539405346
+  }
+}
