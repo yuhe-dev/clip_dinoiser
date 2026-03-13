@@ -1,0 +1,40 @@
+{
+  "finder": "soft_kmeans",
+  "num_slices": 8,
+  "sample_count": 500,
+  "projected_dir": "/home/yuhe/clip_dinoiser/artifacts/slice_debug/projected",
+  "block_ranges": {
+    "quality.laplacian": [
+      0,
+      17
+    ],
+    "quality.noise_pca": [
+      17,
+      34
+    ],
+    "quality.bga": [
+      34,
+      48
+    ],
+    "difficulty.small_ratio": [
+      48,
+      68
+    ],
+    "difficulty.visual_semantic_gap": [
+      68,
+      85
+    ],
+    "difficulty.empirical_iou": [
+      85,
+      99
+    ],
+    "coverage.knn_local_density": [
+      99,
+      154
+    ],
+    "coverage.prototype_distance": [
+      154,
+      210
+    ]
+  }
+}
