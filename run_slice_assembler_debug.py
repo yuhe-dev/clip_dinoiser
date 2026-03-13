@@ -1,9 +1,13 @@
 from __future__ import annotations
 
 import argparse
+import faulthandler
 import json
 import os
 import sys
+
+faulthandler.enable()
+print("[run_slice_assembler_debug] start", file=sys.stderr, flush=True)
 
 if __package__ in {None, ""}:
     SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -12,6 +16,8 @@ if __package__ in {None, ""}:
     from slice_discovery.assembler import ProcessedFeatureAssembler
 else:
     from .slice_discovery.assembler import ProcessedFeatureAssembler
+
+print("[run_slice_assembler_debug] imports done", file=sys.stderr, flush=True)
 
 
 def build_argparser() -> argparse.ArgumentParser:
@@ -50,6 +56,7 @@ def run(args: argparse.Namespace) -> int:
 def main(argv: list[str] | None = None) -> int:
     parser = build_argparser()
     args = parser.parse_args(argv)
+    print("[run_slice_assembler_debug] args parsed", file=sys.stderr, flush=True)
     return run(args)
 
 

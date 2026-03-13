@@ -3,6 +3,8 @@ import json
 import sys
 import tempfile
 import unittest
+from contextlib import redirect_stderr
+from io import StringIO
 
 import numpy as np
 
@@ -15,6 +17,7 @@ if ROOT not in sys.path:
 from clip_dinoiser.slice_discovery.assembler import (
     ProcessedFeatureAssembler,
     _ensure_numpy_pickle_compat,
+    _load_records,
 )
 
 
@@ -278,6 +281,23 @@ class ProcessedFeatureAssemblerTests(unittest.TestCase):
         self.assertTrue(summary["flat_all_finite"])
         self.assertEqual(summary["blocks"]["quality.laplacian"]["shape"], [2, 4])
         self.assertTrue(summary["blocks"]["quality.laplacian"]["all_finite"])
+
+    def test_load_records_emits_debug_stage_output(self):
+        quality_records, _, _ = self._build_records()
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            quality_path = os.path.join(tmpdir, "quality_processed_features.npy")
+            np.save(quality_path, np.asarray(quality_records, dtype=object), allow_pickle=True)
+
+            stderr = StringIO()
+            with redirect_stderr(stderr):
+                records = _load_records(quality_path)
+
+            self.assertEqual(len(records), 2)
+            debug_output = stderr.getvalue()
+            self.assertIn("[load_records] start", debug_output)
+            self.assertIn("[load_records] before np.load", debug_output)
+            self.assertIn("[load_records] after dict cast len=2", debug_output)
 
 
 if __name__ == "__main__":

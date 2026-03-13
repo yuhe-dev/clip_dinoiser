@@ -1,10 +1,14 @@
 from __future__ import annotations
 
 import argparse
+import faulthandler
 import json
 import os
 import subprocess
 import sys
+
+faulthandler.enable()
+print("[run_slice_bundle_probe] start", file=sys.stderr, flush=True)
 
 if __package__ in {None, ""}:
     SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -13,6 +17,8 @@ if __package__ in {None, ""}:
     from slice_discovery.assembler import _load_json, _load_records
 else:
     from .slice_discovery.assembler import _load_json, _load_records
+
+print("[run_slice_bundle_probe] imports done", file=sys.stderr, flush=True)
 
 
 def build_argparser() -> argparse.ArgumentParser:
@@ -80,6 +86,7 @@ def _probe_stage(script_path: str, data_root: str, schema_path: str, stage: str)
 def run(args: argparse.Namespace) -> int:
     data_root = os.path.abspath(args.data_root)
     schema_path = os.path.abspath(args.schema_path)
+    output_path = os.path.abspath(args.output_path)
 
     if args.internal_stage is not None:
         return _run_internal_stage(data_root, schema_path, args.internal_stage)
@@ -96,7 +103,8 @@ def run(args: argparse.Namespace) -> int:
         "schema_path": schema_path,
         "stages": stages,
     }
-    with open(os.path.abspath(args.output_path), "w", encoding="utf-8") as f:
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    with open(output_path, "w", encoding="utf-8") as f:
         json.dump(payload, f, indent=2, ensure_ascii=False)
     return 0
 
@@ -104,6 +112,7 @@ def run(args: argparse.Namespace) -> int:
 def main(argv: list[str] | None = None) -> int:
     parser = build_argparser()
     args = parser.parse_args(argv)
+    print("[run_slice_bundle_probe] args parsed", file=sys.stderr, flush=True)
     return run(args)
 
 
