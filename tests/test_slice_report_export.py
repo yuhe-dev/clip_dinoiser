@@ -76,30 +76,49 @@ class SliceReportExportTests(unittest.TestCase):
             )
             image_root = self._write_dummy_images(tmpdir)
 
-            exit_code = export_main(
+            embedding = np.array(
                 [
-                    "--projected-dir",
-                    projected_dir,
-                    "--cluster-dir",
-                    cluster_dir,
-                    "--output-dir",
-                    report_dir,
-                    "--image-root",
-                    image_root,
-                ]
+                    [0.0, 0.0],
+                    [1.0, 0.5],
+                    [0.5, 1.0],
+                ],
+                dtype=np.float32,
             )
+
+            with patch(
+                "clip_dinoiser.slice_discovery.report_exporter.SliceReportExporter._compute_umap_2d",
+                return_value=embedding,
+            ):
+                exit_code = export_main(
+                    [
+                        "--projected-dir",
+                        projected_dir,
+                        "--cluster-dir",
+                        cluster_dir,
+                        "--output-dir",
+                        report_dir,
+                        "--image-root",
+                        image_root,
+                    ]
+                )
 
             self.assertEqual(exit_code, 0)
             self.assertTrue(os.path.exists(os.path.join(report_dir, "run_summary.json")))
             self.assertTrue(os.path.exists(os.path.join(report_dir, "slices.json")))
             self.assertTrue(os.path.exists(os.path.join(report_dir, "samples.json")))
             self.assertTrue(os.path.exists(os.path.join(report_dir, "feature_schema.json")))
+            self.assertTrue(os.path.exists(os.path.join(report_dir, "embedding_2d.json")))
+            self.assertTrue(os.path.exists(os.path.join(report_dir, "slice_centers_2d.json")))
 
             with open(os.path.join(report_dir, "run_summary.json"), "r", encoding="utf-8") as f:
                 run_summary = json.load(f)
             self.assertEqual(run_summary["finder"], "gmm")
             self.assertEqual(run_summary["num_slices"], 2)
             self.assertEqual(run_summary["sample_count"], 3)
+            self.assertEqual(run_summary["embedding"]["method"], "umap")
+            self.assertIn("random_state", run_summary["embedding"])
+            self.assertIn("n_neighbors", run_summary["embedding"])
+            self.assertIn("min_dist", run_summary["embedding"])
 
             with open(os.path.join(report_dir, "slices.json"), "r", encoding="utf-8") as f:
                 slices = json.load(f)
@@ -129,6 +148,24 @@ class SliceReportExportTests(unittest.TestCase):
             self.assertEqual(feature_schema["block_order"][0], "quality.laplacian")
             self.assertIn("quality.laplacian", feature_schema["blocks"])
             self.assertTrue(os.path.exists(os.path.join(report_dir, "thumbnails")))
+
+            with open(os.path.join(report_dir, "embedding_2d.json"), "r", encoding="utf-8") as f:
+                embedding_payload = json.load(f)
+            self.assertEqual(len(embedding_payload), 3)
+            self.assertEqual(
+                set(embedding_payload[0].keys()),
+                {"sample_id", "x", "y", "hard_assignment", "max_membership"},
+            )
+            self.assertTrue(np.isfinite([row["x"] for row in embedding_payload]).all())
+            self.assertTrue(np.isfinite([row["y"] for row in embedding_payload]).all())
+
+            with open(os.path.join(report_dir, "slice_centers_2d.json"), "r", encoding="utf-8") as f:
+                center_payload = json.load(f)
+            self.assertEqual(len(center_payload), 2)
+            self.assertEqual(
+                set(center_payload[0].keys()),
+                {"slice_id", "x", "y", "weight", "hard_count"},
+            )
 
     def test_report_export_only_copies_images_referenced_by_slice_views(self):
         fixture_builder = SliceDebugScriptTests()
@@ -183,9 +220,21 @@ class SliceReportExportTests(unittest.TestCase):
                 del scores, descending, top_k
                 return [sample_ids[0]]
 
+            embedding = np.array(
+                [
+                    [0.0, 0.0],
+                    [1.0, 0.5],
+                    [0.5, 1.0],
+                ],
+                dtype=np.float32,
+            )
+
             with patch(
                 "clip_dinoiser.slice_discovery.report_exporter.SliceReportExporter._top_sample_ids",
                 side_effect=_only_first_sample,
+            ), patch(
+                "clip_dinoiser.slice_discovery.report_exporter.SliceReportExporter._compute_umap_2d",
+                return_value=embedding,
             ):
                 exit_code = export_main(
                     [

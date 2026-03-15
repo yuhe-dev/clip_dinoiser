@@ -2,3 +2,4 @@ ftfy
 omegaconf
 open_clip_torch==2.24
 hydra-core
+umap-learn
