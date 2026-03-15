@@ -72,5 +72,11 @@
     "row_sum_max": 1.0,
     "avg_max_membership": 0.9967470169067383,
     "avg_entropy": 0.007909330539405346
+  },
+  "embedding": {
+    "method": "umap",
+    "random_state": 42,
+    "n_neighbors": 15,
+    "min_dist": 0.1
   }
 }
