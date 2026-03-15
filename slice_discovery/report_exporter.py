@@ -13,6 +13,10 @@ class SliceReportExporter:
     UMAP_RANDOM_STATE = 42
     UMAP_N_NEIGHBORS = 15
     UMAP_MIN_DIST = 0.1
+    DISPLAY_POINT_BUDGET = 5000
+    MIN_POINTS_PER_SLICE = 180
+    ROBUST_QUANTILE_LOW = 0.01
+    ROBUST_QUANTILE_HIGH = 0.99
 
     def export(
         self,
@@ -32,6 +36,12 @@ class SliceReportExporter:
         slice_weights = np.asarray(cluster_payload["slice_weights"], dtype=np.float32)
         centers = np.asarray(cluster_payload["centers"], dtype=np.float32)
         embedding_2d = self._compute_umap_2d(projected.matrix)
+        display_sample_ids = self._select_display_sample_ids(
+            sample_ids=sample_ids,
+            embedding_2d=embedding_2d,
+            hard_assignment=hard_assignment,
+            max_membership=membership.max(axis=1),
+        )
         slice_centers_2d = self._compute_slice_centers_2d(
             embedding_2d=embedding_2d,
             membership=membership,
@@ -141,6 +151,7 @@ class SliceReportExporter:
             selected_sample_ids.update(representative_samples)
             selected_sample_ids.update(center_samples)
             selected_sample_ids.update(ambiguous_samples)
+            selected_sample_ids.update(display_sample_ids)
 
             slice_info = dict(slice_info)
             slice_info["avg_entropy"] = float((sample_weights * entropy).sum() / np.clip(sample_weights.sum(), 1e-12, None))
@@ -182,6 +193,7 @@ class SliceReportExporter:
                     "y": float(embedding_2d[index, 1]),
                     "hard_assignment": int(hard_assignment[index]),
                     "max_membership": float(membership[index].max()),
+                    "display": sample_id in display_sample_ids,
                 }
             )
 
@@ -247,6 +259,72 @@ class SliceReportExporter:
             raise ValueError("UMAP embedding contains non-finite coordinates.")
         return embedding
 
+    def _select_display_sample_ids(
+        self,
+        sample_ids: list[str],
+        embedding_2d: np.ndarray,
+        hard_assignment: np.ndarray,
+        max_membership: np.ndarray,
+    ) -> set[str]:
+        x_low, x_high = self._quantile_extent(embedding_2d[:, 0], self.ROBUST_QUANTILE_LOW, self.ROBUST_QUANTILE_HIGH)
+        y_low, y_high = self._quantile_extent(embedding_2d[:, 1], self.ROBUST_QUANTILE_LOW, self.ROBUST_QUANTILE_HIGH)
+
+        candidate_indices = [
+            index
+            for index in range(embedding_2d.shape[0])
+            if x_low <= embedding_2d[index, 0] <= x_high and y_low <= embedding_2d[index, 1] <= y_high
+        ]
+        if len(candidate_indices) <= self.DISPLAY_POINT_BUDGET:
+            return {sample_ids[index] for index in candidate_indices}
+
+        groups: dict[int, list[int]] = {}
+        for index in candidate_indices:
+            groups.setdefault(int(hard_assignment[index]), []).append(index)
+
+        quotas: dict[int, int] = {}
+        allocated = 0
+        for slice_id in sorted(groups.keys()):
+            quota = min(len(groups[slice_id]), self.MIN_POINTS_PER_SLICE)
+            quotas[slice_id] = quota
+            allocated += quota
+
+        remaining_budget = max(self.DISPLAY_POINT_BUDGET - allocated, 0)
+        remaining_capacity = {
+            slice_id: max(len(indices) - quotas.get(slice_id, 0), 0)
+            for slice_id, indices in groups.items()
+        }
+        total_capacity = sum(remaining_capacity.values())
+
+        if remaining_budget > 0 and total_capacity > 0:
+            for slice_id in sorted(groups.keys()):
+                capacity = remaining_capacity[slice_id]
+                if capacity <= 0:
+                    continue
+                extra = min(capacity, int((remaining_budget * capacity) / total_capacity))
+                quotas[slice_id] = quotas.get(slice_id, 0) + extra
+
+        used = sum(quotas.values())
+        if used < self.DISPLAY_POINT_BUDGET:
+            for slice_id in sorted(groups.keys()):
+                if used >= self.DISPLAY_POINT_BUDGET:
+                    break
+                current = quotas.get(slice_id, 0)
+                if current < len(groups[slice_id]):
+                    quotas[slice_id] = current + 1
+                    used += 1
+
+        selected_indices: list[int] = []
+        for slice_id in sorted(groups.keys()):
+            selected_indices.extend(
+                self._deterministic_take_indices(
+                    groups[slice_id],
+                    max_membership=max_membership,
+                    sample_ids=sample_ids,
+                    quota=quotas.get(slice_id, 0),
+                )
+            )
+        return {sample_ids[index] for index in selected_indices}
+
     @staticmethod
     def _compute_slice_centers_2d(
         embedding_2d: np.ndarray,
@@ -272,3 +350,43 @@ class SliceReportExporter:
                 }
             )
         return centers
+
+    @staticmethod
+    def _quantile_extent(values: np.ndarray, low: float, high: float) -> tuple[float, float]:
+        if values.size == 0:
+            return 0.0, 1.0
+        sorted_values = np.sort(values.astype(np.float64, copy=False))
+        q_low = float(np.quantile(sorted_values, low))
+        q_high = float(np.quantile(sorted_values, high))
+        if q_low == q_high:
+            return q_low - 1.0, q_high + 1.0
+        return q_low, q_high
+
+    @staticmethod
+    def _deterministic_take_indices(
+        indices: list[int],
+        max_membership: np.ndarray,
+        sample_ids: list[str],
+        quota: int,
+    ) -> list[int]:
+        if quota <= 0 or len(indices) == 0:
+            return []
+        if len(indices) <= quota:
+            return indices
+
+        by_confidence = sorted(indices, key=lambda index: (-float(max_membership[index]), sample_ids[index]))
+        head_count = min(int(np.ceil(quota * 0.4)), quota, len(by_confidence))
+        selected = by_confidence[:head_count]
+        used = set(selected)
+        remaining_pool = [index for index in indices if index not in used]
+        remaining = quota - len(selected)
+        if remaining <= 0 or len(remaining_pool) == 0:
+            return selected
+
+        stride = len(remaining_pool) / remaining
+        for offset in range(remaining):
+            picked = remaining_pool[min(int(np.floor(offset * stride)), len(remaining_pool) - 1)]
+            if picked not in used:
+                selected.append(picked)
+                used.add(picked)
+        return selected

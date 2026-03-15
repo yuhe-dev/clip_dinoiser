@@ -154,7 +154,7 @@ class SliceReportExportTests(unittest.TestCase):
             self.assertEqual(len(embedding_payload), 3)
             self.assertEqual(
                 set(embedding_payload[0].keys()),
-                {"sample_id", "x", "y", "hard_assignment", "max_membership"},
+                {"sample_id", "x", "y", "hard_assignment", "max_membership", "display"},
             )
             self.assertTrue(np.isfinite([row["x"] for row in embedding_payload]).all())
             self.assertTrue(np.isfinite([row["y"] for row in embedding_payload]).all())
@@ -235,6 +235,9 @@ class SliceReportExportTests(unittest.TestCase):
             ), patch(
                 "clip_dinoiser.slice_discovery.report_exporter.SliceReportExporter._compute_umap_2d",
                 return_value=embedding,
+            ), patch(
+                "clip_dinoiser.slice_discovery.report_exporter.SliceReportExporter._select_display_sample_ids",
+                return_value={"images/train2017/0002.jpg"},
             ):
                 exit_code = export_main(
                     [
@@ -256,13 +259,19 @@ class SliceReportExportTests(unittest.TestCase):
                 for name in files:
                     thumbnail_files.append(os.path.relpath(os.path.join(root, name), os.path.join(report_dir, "thumbnails")))
 
-            self.assertEqual(sorted(thumbnail_files), ["images/train2017/0001.jpg"])
+            self.assertEqual(sorted(thumbnail_files), ["images/train2017/0001.jpg", "images/train2017/0002.jpg"])
 
             with open(os.path.join(report_dir, "samples.json"), "r", encoding="utf-8") as f:
                 samples = json.load(f)
 
             non_empty_urls = [sample["image_url"] for sample in samples if sample["image_url"]]
-            self.assertEqual(non_empty_urls, ["./thumbnails/images/train2017/0001.jpg"])
+            self.assertEqual(
+                non_empty_urls,
+                [
+                    "./thumbnails/images/train2017/0001.jpg",
+                    "./thumbnails/images/train2017/0002.jpg",
+                ],
+            )
 
 
 if __name__ == "__main__":
