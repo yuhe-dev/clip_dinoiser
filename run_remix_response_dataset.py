@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import faulthandler
 import json
 import os
 import sys
@@ -50,6 +51,10 @@ def _parse_int_csv(raw: str) -> list[int]:
 
 def _parse_float_csv(raw: str) -> list[float]:
     return [float(token.strip()) for token in raw.split(",") if token.strip()]
+
+
+def _progress(message: str) -> None:
+    print(f"[remix_response_dataset] {message}", file=sys.stderr, flush=True)
 
 
 def _ordered_pairs(num_slices: int, max_pairs: int) -> list[tuple[int, int]]:
@@ -105,12 +110,16 @@ def _write_subset_manifest(
     return manifest_path
 
 
-def run(args: argparse.Namespace) -> int:
+def run(args: argparse.Namespace, log_fn=_progress) -> int:
+    faulthandler.enable()
+    log_fn("loading projected artifacts")
     projected = SliceFeatureProjector.load(os.path.abspath(args.projected_dir))
+    log_fn("loading slice artifacts")
     artifacts = load_slice_artifacts(os.path.abspath(args.cluster_dir))
     if projected.sample_ids != artifacts.sample_ids:
         raise ValueError("projected sample ids must match cluster sample ids")
 
+    log_fn(f"loading portrait feature groups source={args.portrait_source}")
     feature_groups, portrait_source = load_portrait_feature_groups(
         projected=projected,
         cluster_meta=artifacts.meta,
@@ -118,12 +127,15 @@ def run(args: argparse.Namespace) -> int:
         processed_data_root=os.path.abspath(args.processed_data_root) if args.processed_data_root else None,
         schema_path=os.path.abspath(args.schema_path) if args.schema_path else None,
     )
+    log_fn(f"computing slice portraits source={portrait_source}")
     portraits = compute_slice_portraits(feature_groups, artifacts.membership)
     amplitudes = _parse_float_csv(args.amplitudes)
     baseline_seeds = _parse_int_csv(args.baseline_seeds)
+    log_fn(f"preparing baseline trials count={len(baseline_seeds)} amplitudes={amplitudes}")
 
     rows: list[dict[str, object]] = []
     for baseline_seed in baseline_seeds:
+        log_fn(f"baseline_seed={baseline_seed} sampling baseline subset budget={int(args.budget)}")
         rng = np.random.default_rng(int(baseline_seed))
         sample_indices = rng.choice(len(artifacts.sample_ids), size=int(args.budget), replace=False)
         baseline_sample_ids = [artifacts.sample_ids[int(index)] for index in sample_indices.tolist()]
@@ -136,6 +148,7 @@ def run(args: argparse.Namespace) -> int:
                 baseline_sample_ids,
                 os.path.abspath(args.pool_image_root) if args.pool_image_root else None,
             )
+            log_fn(f"baseline_seed={baseline_seed} wrote baseline manifest")
         pair_library = _select_pair_library(
             baseline_mixture=baseline_mixture,
             portraits=portraits,
@@ -143,11 +156,13 @@ def run(args: argparse.Namespace) -> int:
             amplitudes=amplitudes,
             pair_selector=args.pair_selector,
         )
+        log_fn(f"baseline_seed={baseline_seed} selected {len(pair_library)} pair directions selector={args.pair_selector}")
         candidates = generate_pairwise_candidates(
             baseline_mixture,
             amplitudes=amplitudes,
             ordered_pairs=pair_library,
         )
+        log_fn(f"baseline_seed={baseline_seed} generated {len(candidates)} pairwise candidates")
 
         for candidate_index, candidate in enumerate(candidates):
             target_mixture = np.asarray(candidate.target_mixture, dtype=np.float32)
@@ -193,12 +208,13 @@ def run(args: argparse.Namespace) -> int:
                     os.path.abspath(args.subset_manifest_dir),
                     candidate_id,
                     selected_ids,
-                    os.path.abspath(args.pool_image_root) if args.pool_image_root else None,
-                )
+                os.path.abspath(args.pool_image_root) if args.pool_image_root else None,
+            )
             rows.append(row)
 
     output_path = os.path.abspath(args.output_path)
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    log_fn(f"writing response rows count={len(rows)} output={output_path}")
     write_jsonl(output_path, rows)
     return 0
 

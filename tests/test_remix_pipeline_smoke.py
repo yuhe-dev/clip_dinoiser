@@ -15,10 +15,57 @@ if ROOT not in sys.path:
 from clip_dinoiser.run_remix_attach_results import main as attach_main
 from clip_dinoiser.run_remix_collect_results import main as collect_main
 from clip_dinoiser.run_remix_recommendation import main as recommend_main
-from clip_dinoiser.run_remix_response_dataset import main as response_main
+from clip_dinoiser.run_remix_response_dataset import build_parser as response_build_parser, main as response_main, run as response_run
 
 
 class RemixPipelineSmokeTests(unittest.TestCase):
+    def test_response_dataset_run_emits_stage_progress(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            projected_dir = os.path.join(tmpdir, "projected")
+            cluster_dir = os.path.join(tmpdir, "cluster")
+            os.makedirs(projected_dir, exist_ok=True)
+            os.makedirs(cluster_dir, exist_ok=True)
+
+            sample_ids = np.asarray(["a.jpg", "b.jpg", "c.jpg", "d.jpg"], dtype=object)
+            np.savez(
+                os.path.join(projected_dir, "projected_features.npz"),
+                matrix=np.asarray([[0.1, 1.0], [0.2, 0.8], [0.9, 0.1], [0.8, 0.2]], dtype=np.float32),
+                sample_ids=sample_ids,
+            )
+            with open(os.path.join(projected_dir, "projected_features_meta.json"), "w", encoding="utf-8") as f:
+                json.dump({"sample_ids": sample_ids.tolist(), "block_ranges": {"quality.laplacian": [0, 2]}}, f)
+            membership = np.asarray([[0.9, 0.1], [0.8, 0.2], [0.2, 0.8], [0.1, 0.9]], dtype=np.float32)
+            np.savez(
+                os.path.join(cluster_dir, "slice_result.npz"),
+                sample_ids=sample_ids,
+                membership=membership,
+                hard_assignment=np.asarray([0, 0, 1, 1], dtype=np.int64),
+                slice_weights=membership.mean(axis=0),
+                centers=np.asarray([[0.15, 0.9], [0.85, 0.15]], dtype=np.float32),
+            )
+            with open(os.path.join(cluster_dir, "slice_result_meta.json"), "w", encoding="utf-8") as f:
+                json.dump({"finder": "gmm", "num_slices": 2}, f)
+
+            logs = []
+            args = response_build_parser().parse_args(
+                [
+                    "--projected-dir",
+                    projected_dir,
+                    "--cluster-dir",
+                    cluster_dir,
+                    "--output-path",
+                    os.path.join(tmpdir, "rows.jsonl"),
+                    "--budget",
+                    "2",
+                ]
+            )
+
+            self.assertEqual(response_run(args, log_fn=logs.append), 0)
+            self.assertTrue(any("loading projected artifacts" in msg for msg in logs))
+            self.assertTrue(any("loading slice artifacts" in msg for msg in logs))
+            self.assertTrue(any("computing slice portraits" in msg for msg in logs))
+            self.assertTrue(any("writing response rows" in msg for msg in logs))
+
     def test_remix_pipeline_smoke(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             projected_dir = os.path.join(tmpdir, "projected")
