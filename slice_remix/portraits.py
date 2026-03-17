@@ -4,8 +4,12 @@ import os
 
 import numpy as np
 
-from ..slice_discovery.assembler import ProcessedFeatureAssembler
-from ..slice_discovery.types import ProjectedSliceFeatures
+try:
+    from ..slice_discovery.assembler import ProcessedFeatureAssembler
+    from ..slice_discovery.types import ProjectedSliceFeatures
+except ImportError:
+    from slice_discovery.assembler import ProcessedFeatureAssembler
+    from slice_discovery.types import ProjectedSliceFeatures
 
 
 def compute_slice_portraits(

@@ -3,6 +3,7 @@ import sys
 import json
 import tempfile
 import unittest
+import subprocess
 
 import numpy as np
 
@@ -95,6 +96,24 @@ class SliceRemixPortraitTests(unittest.TestCase):
         np.testing.assert_allclose(
             groups["quality.laplacian"][0],
             np.asarray([0.1, 0.2, 1.0, 0.0], dtype=np.float32),
+        )
+
+    def test_run_remix_response_dataset_module_is_importable_in_script_mode(self):
+        result = subprocess.run(
+            [
+                sys.executable,
+                "-c",
+                "import os, sys; sys.path.insert(0, os.getcwd()); import run_remix_response_dataset",
+            ],
+            cwd=os.path.abspath(os.path.join(ROOT, "clip_dinoiser")),
+            capture_output=True,
+            text=True,
+        )
+
+        self.assertEqual(
+            result.returncode,
+            0,
+            msg=f"stdout={result.stdout}\nstderr={result.stderr}",
         )
 
 
