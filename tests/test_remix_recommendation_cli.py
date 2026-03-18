@@ -142,6 +142,27 @@ class RemixRecommendationCliTests(unittest.TestCase):
 
         self.assertEqual(args.assembled_feature_dir, "/tmp/assembled_features")
 
+    def test_recommendation_cli_parser_accepts_surrogate_output_path(self):
+        parser = build_parser()
+        args = parser.parse_args(
+            [
+                "--projected-dir",
+                "/tmp/projected",
+                "--cluster-dir",
+                "/tmp/cluster",
+                "--response-dataset",
+                "/tmp/rows.jsonl",
+                "--baseline-seed",
+                "0",
+                "--budget",
+                "1000",
+                "--surrogate-output-path",
+                "/tmp/surrogate.json",
+            ]
+        )
+
+        self.assertEqual(args.surrogate_output_path, "/tmp/surrogate.json")
+
 
 if __name__ == "__main__":
     unittest.main()

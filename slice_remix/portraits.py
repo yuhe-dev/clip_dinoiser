@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import os
 
 import numpy as np
@@ -14,6 +15,9 @@ except ImportError:
 
 def _noop_log(_: str) -> None:
     return None
+
+
+VECTOR_FIELD_NAMES = {"hist", "profile", "delta_profile"}
 
 
 def compute_slice_portraits(
@@ -101,6 +105,91 @@ def _resolve_assembled_feature_dir(
         if os.path.exists(npz_path) and os.path.exists(meta_path):
             return candidate
     return None
+
+
+def build_feature_label_map(
+    feature_groups: dict[str, np.ndarray],
+    *,
+    schema_path: str | None = None,
+) -> dict[str, list[str]]:
+    schema = None
+    if schema_path and os.path.exists(schema_path):
+        with open(schema_path, "r", encoding="utf-8") as f:
+            schema = json.load(f)
+
+    labels: dict[str, list[str]] = {}
+    for block_name, matrix in feature_groups.items():
+        width = int(np.asarray(matrix).shape[1]) if np.asarray(matrix).ndim == 2 else 1
+        if schema is None or "." not in block_name:
+            labels[block_name] = [f"dim_{index}" for index in range(width)]
+            continue
+
+        dimension_name, feature_name = block_name.split(".", 1)
+        feature_spec = (
+            schema.get("dimensions", {})
+            .get(dimension_name, {})
+            .get("features", {})
+            .get(feature_name, {})
+        )
+        field_names = list(feature_spec.get("model_input_fields", []))
+        if not field_names:
+            labels[block_name] = [f"dim_{index}" for index in range(width)]
+            continue
+
+        scalar_count = sum(1 for field_name in field_names if field_name not in VECTOR_FIELD_NAMES)
+        vector_width = max(width - scalar_count, 0)
+        block_labels: list[str] = []
+        for field_name in field_names:
+            if field_name in VECTOR_FIELD_NAMES:
+                block_labels.extend(f"{field_name}[{index}]" for index in range(vector_width))
+            else:
+                block_labels.append(str(field_name))
+        if len(block_labels) != width:
+            labels[block_name] = [f"dim_{index}" for index in range(width)]
+            continue
+        labels[block_name] = block_labels
+    return labels
+
+
+def summarize_portrait_shift(
+    delta_phi: dict[str, list[float] | np.ndarray],
+    feature_label_map: dict[str, list[str]],
+    *,
+    top_blocks: int = 5,
+    top_features_per_block: int = 3,
+) -> dict[str, object]:
+    block_summaries: list[dict[str, object]] = []
+    for block_name, raw_values in delta_phi.items():
+        values = np.asarray(raw_values, dtype=np.float32).reshape(-1)
+        labels = feature_label_map.get(block_name, [f"dim_{index}" for index in range(values.shape[0])])
+        abs_values = np.abs(values)
+        order = np.argsort(-abs_values)
+        top_feature_rows = [
+            {
+                "feature": labels[int(index)] if int(index) < len(labels) else f"dim_{int(index)}",
+                "index": int(index),
+                "delta": float(values[int(index)]),
+                "abs_delta": float(abs_values[int(index)]),
+            }
+            for index in order[:top_features_per_block]
+        ]
+        block_summaries.append(
+            {
+                "block_name": block_name,
+                "dimension": int(values.shape[0]),
+                "l2_norm": float(np.linalg.norm(values)),
+                "mean_abs_delta": float(abs_values.mean()) if abs_values.size else 0.0,
+                "max_abs_delta": float(abs_values.max()) if abs_values.size else 0.0,
+                "signed_sum": float(values.sum()) if values.size else 0.0,
+                "top_features": top_feature_rows,
+            }
+        )
+
+    block_summaries.sort(key=lambda item: float(item["l2_norm"]), reverse=True)
+    return {
+        "top_blocks": block_summaries[:top_blocks],
+        "num_blocks": len(block_summaries),
+    }
 
 
 def load_portrait_feature_groups(

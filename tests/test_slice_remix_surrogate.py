@@ -1,5 +1,6 @@
 import os
 import sys
+import tempfile
 import unittest
 
 
@@ -12,6 +13,8 @@ from clip_dinoiser.slice_remix.surrogate import (
     BootstrapRemixSurrogate,
     LinearRemixSurrogate,
     QuadraticRemixSurrogate,
+    cross_validate_surrogate,
+    evaluate_surrogate_predictions,
 )
 
 
@@ -71,6 +74,61 @@ class SliceRemixSurrogateTests(unittest.TestCase):
         self.assertEqual(len(means), 1)
         self.assertEqual(len(stds), 1)
         self.assertGreater(stds[0], 0.0)
+
+    def test_linear_surrogate_serializes_to_json(self):
+        model = LinearRemixSurrogate()
+        rows = [
+            {"delta_q": [0.1, -0.1], "delta_phi": {"feature_a": [0.2]}, "context": {"budget": 1000}, "measured_gain": 0.3},
+            {"delta_q": [-0.1, 0.1], "delta_phi": {"feature_a": [-0.2]}, "context": {"budget": 1000}, "measured_gain": -0.2},
+        ]
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            output_path = os.path.join(tmpdir, "surrogate.json")
+            model.fit(rows).save_json(output_path)
+
+            self.assertTrue(os.path.isfile(output_path))
+
+    def test_evaluate_surrogate_predictions_reports_group_metrics(self):
+        rows = [
+            {"candidate_id": "cand_0_0", "delta_q": [0.1, -0.1], "delta_phi": {"feature_a": [0.2]}, "context": {"baseline_seed": 0}, "measured_gain": 0.2},
+            {"candidate_id": "cand_0_1", "delta_q": [0.0, 0.0], "delta_phi": {"feature_a": [0.0]}, "context": {"baseline_seed": 0}, "measured_gain": -0.1},
+            {"candidate_id": "cand_1_0", "delta_q": [0.2, -0.2], "delta_phi": {"feature_a": [0.4]}, "context": {"baseline_seed": 1}, "measured_gain": 0.5},
+            {"candidate_id": "cand_1_1", "delta_q": [-0.2, 0.2], "delta_phi": {"feature_a": [-0.4]}, "context": {"baseline_seed": 1}, "measured_gain": -0.3},
+        ]
+
+        report = evaluate_surrogate_predictions(
+            rows,
+            predicted_mean=[0.18, -0.05, 0.45, -0.2],
+            predicted_std=[0.01, 0.01, 0.02, 0.02],
+            group_key="baseline_seed",
+            top_k=1,
+            kappa=1.0,
+        )
+
+        self.assertIn("metrics", report)
+        self.assertAlmostEqual(report["metrics"]["top1_hit_rate"], 1.0)
+        self.assertEqual(len(report["group_reports"]), 2)
+
+    def test_cross_validate_surrogate_runs_leave_one_group_out(self):
+        rows = [
+            {"candidate_id": "cand_0_0", "delta_q": [1.0, 0.0], "delta_phi": {"feature_a": [1.0]}, "context": {"baseline_seed": 0}, "measured_gain": 1.0},
+            {"candidate_id": "cand_0_1", "delta_q": [0.0, 1.0], "delta_phi": {"feature_a": [-1.0]}, "context": {"baseline_seed": 0}, "measured_gain": -1.0},
+            {"candidate_id": "cand_1_0", "delta_q": [1.0, 0.0], "delta_phi": {"feature_a": [1.0]}, "context": {"baseline_seed": 1}, "measured_gain": 1.0},
+            {"candidate_id": "cand_1_1", "delta_q": [0.0, 1.0], "delta_phi": {"feature_a": [-1.0]}, "context": {"baseline_seed": 1}, "measured_gain": -1.0},
+        ]
+
+        report = cross_validate_surrogate(
+            rows,
+            model_name="linear",
+            bootstrap_models=1,
+            group_key="baseline_seed",
+            top_k=1,
+            kappa=0.0,
+        )
+
+        self.assertEqual(report["mode"], "leave_one_group_out")
+        self.assertEqual(report["group_count"], 2)
+        self.assertEqual(len(report["predictions"]), 4)
 
 
 if __name__ == "__main__":

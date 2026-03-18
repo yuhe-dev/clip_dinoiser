@@ -16,9 +16,11 @@ if ROOT not in sys.path:
 from clip_dinoiser.slice_discovery.types import ProjectedSliceFeatures
 from clip_dinoiser.slice_discovery.assembler import ProcessedFeatureAssembler
 from clip_dinoiser.slice_remix.portraits import (
+    build_feature_label_map,
     compute_portrait_shift,
     compute_slice_portraits,
     load_portrait_feature_groups,
+    summarize_portrait_shift,
 )
 from tests.test_processed_feature_assembler import ProcessedFeatureAssemblerTests, TEST_SCHEMA
 
@@ -161,6 +163,45 @@ class SliceRemixPortraitTests(unittest.TestCase):
             0,
             msg=f"stdout={result.stdout}\nstderr={result.stderr}",
         )
+
+    def test_build_feature_label_map_uses_schema_field_names(self):
+        feature_groups = {
+            "quality.laplacian": np.zeros((2, 4), dtype=np.float32),
+            "difficulty.small_ratio": np.zeros((2, 5), dtype=np.float32),
+        }
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            schema_path = os.path.join(tmpdir, "schema.json")
+            with open(schema_path, "w", encoding="utf-8") as f:
+                json.dump(TEST_SCHEMA, f, indent=2, ensure_ascii=False)
+
+            labels = build_feature_label_map(feature_groups, schema_path=schema_path)
+
+        self.assertEqual(
+            labels["quality.laplacian"],
+            ["hist[0]", "hist[1]", "log_num_values", "empty_flag"],
+        )
+        self.assertEqual(
+            labels["difficulty.small_ratio"],
+            ["delta_profile[0]", "delta_profile[1]", "log_num_values", "empty_flag", "mass_small_extreme"],
+        )
+
+    def test_summarize_portrait_shift_reports_top_blocks_and_features(self):
+        delta_phi = {
+            "quality.laplacian": [0.1, -0.4, 0.05, 0.0],
+            "coverage.knn_local_density": [0.01, 0.02, 0.03],
+        }
+        label_map = {
+            "quality.laplacian": ["hist[0]", "hist[1]", "log_num_values", "empty_flag"],
+            "coverage.knn_local_density": ["profile[0]", "profile[1]", "q50"],
+        }
+
+        summary = summarize_portrait_shift(delta_phi, label_map, top_blocks=1, top_features_per_block=2)
+
+        self.assertEqual(summary["top_blocks"][0]["block_name"], "quality.laplacian")
+        top_features = summary["top_blocks"][0]["top_features"]
+        self.assertEqual(top_features[0]["feature"], "hist[1]")
+        self.assertAlmostEqual(top_features[0]["delta"], -0.4)
 
 
 if __name__ == "__main__":

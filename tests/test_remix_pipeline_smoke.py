@@ -13,9 +13,11 @@ if ROOT not in sys.path:
 
 
 from clip_dinoiser.run_remix_attach_results import main as attach_main
+from clip_dinoiser.run_remix_analysis_report import main as analysis_main
 from clip_dinoiser.run_remix_collect_results import main as collect_main
 from clip_dinoiser.run_remix_recommendation import main as recommend_main
 from clip_dinoiser.run_remix_response_dataset import build_parser as response_build_parser, main as response_main, run as response_run
+from clip_dinoiser.run_remix_validate_recommendation import main as validate_recommendation_main
 
 
 class RemixPipelineSmokeTests(unittest.TestCase):
@@ -240,9 +242,56 @@ class RemixPipelineSmokeTests(unittest.TestCase):
 
             with open(output_path, "r", encoding="utf-8") as f:
                 result = json.load(f)
+            self.assertIn("candidate_id", result)
             self.assertIn("baseline_mixture", result)
             self.assertIn("target_mixture", result)
             self.assertIn("delta_q", result)
+            self.assertIn("context", result)
+            self.assertIn("portrait_summary", result)
+            self.assertIn("ranked_candidates", result)
+            self.assertGreater(len(result["ranked_candidates"]), 0)
+            self.assertTrue(os.path.isfile(result["context"]["surrogate_output_path"]))
+
+            recommendation_manifest_path = os.path.join(tmpdir, "recommended_manifest.json")
+            self.assertEqual(
+                validate_recommendation_main(
+                    [
+                        "--cluster-dir",
+                        cluster_dir,
+                        "--recommendation-path",
+                        output_path,
+                        "--pool-image-root",
+                        tmpdir,
+                        "--output-manifest",
+                        recommendation_manifest_path,
+                    ]
+                ),
+                0,
+            )
+            with open(recommendation_manifest_path, "r", encoding="utf-8") as f:
+                manifest = json.load(f)
+            self.assertEqual(manifest["candidate_id"], result["candidate_id"])
+            self.assertEqual(len(manifest["sample_ids"]), 2)
+
+            analysis_output_path = os.path.join(tmpdir, "analysis_report.json")
+            self.assertEqual(
+                analysis_main(
+                    [
+                        "--response-dataset",
+                        labeled_rows_path,
+                        "--recommendation-path",
+                        output_path,
+                        "--output-path",
+                        analysis_output_path,
+                    ]
+                ),
+                0,
+            )
+            with open(analysis_output_path, "r", encoding="utf-8") as f:
+                analysis_report = json.load(f)
+            self.assertIn("surrogate", analysis_report)
+            self.assertIn("cross_validation", analysis_report["surrogate"])
+            self.assertIn("actual_comparison", analysis_report["recommendation"])
 
 
 if __name__ == "__main__":

@@ -56,12 +56,16 @@ def rank_candidates(
 
 def build_recommendation_result(candidate: dict[str, Any]) -> RecommendationResult:
     return RecommendationResult(
+        candidate_id=str(candidate.get("candidate_id", "")),
         baseline_mixture=list(candidate.get("baseline_mixture", [])),
         target_mixture=list(candidate.get("target_mixture", [])),
         delta_q=list(candidate.get("delta_q", [])),
         predicted_gain_mean=float(candidate.get("predicted_gain_mean", 0.0)),
         predicted_gain_std=float(candidate.get("predicted_gain_std", 0.0)),
         risk_adjusted_score=float(candidate.get("risk_adjusted_score", 0.0)),
+        context=dict(candidate.get("context", {})),
+        portrait_summary=dict(candidate.get("portrait_summary", {})),
         rationale=dict(candidate.get("rationale", {})),
         execution=dict(candidate.get("execution", {})),
+        ranked_candidates=list(candidate.get("ranked_candidates", [])),
     )

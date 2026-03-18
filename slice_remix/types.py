@@ -37,11 +37,15 @@ class ResponseRow:
 
 @dataclass
 class RecommendationResult:
+    candidate_id: str
     baseline_mixture: list[float]
     target_mixture: list[float]
     delta_q: list[float]
     predicted_gain_mean: float
     predicted_gain_std: float
     risk_adjusted_score: float
+    context: dict[str, Any] = field(default_factory=dict)
+    portrait_summary: dict[str, Any] = field(default_factory=dict)
     rationale: dict[str, Any] = field(default_factory=dict)
     execution: dict[str, Any] = field(default_factory=dict)
+    ranked_candidates: list[dict[str, Any]] = field(default_factory=list)
