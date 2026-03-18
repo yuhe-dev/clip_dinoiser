@@ -1,0 +1,14 @@
+{
+  "candidate_id": "cand_3_5",
+  "subset_manifest": "/home/yuhe/clip_dinoiser/artifacts/remix_seed3_eval/manifests/cand_3_5.json",
+  "result_path": "/home/yuhe/clip_dinoiser/artifacts/remix_seed3_eval/runs/cand_3_5/result.json",
+  "seed": 0,
+  "timing": {
+    "subset_size": 1000,
+    "started_at": "2026-03-18T10:42:19.536528+00:00",
+    "finished_at": "2026-03-18T10:47:04.259670+00:00",
+    "train_seconds": 19.607,
+    "eval_seconds": 256.354,
+    "total_seconds": 284.723
+  }
+}
