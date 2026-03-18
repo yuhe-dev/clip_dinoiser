@@ -1,0 +1,14 @@
+{
+  "candidate_id": "baseline_3",
+  "subset_manifest": "/home/yuhe/clip_dinoiser/artifacts/remix_seed3_eval/manifests/baseline_3.json",
+  "result_path": "/home/yuhe/clip_dinoiser/artifacts/remix_seed3_eval/runs/baseline_3/result.json",
+  "seed": 0,
+  "timing": {
+    "subset_size": 1000,
+    "started_at": "2026-03-18T09:22:45.650713+00:00",
+    "finished_at": "2026-03-18T09:27:58.004663+00:00",
+    "train_seconds": 19.038,
+    "eval_seconds": 285.744,
+    "total_seconds": 312.354
+  }
+}
