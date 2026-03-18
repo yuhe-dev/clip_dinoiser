@@ -12,6 +12,10 @@ except ImportError:
     from slice_discovery.types import ProjectedSliceFeatures
 
 
+def _noop_log(_: str) -> None:
+    return None
+
+
 def compute_slice_portraits(
     feature_groups: dict[str, np.ndarray],
     memberships: np.ndarray,
@@ -78,6 +82,27 @@ def build_feature_groups_from_assembler(assembler: ProcessedFeatureAssembler) ->
     }
 
 
+def _resolve_assembled_feature_dir(
+    *,
+    processed_data_root: str | None,
+    assembled_feature_dir: str | None,
+) -> str | None:
+    if assembled_feature_dir:
+        return assembled_feature_dir
+    if not processed_data_root:
+        return None
+    candidates = [
+        os.path.join(processed_data_root, "assembled_features"),
+        os.path.join(processed_data_root, "assembled"),
+    ]
+    for candidate in candidates:
+        npz_path = os.path.join(candidate, "assembled_features.npz")
+        meta_path = os.path.join(candidate, "assembled_features_meta.json")
+        if os.path.exists(npz_path) and os.path.exists(meta_path):
+            return candidate
+    return None
+
+
 def load_portrait_feature_groups(
     *,
     projected: ProjectedSliceFeatures,
@@ -85,25 +110,43 @@ def load_portrait_feature_groups(
     portrait_source: str = "auto",
     processed_data_root: str | None = None,
     schema_path: str | None = None,
+    assembled_feature_dir: str | None = None,
+    log_fn=None,
 ) -> tuple[dict[str, np.ndarray], str]:
     if portrait_source not in {"auto", "projected", "semantic"}:
         raise ValueError("portrait_source must be one of: auto, projected, semantic")
 
+    logger = log_fn or _noop_log
     resolved_data_root = processed_data_root or str((cluster_meta or {}).get("data_root", "")).strip() or None
     resolved_schema_path = schema_path or str((cluster_meta or {}).get("schema_path", "")).strip() or None
+    resolved_assembled_dir = _resolve_assembled_feature_dir(
+        processed_data_root=resolved_data_root,
+        assembled_feature_dir=assembled_feature_dir,
+    )
 
     if portrait_source in {"auto", "semantic"} and resolved_data_root and resolved_schema_path:
+        if resolved_assembled_dir:
+            logger(f"loading semantic assembled features dir={resolved_assembled_dir}")
+            assembler = ProcessedFeatureAssembler.load(resolved_assembled_dir)
+            logger(f"loaded semantic assembled features dir={resolved_assembled_dir} sample_count={assembler.sample_count}")
+            if assembler.sample_ids != projected.sample_ids:
+                raise ValueError("assembled semantic features must align with projected sample_ids")
+            return build_feature_groups_from_assembler(assembler), "semantic"
+
         quality_path = os.path.join(resolved_data_root, "quality", "quality_processed_features.npy")
         difficulty_path = os.path.join(resolved_data_root, "difficulty", "difficulty_processed_features.npy")
         coverage_path = os.path.join(resolved_data_root, "coverage", "coverage_processed_features.npy")
         required_paths = [quality_path, difficulty_path, coverage_path, resolved_schema_path]
         if all(os.path.exists(path) for path in required_paths):
+            logger(f"loading semantic processed features data_root={resolved_data_root}")
             assembler = ProcessedFeatureAssembler.from_processed_paths(
                 quality_path=quality_path,
                 difficulty_path=difficulty_path,
                 coverage_path=coverage_path,
                 schema_path=resolved_schema_path,
+                log_fn=logger,
             )
+            logger(f"assembled semantic processed features sample_count={assembler.sample_count} blocks={len(assembler.list_blocks())}")
             if assembler.sample_ids != projected.sample_ids:
                 raise ValueError("processed semantic features must align with projected sample_ids")
             return build_feature_groups_from_assembler(assembler), "semantic"

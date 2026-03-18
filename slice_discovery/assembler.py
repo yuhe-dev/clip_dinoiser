@@ -31,11 +31,19 @@ def _ensure_numpy_pickle_compat() -> None:
         multiarray_module = import_module("numpy.core.multiarray")
         sys.modules.setdefault("numpy._core.multiarray", multiarray_module)
 
-def _load_records(path: str) -> list[dict[str, object]]:
+def _noop_log(_: str) -> None:
+    return None
+
+
+def _load_records(path: str, log_fn=None) -> list[dict[str, object]]:
+    logger = log_fn or _noop_log
+    logger(f"loading processed bundle path={path}")
     _ensure_numpy_pickle_compat()
     records = np.load(path, allow_pickle=True)
+    logger(f"loaded processed bundle path={path} shape={getattr(records, 'shape', None)} dtype={getattr(records, 'dtype', None)}")
     record_list = records.tolist()
     dict_records = [dict(record) for record in record_list]
+    logger(f"materialized processed bundle path={path} records={len(dict_records)}")
     return dict_records
 
 
@@ -113,14 +121,18 @@ class ProcessedFeatureAssembler:
         coverage_path: str,
         schema_path: str,
         limit_samples: int | None = None,
+        log_fn=None,
     ) -> "ProcessedFeatureAssembler":
-        quality_records = _load_records(quality_path)
-        difficulty_records = _load_records(difficulty_path)
-        coverage_records = _load_records(coverage_path)
+        logger = log_fn or _noop_log
+        quality_records = _load_records(quality_path, log_fn=logger)
+        difficulty_records = _load_records(difficulty_path, log_fn=logger)
+        coverage_records = _load_records(coverage_path, log_fn=logger)
         if limit_samples is not None:
             quality_records = quality_records[:limit_samples]
             difficulty_records = difficulty_records[:limit_samples]
             coverage_records = coverage_records[:limit_samples]
+            logger(f"applied record limit limit_samples={limit_samples}")
+        logger(f"loading processed schema path={schema_path}")
         return cls.from_processed_records(
             quality_records=quality_records,
             difficulty_records=difficulty_records,

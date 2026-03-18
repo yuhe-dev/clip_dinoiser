@@ -14,6 +14,7 @@ if ROOT not in sys.path:
 
 
 from clip_dinoiser.slice_discovery.types import ProjectedSliceFeatures
+from clip_dinoiser.slice_discovery.assembler import ProcessedFeatureAssembler
 from clip_dinoiser.slice_remix.portraits import (
     compute_portrait_shift,
     compute_slice_portraits,
@@ -97,6 +98,51 @@ class SliceRemixPortraitTests(unittest.TestCase):
             groups["quality.laplacian"][0],
             np.asarray([0.1, 0.2, 1.0, 0.0], dtype=np.float32),
         )
+
+    def test_load_portrait_feature_groups_prefers_assembled_feature_cache(self):
+        fixture = ProcessedFeatureAssemblerTests()
+        quality_records, difficulty_records, coverage_records = fixture._build_records()
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            data_root = os.path.join(tmpdir, "data_feature")
+            os.makedirs(data_root, exist_ok=True)
+            schema_path = os.path.join(tmpdir, "schema.json")
+            with open(schema_path, "w", encoding="utf-8") as f:
+                json.dump(TEST_SCHEMA, f, indent=2, ensure_ascii=False)
+
+            assembler = ProcessedFeatureAssembler.from_processed_records(
+                quality_records=quality_records,
+                difficulty_records=difficulty_records,
+                coverage_records=coverage_records,
+                schema=TEST_SCHEMA,
+            )
+            assembled_dir = os.path.join(data_root, "assembled_features")
+            assembler.save(assembled_dir)
+
+            projected = ProjectedSliceFeatures(
+                matrix=np.zeros((2, 12), dtype=np.float32),
+                sample_ids=["images/train2017/0001.jpg", "images/train2017/0002.jpg"],
+                block_ranges={
+                    "quality.laplacian": (0, 4),
+                    "difficulty.small_ratio": (4, 9),
+                    "coverage.knn_local_density": (9, 12),
+                },
+            )
+
+            logs: list[str] = []
+            groups, source = load_portrait_feature_groups(
+                projected=projected,
+                cluster_meta={
+                    "data_root": data_root,
+                    "schema_path": schema_path,
+                },
+                portrait_source="auto",
+                log_fn=logs.append,
+            )
+
+        self.assertEqual(source, "semantic")
+        self.assertTrue(any("loading semantic assembled features" in message for message in logs))
+        self.assertEqual(sorted(groups.keys()), sorted(projected.block_ranges.keys()))
 
     def test_run_remix_response_dataset_module_is_importable_in_script_mode(self):
         result = subprocess.run(

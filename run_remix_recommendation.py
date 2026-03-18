@@ -47,10 +47,15 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--portrait-source", choices=["auto", "projected", "semantic"], default="auto")
     parser.add_argument("--processed-data-root")
     parser.add_argument("--schema-path")
+    parser.add_argument("--assembled-feature-dir")
     parser.add_argument("--surrogate-model", choices=["linear", "quadratic"], default="linear")
     parser.add_argument("--bootstrap-models", type=int, default=1)
     parser.add_argument("--pair-selector", choices=["first", "portrait_diversity"], default="portrait_diversity")
     return parser
+
+
+def _progress(message: str) -> None:
+    print(f"[remix_recommendation] {message}", file=sys.stderr, flush=True)
 
 
 def _parse_float_csv(raw: str) -> list[float]:
@@ -101,24 +106,32 @@ def _build_surrogate(model_name: str, bootstrap_models: int):
     raise ValueError(f"Unsupported surrogate_model='{model_name}'")
 
 
-def run(args: argparse.Namespace) -> int:
+def run(args: argparse.Namespace, log_fn=_progress) -> int:
+    log_fn("loading labeled response dataset")
     response_rows = [row for row in read_jsonl(os.path.abspath(args.response_dataset)) if row.get("measured_gain") is not None]
     if not response_rows:
         raise ValueError("response dataset must contain rows with measured_gain")
 
+    log_fn(f"fitting surrogate model={args.surrogate_model} bootstrap_models={int(args.bootstrap_models)} rows={len(response_rows)}")
     surrogate = _build_surrogate(args.surrogate_model, int(args.bootstrap_models)).fit(response_rows)
+    log_fn("loading projected artifacts")
     projected = SliceFeatureProjector.load(os.path.abspath(args.projected_dir))
+    log_fn("loading slice artifacts")
     artifacts = load_slice_artifacts(os.path.abspath(args.cluster_dir))
     if projected.sample_ids != artifacts.sample_ids:
         raise ValueError("projected sample ids must match cluster sample ids")
 
+    log_fn(f"loading portrait feature groups source={args.portrait_source}")
     feature_groups, portrait_source = load_portrait_feature_groups(
         projected=projected,
         cluster_meta=artifacts.meta,
         portrait_source=args.portrait_source,
         processed_data_root=os.path.abspath(args.processed_data_root) if args.processed_data_root else None,
         schema_path=os.path.abspath(args.schema_path) if args.schema_path else None,
+        assembled_feature_dir=os.path.abspath(args.assembled_feature_dir) if args.assembled_feature_dir else None,
+        log_fn=log_fn,
     )
+    log_fn(f"computing slice portraits source={portrait_source}")
     portraits = compute_slice_portraits(feature_groups, artifacts.membership)
     rng = np.random.default_rng(int(args.baseline_seed))
     sample_indices = rng.choice(len(artifacts.sample_ids), size=int(args.budget), replace=False)
@@ -136,6 +149,7 @@ def run(args: argparse.Namespace) -> int:
         amplitudes=amplitudes,
         ordered_pairs=pair_library,
     )
+    log_fn(f"generated runtime candidates count={len(candidates)} selector={args.pair_selector}")
 
     candidate_rows: list[dict[str, object]] = []
     for candidate_index, candidate in enumerate(candidates):
@@ -179,6 +193,7 @@ def run(args: argparse.Namespace) -> int:
 
     output_path = os.path.abspath(args.output_path)
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    log_fn(f"writing recommendation output={output_path}")
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(asdict(result), f, indent=2, ensure_ascii=False)
     return 0

@@ -41,6 +41,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--portrait-source", choices=["auto", "projected", "semantic"], default="auto")
     parser.add_argument("--processed-data-root")
     parser.add_argument("--schema-path")
+    parser.add_argument("--assembled-feature-dir")
     parser.add_argument("--pair-selector", choices=["first", "portrait_diversity"], default="portrait_diversity")
     return parser
 
@@ -126,6 +127,8 @@ def run(args: argparse.Namespace, log_fn=_progress) -> int:
         portrait_source=args.portrait_source,
         processed_data_root=os.path.abspath(args.processed_data_root) if args.processed_data_root else None,
         schema_path=os.path.abspath(args.schema_path) if args.schema_path else None,
+        assembled_feature_dir=os.path.abspath(args.assembled_feature_dir) if args.assembled_feature_dir else None,
+        log_fn=log_fn,
     )
     log_fn(f"computing slice portraits source={portrait_source}")
     portraits = compute_slice_portraits(feature_groups, artifacts.membership)

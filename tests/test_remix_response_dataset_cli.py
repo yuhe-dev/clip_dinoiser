@@ -73,6 +73,25 @@ class RemixResponseDatasetCliTests(unittest.TestCase):
 
         self.assertEqual(args.pair_selector, "portrait_diversity")
 
+    def test_response_dataset_cli_parser_accepts_assembled_feature_dir(self):
+        parser = build_parser()
+        args = parser.parse_args(
+            [
+                "--projected-dir",
+                "/tmp/projected",
+                "--cluster-dir",
+                "/tmp/cluster",
+                "--output-path",
+                "/tmp/rows.jsonl",
+                "--budget",
+                "1000",
+                "--assembled-feature-dir",
+                "/tmp/assembled_features",
+            ]
+        )
+
+        self.assertEqual(args.assembled_feature_dir, "/tmp/assembled_features")
+
 
 if __name__ == "__main__":
     unittest.main()
