@@ -1,0 +1,53 @@
+{
+  "data_root": "/home/yuhe/clip_dinoiser/data/data_feature",
+  "schema_path": "/home/yuhe/clip_dinoiser/docs/feature_schema/unified_processed_feature_schema.json",
+  "stages": {
+    "schema": {
+      "returncode": 0,
+      "stdout": "{\"stage\": \"schema\", \"status\": \"ok\", \"schema_version\": \"processed_feature_bundle.v1\"}",
+      "stderr": "",
+      "status": "ok",
+      "details": {
+        "stage": "schema",
+        "status": "ok",
+        "schema_version": "processed_feature_bundle.v1"
+      }
+    },
+    "quality": {
+      "returncode": 0,
+      "stdout": "{\"stage\": \"quality\", \"status\": \"ok\", \"record_count\": 50000, \"first_image_rel\": \"images/train2017/000000000025.jpg\"}",
+      "stderr": "",
+      "status": "ok",
+      "details": {
+        "stage": "quality",
+        "status": "ok",
+        "record_count": 50000,
+        "first_image_rel": "images/train2017/000000000025.jpg"
+      }
+    },
+    "difficulty": {
+      "returncode": 0,
+      "stdout": "{\"stage\": \"difficulty\", \"status\": \"ok\", \"record_count\": 50000, \"first_image_rel\": \"images/train2017/000000000025.jpg\"}",
+      "stderr": "",
+      "status": "ok",
+      "details": {
+        "stage": "difficulty",
+        "status": "ok",
+        "record_count": 50000,
+        "first_image_rel": "images/train2017/000000000025.jpg"
+      }
+    },
+    "coverage": {
+      "returncode": 0,
+      "stdout": "{\"stage\": \"coverage\", \"status\": \"ok\", \"record_count\": 50000, \"first_image_rel\": \"images/train2017/000000000025.jpg\"}",
+      "stderr": "",
+      "status": "ok",
+      "details": {
+        "stage": "coverage",
+        "status": "ok",
+        "record_count": 50000,
+        "first_image_rel": "images/train2017/000000000025.jpg"
+      }
+    }
+  }
+}
