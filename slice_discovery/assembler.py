@@ -3,9 +3,11 @@ from __future__ import annotations
 import json
 import os
 import sys
+import pickle
 from importlib import import_module
 
 import numpy as np
+from numpy.lib import format as npy_format
 
 from .types import FeatureBlock
 
@@ -39,7 +41,16 @@ def _load_records(path: str, log_fn=None) -> list[dict[str, object]]:
     logger = log_fn or _noop_log
     logger(f"loading processed bundle path={path}")
     _ensure_numpy_pickle_compat()
-    records = np.load(path, allow_pickle=True)
+    with open(path, "rb") as f:
+        version = npy_format.read_magic(f)
+        shape, _fortran_order, dtype = npy_format._read_array_header(f, version)
+        logger(f"processed bundle header path={path} version={version} shape={shape} dtype={dtype}")
+        if dtype.hasobject:
+            logger(f"reading object-array payload via pickle path={path}")
+            records = pickle.load(f)
+        else:
+            f.seek(0)
+            records = np.load(f, allow_pickle=False)
     logger(f"loaded processed bundle path={path} shape={getattr(records, 'shape', None)} dtype={getattr(records, 'dtype', None)}")
     record_list = records.tolist()
     dict_records = [dict(record) for record in record_list]

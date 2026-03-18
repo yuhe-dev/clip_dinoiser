@@ -15,7 +15,9 @@ if ROOT not in sys.path:
 from clip_dinoiser.slice_discovery.assembler import (
     ProcessedFeatureAssembler,
     _ensure_numpy_pickle_compat,
+    _load_records,
 )
+import clip_dinoiser.slice_discovery.assembler as assembler_module
 
 
 TEST_SCHEMA = {
@@ -260,6 +262,27 @@ class ProcessedFeatureAssemblerTests(unittest.TestCase):
 
         self.assertIn("numpy._core", sys.modules)
         self.assertIn("numpy._core.multiarray", sys.modules)
+
+    def test_load_records_avoids_numpy_load_for_object_arrays(self):
+        quality_records, _, _ = self._build_records()
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            quality_path = os.path.join(tmpdir, "quality_processed_features.npy")
+            np.save(quality_path, np.asarray(quality_records, dtype=object), allow_pickle=True)
+
+            original_np_load = assembler_module.np.load
+
+            def fail_np_load(*args, **kwargs):
+                raise AssertionError("np.load should not be used for object-array processed bundles")
+
+            assembler_module.np.load = fail_np_load
+            try:
+                loaded = _load_records(quality_path)
+            finally:
+                assembler_module.np.load = original_np_load
+
+        self.assertEqual(len(loaded), 2)
+        self.assertEqual(loaded[0]["image_rel"], "images/train2017/0001.jpg")
 
     def test_debug_summary_reports_block_and_flat_statistics(self):
         quality_records, difficulty_records, coverage_records = self._build_records()
