@@ -8,7 +8,11 @@ if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
 
-from clip_dinoiser.run_remix_training_experiment import build_parser, build_timing_summary
+from clip_dinoiser.run_remix_training_experiment import (
+    build_parser,
+    build_result_entry_filename,
+    build_timing_summary,
+)
 
 
 class RemixTrainingExperimentCliTests(unittest.TestCase):
@@ -46,6 +50,12 @@ class RemixTrainingExperimentCliTests(unittest.TestCase):
         self.assertAlmostEqual(timing["train_seconds"], 12.346, places=3)
         self.assertAlmostEqual(timing["eval_seconds"], 3.211, places=3)
         self.assertAlmostEqual(timing["total_seconds"], 15.556, places=3)
+
+    def test_build_result_entry_filename_uses_candidate_id(self):
+        self.assertEqual(
+            build_result_entry_filename("baseline_0"),
+            "baseline_0_result_entry.json",
+        )
 
 
 if __name__ == "__main__":

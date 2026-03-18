@@ -46,6 +46,8 @@ def build_result_manifest_rows(
                 "baseline_id": baseline_id,
                 "baseline_result_path": baseline_entry["result_path"],
                 "candidate_result_path": candidate_entry["result_path"],
+                "baseline_timing": baseline_entry.get("timing"),
+                "candidate_timing": candidate_entry.get("timing"),
             }
         )
     return manifest_rows

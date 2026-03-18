@@ -53,6 +53,10 @@ def build_timing_summary(
     }
 
 
+def build_result_entry_filename(candidate_id: str) -> str:
+    return f"{candidate_id}_result_entry.json"
+
+
 def run(args: argparse.Namespace) -> int:
     from PIL import Image
     import torch
@@ -163,7 +167,7 @@ def run(args: argparse.Namespace) -> int:
         result_path = os.path.join(cfg.output, args.result_name)
         with open(result_path, "w", encoding="utf-8") as f:
             json.dump(results, f, indent=2)
-        manifest_path = os.path.join(cfg.output, f"{os.path.splitext(args.result_name)[0]}_result_entry.json")
+        manifest_path = os.path.join(cfg.output, build_result_entry_filename(manifest.candidate_id))
         with open(manifest_path, "w", encoding="utf-8") as f:
             json.dump(
                 {

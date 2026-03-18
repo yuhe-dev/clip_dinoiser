@@ -44,8 +44,18 @@ class SliceRemixResultsTests(unittest.TestCase):
             }
         ]
         result_entries = {
-            "baseline_0": {"candidate_id": "baseline_0", "result_path": "/tmp/results/baseline.json", "seed": 0},
-            "cand_0_0": {"candidate_id": "cand_0_0", "result_path": "/tmp/results/candidate.json", "seed": 0},
+            "baseline_0": {
+                "candidate_id": "baseline_0",
+                "result_path": "/tmp/results/baseline.json",
+                "seed": 0,
+                "timing": {"total_seconds": 10.0},
+            },
+            "cand_0_0": {
+                "candidate_id": "cand_0_0",
+                "result_path": "/tmp/results/candidate.json",
+                "seed": 0,
+                "timing": {"total_seconds": 12.5},
+            },
         }
 
         manifest_rows = build_result_manifest_rows(rows, result_entries)
@@ -54,6 +64,8 @@ class SliceRemixResultsTests(unittest.TestCase):
         self.assertEqual(manifest_rows[0]["candidate_id"], "cand_0_0")
         self.assertEqual(manifest_rows[0]["baseline_result_path"], "/tmp/results/baseline.json")
         self.assertEqual(manifest_rows[0]["candidate_result_path"], "/tmp/results/candidate.json")
+        self.assertEqual(manifest_rows[0]["baseline_timing"]["total_seconds"], 10.0)
+        self.assertEqual(manifest_rows[0]["candidate_timing"]["total_seconds"], 12.5)
 
 
 if __name__ == "__main__":
