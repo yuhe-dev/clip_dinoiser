@@ -1,0 +1,14 @@
+{
+  "candidate_id": "baseline_2",
+  "subset_manifest": "/home/yuhe/clip_dinoiser/artifacts/remix_mvp_gmm_k8_b1000/manifests/baseline_2.json",
+  "result_path": "/home/yuhe/clip_dinoiser/artifacts/remix_mvp_gmm_k8_b1000/runs/baseline_2/result.json",
+  "seed": 0,
+  "timing": {
+    "subset_size": 1000,
+    "started_at": "2026-03-18T04:23:17.914560+00:00",
+    "finished_at": "2026-03-18T04:27:48.434889+00:00",
+    "train_seconds": 19.335,
+    "eval_seconds": 243.498,
+    "total_seconds": 270.52
+  }
+}

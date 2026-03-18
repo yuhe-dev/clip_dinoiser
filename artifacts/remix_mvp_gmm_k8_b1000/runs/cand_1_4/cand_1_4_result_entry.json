@@ -1,0 +1,14 @@
+{
+  "candidate_id": "cand_1_4",
+  "subset_manifest": "/home/yuhe/clip_dinoiser/artifacts/remix_mvp_gmm_k8_b1000/manifests/cand_1_4.json",
+  "result_path": "/home/yuhe/clip_dinoiser/artifacts/remix_mvp_gmm_k8_b1000/runs/cand_1_4/result.json",
+  "seed": 0,
+  "timing": {
+    "subset_size": 1000,
+    "started_at": "2026-03-18T05:24:05.092217+00:00",
+    "finished_at": "2026-03-18T05:28:45.470136+00:00",
+    "train_seconds": 19.599,
+    "eval_seconds": 253.093,
+    "total_seconds": 280.378
+  }
+}
