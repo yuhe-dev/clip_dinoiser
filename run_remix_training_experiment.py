@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 import argparse
+from datetime import datetime, timezone
 import json
 import os
 import random
 import sys
+import time
 
 import numpy as np
 
@@ -28,6 +30,29 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def _progress(message: str) -> None:
+    print(f"[remix_training_experiment] {message}", file=sys.stderr, flush=True)
+
+
+def build_timing_summary(
+    *,
+    train_seconds: float,
+    eval_seconds: float,
+    total_seconds: float,
+    subset_size: int,
+    started_at: str,
+    finished_at: str,
+) -> dict[str, object]:
+    return {
+        "subset_size": int(subset_size),
+        "started_at": started_at,
+        "finished_at": finished_at,
+        "train_seconds": round(float(train_seconds), 3),
+        "eval_seconds": round(float(eval_seconds), 3),
+        "total_seconds": round(float(total_seconds), 3),
+    }
+
+
 def run(args: argparse.Namespace) -> int:
     from PIL import Image
     import torch
@@ -46,6 +71,9 @@ def run(args: argparse.Namespace) -> int:
         os.path.abspath(args.subset_manifest),
         pool_image_root=os.path.abspath(args.pool_image_root) if args.pool_image_root else None,
     )
+    started_at = datetime.now(timezone.utc).isoformat()
+    total_start = time.perf_counter()
+    _progress(f"loaded manifest candidate_id={manifest.candidate_id} subset_size={len(manifest.sample_paths)}")
 
     initialize(config_path="configs", version_base=None)
     cfg = compose(config_name=args.config)
@@ -100,13 +128,38 @@ def run(args: argparse.Namespace) -> int:
     model.load_teachers()
 
     cudnn.benchmark = True
+    train_start = time.perf_counter()
+    _progress("starting training")
     do_train(model, cfg.train, {"train": train_loader}, out_path=cfg.output)
+    train_seconds = time.perf_counter() - train_start
+    _progress(f"training finished train_seconds={train_seconds:.3f}")
     logger.info("Training finished. Running evaluation...")
     model.found_model = None
     model.vit_encoder = None
+    eval_start = time.perf_counter()
+    _progress("starting evaluation")
     results = validate(model, cfg)
+    eval_seconds = time.perf_counter() - eval_start
+    total_seconds = time.perf_counter() - total_start
+    finished_at = datetime.now(timezone.utc).isoformat()
+    timing = build_timing_summary(
+        train_seconds=train_seconds,
+        eval_seconds=eval_seconds,
+        total_seconds=total_seconds,
+        subset_size=len(manifest.sample_paths),
+        started_at=started_at,
+        finished_at=finished_at,
+    )
+    _progress(
+        "finished candidate_id="
+        f"{manifest.candidate_id} train_seconds={timing['train_seconds']:.3f} "
+        f"eval_seconds={timing['eval_seconds']:.3f} total_seconds={timing['total_seconds']:.3f}"
+    )
 
     if rank == 0:
+        if isinstance(results, dict):
+            results = dict(results)
+            results["timing"] = timing
         result_path = os.path.join(cfg.output, args.result_name)
         with open(result_path, "w", encoding="utf-8") as f:
             json.dump(results, f, indent=2)
@@ -118,6 +171,7 @@ def run(args: argparse.Namespace) -> int:
                     "subset_manifest": os.path.abspath(args.subset_manifest),
                     "result_path": result_path,
                     "seed": int(cfg.seed),
+                    "timing": timing,
                 },
                 f,
                 indent=2,
