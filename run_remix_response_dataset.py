@@ -12,6 +12,9 @@ if __package__ in {None, ""}:
     SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
     if SCRIPT_DIR not in sys.path:
         sys.path.insert(0, SCRIPT_DIR)
+    from slice_discovery.runtime_compat import ensure_numpy_pickle_compat
+
+    ensure_numpy_pickle_compat()
     from slice_discovery.projector import SliceFeatureProjector
     from slice_remix.actions import generate_pairwise_candidates, select_pairwise_directions
     from slice_remix.baseline import estimate_baseline_mixture, load_slice_artifacts
@@ -19,6 +22,9 @@ if __package__ in {None, ""}:
     from slice_remix.policy import compute_importance_weights, sample_budgeted_subset, summarize_target_quotas
     from slice_remix.portraits import compute_portrait_shift, compute_slice_portraits, load_portrait_feature_groups
 else:
+    from .slice_discovery.runtime_compat import ensure_numpy_pickle_compat
+
+    ensure_numpy_pickle_compat()
     from .slice_discovery.projector import SliceFeatureProjector
     from .slice_remix.actions import generate_pairwise_candidates, select_pairwise_directions
     from .slice_remix.baseline import estimate_baseline_mixture, load_slice_artifacts
