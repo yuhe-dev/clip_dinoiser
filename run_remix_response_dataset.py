@@ -16,21 +16,55 @@ if __package__ in {None, ""}:
 
     ensure_numpy_pickle_compat()
     from slice_discovery.projector import SliceFeatureProjector
+    from slice_remix.beam_search import (
+        BeamSearchConfig,
+        SearchEdge,
+        TargetBeamSearchConfig,
+        generate_beam_candidates,
+        generate_target_beam_candidates,
+    )
     from slice_remix.actions import generate_pairwise_candidates, select_pairwise_directions
     from slice_remix.baseline import estimate_baseline_mixture, load_slice_artifacts
     from slice_remix.dataset import build_response_row, write_jsonl
     from slice_remix.policy import compute_importance_weights, sample_budgeted_subset, summarize_target_quotas
-    from slice_remix.portraits import compute_portrait_shift, compute_slice_portraits, load_portrait_feature_groups
+    from slice_remix.portraits import build_feature_label_map, compute_portrait_shift, compute_slice_portraits, load_portrait_feature_groups
+    from slice_remix.prior_graph import (
+        SearchBias,
+        SearchConstraints,
+        TargetPortraitSpec,
+        build_pool_target_portrait_spec,
+        build_portrait_residual_context,
+        build_prior_graph,
+        build_target_prior_graph,
+        build_target_residual_context,
+    )
 else:
     from .slice_discovery.runtime_compat import ensure_numpy_pickle_compat
 
     ensure_numpy_pickle_compat()
     from .slice_discovery.projector import SliceFeatureProjector
+    from .slice_remix.beam_search import (
+        BeamSearchConfig,
+        SearchEdge,
+        TargetBeamSearchConfig,
+        generate_beam_candidates,
+        generate_target_beam_candidates,
+    )
     from .slice_remix.actions import generate_pairwise_candidates, select_pairwise_directions
     from .slice_remix.baseline import estimate_baseline_mixture, load_slice_artifacts
     from .slice_remix.dataset import build_response_row, write_jsonl
     from .slice_remix.policy import compute_importance_weights, sample_budgeted_subset, summarize_target_quotas
-    from .slice_remix.portraits import compute_portrait_shift, compute_slice_portraits, load_portrait_feature_groups
+    from .slice_remix.portraits import build_feature_label_map, compute_portrait_shift, compute_slice_portraits, load_portrait_feature_groups
+    from .slice_remix.prior_graph import (
+        SearchBias,
+        SearchConstraints,
+        TargetPortraitSpec,
+        build_pool_target_portrait_spec,
+        build_portrait_residual_context,
+        build_prior_graph,
+        build_target_prior_graph,
+        build_target_residual_context,
+    )
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -48,7 +82,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--processed-data-root")
     parser.add_argument("--schema-path")
     parser.add_argument("--assembled-feature-dir")
-    parser.add_argument("--pair-selector", choices=["first", "portrait_diversity"], default="portrait_diversity")
+    parser.add_argument("--pair-selector", choices=["first", "portrait_diversity", "beam_v1", "beam_target_v1"], default="portrait_diversity")
     return parser
 
 
@@ -98,6 +132,76 @@ def _select_pair_library(
     raise ValueError(f"Unsupported pair_selector='{pair_selector}'")
 
 
+def _slice_ids(num_slices: int) -> list[str]:
+    return [f"slice_{index:02d}" for index in range(num_slices)]
+
+
+def _payload_to_search_edges(payload: object, slice_ids: list[str]) -> list[SearchEdge]:
+    index_by_id = {slice_id: index for index, slice_id in enumerate(slice_ids)}
+    edges: list[SearchEdge] = []
+    for edge in payload.edges:
+        if not edge.admissible:
+            continue
+        edges.append(
+            SearchEdge(
+                donor=index_by_id[edge.donor],
+                receiver=index_by_id[edge.receiver],
+                score=float(edge.score),
+                amplitude_band=tuple(float(value) for value in edge.amplitude_band),
+                balance_score=float(edge.balance_score),
+                risk_score=float(edge.risk_score),
+                fit_score=float(getattr(edge, "fit_score", edge.score)),
+                bias_score=float(getattr(edge, "bias_score", 0.0)),
+            )
+        )
+    return edges
+
+
+def _shift_quality_laplacian_target(target_spec: TargetPortraitSpec, *, block_name: str = "quality.laplacian", mass: float = 0.08) -> TargetPortraitSpec:
+    if block_name not in target_spec.shape_targets:
+        return target_spec
+    original = np.asarray(target_spec.shape_targets[block_name], dtype=np.float32)
+    if original.ndim != 1 or original.size < 3:
+        return target_spec
+
+    updated = original.copy()
+    low_count = max(1, min(2, updated.size // 3 if updated.size >= 6 else 1))
+    source_indices = np.arange(low_count, dtype=np.int64)
+    target_start = max(low_count + 1, updated.size // 2)
+    target_indices = np.arange(target_start, updated.size, dtype=np.int64)
+    if target_indices.size == 0:
+        target_indices = np.arange(updated.size - 1, updated.size, dtype=np.int64)
+
+    removable = float(updated[source_indices].sum())
+    transfer = min(float(mass), max(0.0, removable * 0.5))
+    if transfer <= 1e-8:
+        return target_spec
+
+    source_weights = updated[source_indices]
+    source_total = float(source_weights.sum())
+    if source_total > 1e-8:
+        updated[source_indices] -= transfer * (source_weights / source_total)
+    target_weights = np.linspace(1.0, 2.0, num=target_indices.size, dtype=np.float32)
+    target_weights /= float(target_weights.sum())
+    updated[target_indices] += transfer * target_weights
+    updated = np.clip(updated, 0.0, None)
+    total = float(updated.sum())
+    if total > 1e-8:
+        updated /= total
+    return TargetPortraitSpec(
+        shape_targets={
+            name: (updated.astype(np.float32) if name == block_name else np.asarray(values, dtype=np.float32).copy())
+            for name, values in target_spec.shape_targets.items()
+        },
+        scalar_targets={
+            name: np.asarray(values, dtype=np.float32).copy()
+            for name, values in target_spec.scalar_targets.items()
+        },
+        block_weights={name: float(weight) for name, weight in target_spec.block_weights.items()},
+        source="quality_laplacian_smooth_shift",
+    )
+
+
 def _write_subset_manifest(
     manifest_dir: str,
     candidate_id: str,
@@ -138,6 +242,10 @@ def run(args: argparse.Namespace, log_fn=_progress) -> int:
     )
     log_fn(f"computing slice portraits source={portrait_source}")
     portraits = compute_slice_portraits(feature_groups, artifacts.membership)
+    feature_label_map = build_feature_label_map(
+        feature_groups,
+        schema_path=os.path.abspath(args.schema_path) if args.schema_path else None,
+    )
     amplitudes = _parse_float_csv(args.amplitudes)
     baseline_seeds = _parse_int_csv(args.baseline_seeds)
     log_fn(f"preparing baseline trials count={len(baseline_seeds)} amplitudes={amplitudes}")
@@ -158,20 +266,90 @@ def run(args: argparse.Namespace, log_fn=_progress) -> int:
                 os.path.abspath(args.pool_image_root) if args.pool_image_root else None,
             )
             log_fn(f"baseline_seed={baseline_seed} wrote baseline manifest")
-        pair_library = _select_pair_library(
-            baseline_mixture=baseline_mixture,
-            portraits=portraits,
-            max_pairs=int(args.max_pairs),
-            amplitudes=amplitudes,
-            pair_selector=args.pair_selector,
-        )
-        log_fn(f"baseline_seed={baseline_seed} selected {len(pair_library)} pair directions selector={args.pair_selector}")
-        candidates = generate_pairwise_candidates(
-            baseline_mixture,
-            amplitudes=amplitudes,
-            ordered_pairs=pair_library,
-        )
-        log_fn(f"baseline_seed={baseline_seed} generated {len(candidates)} pairwise candidates")
+        if args.pair_selector == "beam_v1":
+            slice_ids = _slice_ids(artifacts.membership.shape[1])
+            portrait_context = build_portrait_residual_context(
+                feature_groups=feature_groups,
+                feature_label_map=feature_label_map,
+                memberships=artifacts.membership,
+                baseline_sample_indices=sample_indices.tolist(),
+            )
+            payload = build_prior_graph(
+                feature_groups=feature_groups,
+                feature_label_map=feature_label_map,
+                memberships=artifacts.membership,
+                baseline_sample_indices=sample_indices.tolist(),
+                slice_ids=slice_ids,
+                portrait_context=portrait_context,
+                baseline_seed=int(baseline_seed),
+                budget=int(args.budget),
+            )
+            candidates = generate_beam_candidates(
+                baseline_mixture=baseline_mixture,
+                pool_mixture=artifacts.membership.mean(axis=0, dtype=np.float32),
+                edges=_payload_to_search_edges(payload, slice_ids),
+                portrait_context=portrait_context,
+                config=BeamSearchConfig(
+                    max_depth=min(4, max(2, len(baseline_mixture) - 1)),
+                    beam_width=max(8, int(args.max_pairs) * 2),
+                    proposal_edges_per_node=max(12, int(args.max_pairs) * 4),
+                ),
+            )
+            log_fn(f"baseline_seed={baseline_seed} generated {len(candidates)} beam candidates")
+        elif args.pair_selector == "beam_target_v1":
+            slice_ids = _slice_ids(artifacts.membership.shape[1])
+            pool_target = build_pool_target_portrait_spec(
+                feature_groups=feature_groups,
+                feature_label_map=feature_label_map,
+                memberships=artifacts.membership,
+            )
+            target_spec = _shift_quality_laplacian_target(pool_target)
+            target_context = build_target_residual_context(
+                feature_groups=feature_groups,
+                feature_label_map=feature_label_map,
+                memberships=artifacts.membership,
+                baseline_sample_indices=sample_indices.tolist(),
+                target_spec=target_spec,
+            )
+            payload = build_target_prior_graph(
+                feature_groups=feature_groups,
+                feature_label_map=feature_label_map,
+                memberships=artifacts.membership,
+                baseline_sample_indices=sample_indices.tolist(),
+                slice_ids=slice_ids,
+                target_spec=target_spec,
+                target_context=target_context,
+                constraints=SearchConstraints(),
+                bias=SearchBias(),
+                baseline_seed=int(baseline_seed),
+                budget=int(args.budget),
+            )
+            candidates = generate_target_beam_candidates(
+                baseline_mixture=baseline_mixture,
+                edges=_payload_to_search_edges(payload, slice_ids),
+                target_context=target_context,
+                config=TargetBeamSearchConfig(
+                    max_depth=min(4, max(2, len(baseline_mixture) - 1)),
+                    beam_width=max(8, int(args.max_pairs) * 2),
+                    proposal_edges_per_node=max(12, int(args.max_pairs) * 4),
+                ),
+            )
+            log_fn(f"baseline_seed={baseline_seed} generated {len(candidates)} target-beam candidates")
+        else:
+            pair_library = _select_pair_library(
+                baseline_mixture=baseline_mixture,
+                portraits=portraits,
+                max_pairs=int(args.max_pairs),
+                amplitudes=amplitudes,
+                pair_selector=args.pair_selector,
+            )
+            log_fn(f"baseline_seed={baseline_seed} selected {len(pair_library)} pair directions selector={args.pair_selector}")
+            candidates = generate_pairwise_candidates(
+                baseline_mixture,
+                amplitudes=amplitudes,
+                ordered_pairs=pair_library,
+            )
+            log_fn(f"baseline_seed={baseline_seed} generated {len(candidates)} pairwise candidates")
 
         for candidate_index, candidate in enumerate(candidates):
             target_mixture = np.asarray(candidate.target_mixture, dtype=np.float32)
@@ -197,6 +375,7 @@ def run(args: argparse.Namespace, log_fn=_progress) -> int:
                 "receivers": list(candidate.receivers),
                 "amplitude": float(candidate.amplitude),
                 "pair_selector": args.pair_selector,
+                "plan": list(candidate.metadata.get("plan", [])),
             }
             weights = compute_importance_weights(artifacts.membership, target_mixture)
             selected_ids = sample_budgeted_subset(

@@ -68,4 +68,5 @@ def build_recommendation_result(candidate: dict[str, Any]) -> RecommendationResu
         rationale=dict(candidate.get("rationale", {})),
         execution=dict(candidate.get("execution", {})),
         ranked_candidates=list(candidate.get("ranked_candidates", [])),
+        search_tree=dict(candidate.get("search_tree", {})),
     )

@@ -49,3 +49,4 @@ class RecommendationResult:
     rationale: dict[str, Any] = field(default_factory=dict)
     execution: dict[str, Any] = field(default_factory=dict)
     ranked_candidates: list[dict[str, Any]] = field(default_factory=list)
+    search_tree: dict[str, Any] = field(default_factory=dict)

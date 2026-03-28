@@ -1,0 +1,196 @@
+{
+  "label": "seed0_rng",
+  "baseline_source": "rng_seed_0",
+  "portrait_source": "projected",
+  "baseline_gap": 196.40896013343644,
+  "node_count": 24,
+  "admissible_edge_count": 437,
+  "max_pool_delta_abs": 0.012058738619089127,
+  "admissible_edges_max_amp_lt_0_03": 414,
+  "completed_candidate_count": 40,
+  "layer_summaries": [
+    {
+      "depth": 0,
+      "beam_in": 1,
+      "expanded_children": 46,
+      "deduped_children": 46,
+      "beam_out": 10,
+      "best_parent_progress": 0.0,
+      "best_child_progress": 0.27569098024323124,
+      "pruned_summary": {
+        "repeat_edge": 0,
+        "infeasible": 23,
+        "proposal_pruned": 390,
+        "no_gain": 2
+      },
+      "stopped": null
+    },
+    {
+      "depth": 1,
+      "beam_in": 10,
+      "expanded_children": 506,
+      "deduped_children": 492,
+      "beam_out": 10,
+      "best_parent_progress": 0.2549725424802599,
+      "best_child_progress": 0.9717838686451064,
+      "pruned_summary": {
+        "repeat_edge": 10,
+        "infeasible": 230,
+        "proposal_pruned": 3890,
+        "no_gain": 32
+      },
+      "stopped": null
+    },
+    {
+      "depth": 2,
+      "beam_in": 10,
+      "expanded_children": 891,
+      "deduped_children": 887,
+      "beam_out": 10,
+      "best_parent_progress": 0.3352912545402396,
+      "best_child_progress": 0.9923941381157836,
+      "pruned_summary": {
+        "repeat_edge": 10,
+        "infeasible": 230,
+        "proposal_pruned": 3890,
+        "no_gain": 25
+      },
+      "stopped": null
+    },
+    {
+      "depth": 3,
+      "beam_in": 10,
+      "expanded_children": 1274,
+      "deduped_children": 1270,
+      "beam_out": 10,
+      "best_parent_progress": 0.3490065762242634,
+      "best_child_progress": 0.9916542060428739,
+      "pruned_summary": {
+        "repeat_edge": 10,
+        "infeasible": 230,
+        "proposal_pruned": 3890,
+        "no_gain": 16
+      },
+      "stopped": null
+    }
+  ],
+  "best_progress_by_depth": {
+    "0": 0.0,
+    "1": 0.2549725424802599,
+    "2": 0.3352912545402396,
+    "3": 0.3490065762242634,
+    "4": 0.4404759431634045
+  },
+  "max_depth_reached": 4,
+  "monotonic_progress_violations": [],
+  "top_candidates": [
+    {
+      "plan": [
+        {
+          "donor": 5,
+          "receiver": 14,
+          "amplitude": 0.010575637221336365,
+          "score": 0.11605755190433667
+        },
+        {
+          "donor": 5,
+          "receiver": 16,
+          "amplitude": 0.013413464650511742,
+          "score": 0.020051988742224976
+        },
+        {
+          "donor": 13,
+          "receiver": 16,
+          "amplitude": 0.010575637221336365,
+          "score": -0.047141889724099065
+        }
+      ],
+      "progress": 0.17397683239314618,
+      "priority": 39.18947145070923
+    },
+    {
+      "plan": [
+        {
+          "donor": 13,
+          "receiver": 14,
+          "amplitude": 0.01176142692565918,
+          "score": 0.01552260460148911
+        }
+      ],
+      "progress": 0.09089418707083166,
+      "priority": 38.36203697656249
+    },
+    {
+      "plan": [
+        {
+          "donor": 4,
+          "receiver": 8,
+          "amplitude": 0.01930319331586361,
+          "score": -0.001476589322262134
+        },
+        {
+          "donor": 5,
+          "receiver": 8,
+          "amplitude": 0.019119517877697945,
+          "score": -0.054019761206552566
+        },
+        {
+          "donor": 5,
+          "receiver": 17,
+          "amplitude": 0.004869583994150162,
+          "score": 0.06961715404699106
+        }
+      ],
+      "progress": 0.22240876286012684,
+      "priority": 36.066868372527836
+    },
+    {
+      "plan": [
+        {
+          "donor": 5,
+          "receiver": 8,
+          "amplitude": 0.014433607459068298,
+          "score": -0.054019761206552566
+        },
+        {
+          "donor": 5,
+          "receiver": 16,
+          "amplitude": 0.009555494412779808,
+          "score": 0.020051988742224976
+        },
+        {
+          "donor": 17,
+          "receiver": 16,
+          "amplitude": 0.014433607459068298,
+          "score": -0.09223750925927843
+        }
+      ],
+      "progress": 0.0768051525595539,
+      "priority": 35.484498838572684
+    },
+    {
+      "plan": [
+        {
+          "donor": 5,
+          "receiver": 8,
+          "amplitude": 0.023989101871848106,
+          "score": -0.054019761206552566
+        },
+        {
+          "donor": 17,
+          "receiver": 8,
+          "amplitude": 0.014433607459068298,
+          "score": 0.16832820562404124
+        },
+        {
+          "donor": 23,
+          "receiver": 8,
+          "amplitude": 0.015839392319321632,
+          "score": 0.11545669431620689
+        }
+      ],
+      "progress": 0.28437209245320855,
+      "priority": 34.34220615212415
+    }
+  ]
+}

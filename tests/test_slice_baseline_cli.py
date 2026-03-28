@@ -211,6 +211,91 @@ class SliceBaselineCliTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, msg=result.stderr)
         self.assertIn("Run the slice discovery baseline pipeline", result.stdout)
 
+    def test_cli_auto_num_slices_writes_model_selection_artifact(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            data_root, schema_path = self._write_fixture_bundle(tmpdir)
+            output_dir = os.path.join(tmpdir, "artifacts")
+            stderr = StringIO()
+
+            with redirect_stderr(stderr):
+                exit_code = main(
+                    [
+                        "--data-root",
+                        data_root,
+                        "--schema-path",
+                        schema_path,
+                        "--output-dir",
+                        output_dir,
+                        "--finder",
+                        "gmm",
+                        "--auto-num-slices",
+                        "--candidate-ks",
+                        "2,3",
+                        "--max-iters",
+                        "20",
+                    ]
+                )
+
+            self.assertEqual(exit_code, 0)
+            self.assertTrue(os.path.exists(os.path.join(output_dir, "model_selection.json")))
+
+            payload = np.load(os.path.join(output_dir, "slice_result.npz"), allow_pickle=True)
+            with open(os.path.join(output_dir, "slice_result_meta.json"), "r", encoding="utf-8") as f:
+                meta = json.load(f)
+            with open(os.path.join(output_dir, "model_selection.json"), "r", encoding="utf-8") as f:
+                selection = json.load(f)
+
+            self.assertEqual(meta["selection_mode"], "auto")
+            self.assertEqual(meta["selected_num_slices"], selection["selected_k"])
+            self.assertEqual(payload["membership"].shape[1], selection["selected_k"])
+            self.assertEqual([row["num_slices"] for row in selection["candidates"]], [2, 3])
+
+            progress_output = stderr.getvalue()
+            self.assertIn("[slice_baseline] selecting num_slices automatically", progress_output)
+
+    def test_cli_auto_num_slices_supports_vmf(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            data_root, schema_path = self._write_fixture_bundle(tmpdir)
+            output_dir = os.path.join(tmpdir, "artifacts")
+            stderr = StringIO()
+
+            with redirect_stderr(stderr):
+                exit_code = main(
+                    [
+                        "--data-root",
+                        data_root,
+                        "--schema-path",
+                        schema_path,
+                        "--output-dir",
+                        output_dir,
+                        "--finder",
+                        "vmf",
+                        "--auto-num-slices",
+                        "--candidate-ks",
+                        "2,3",
+                        "--max-iters",
+                        "20",
+                    ]
+                )
+
+            self.assertEqual(exit_code, 0)
+            self.assertTrue(os.path.exists(os.path.join(output_dir, "model_selection.json")))
+
+            payload = np.load(os.path.join(output_dir, "slice_result.npz"), allow_pickle=True)
+            with open(os.path.join(output_dir, "slice_result_meta.json"), "r", encoding="utf-8") as f:
+                meta = json.load(f)
+            with open(os.path.join(output_dir, "model_selection.json"), "r", encoding="utf-8") as f:
+                selection = json.load(f)
+
+            self.assertEqual(meta["finder"], "vmf")
+            self.assertEqual(meta["selection_mode"], "auto")
+            self.assertEqual(meta["selected_num_slices"], selection["selected_k"])
+            self.assertEqual(payload["membership"].shape[1], selection["selected_k"])
+            self.assertEqual([row["num_slices"] for row in selection["candidates"]], [2, 3])
+
+            progress_output = stderr.getvalue()
+            self.assertIn("[slice_baseline] selecting num_slices automatically", progress_output)
+
 
 if __name__ == "__main__":
     unittest.main()

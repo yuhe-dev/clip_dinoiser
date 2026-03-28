@@ -68,6 +68,133 @@ class RemixPipelineSmokeTests(unittest.TestCase):
             self.assertTrue(any("computing slice portraits" in msg for msg in logs))
             self.assertTrue(any("writing response rows" in msg for msg in logs))
 
+    def test_beam_v1_response_and_recommendation_smoke(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            projected_dir = os.path.join(tmpdir, "projected")
+            cluster_dir = os.path.join(tmpdir, "cluster")
+            os.makedirs(projected_dir, exist_ok=True)
+            os.makedirs(cluster_dir, exist_ok=True)
+
+            sample_ids = np.asarray(["a.jpg", "b.jpg", "c.jpg", "d.jpg"], dtype=object)
+            projected_matrix = np.asarray(
+                [
+                    [0.1, 1.0, 0.2],
+                    [0.2, 0.8, 0.1],
+                    [0.9, 0.1, 0.7],
+                    [0.8, 0.2, 0.6],
+                ],
+                dtype=np.float32,
+            )
+            np.savez(
+                os.path.join(projected_dir, "projected_features.npz"),
+                matrix=projected_matrix,
+                sample_ids=sample_ids,
+            )
+            with open(os.path.join(projected_dir, "projected_features_meta.json"), "w", encoding="utf-8") as f:
+                json.dump(
+                    {
+                        "sample_ids": sample_ids.tolist(),
+                        "block_ranges": {
+                            "quality.laplacian": [0, 2],
+                            "coverage.knn_local_density": [2, 3],
+                        },
+                    },
+                    f,
+                )
+
+            membership = np.asarray(
+                [
+                    [0.9, 0.1],
+                    [0.8, 0.2],
+                    [0.2, 0.8],
+                    [0.1, 0.9],
+                ],
+                dtype=np.float32,
+            )
+            np.savez(
+                os.path.join(cluster_dir, "slice_result.npz"),
+                sample_ids=sample_ids,
+                membership=membership,
+                hard_assignment=np.asarray([0, 0, 1, 1], dtype=np.int64),
+                slice_weights=membership.mean(axis=0),
+                centers=np.asarray([[0.15, 0.9, 0.15], [0.85, 0.15, 0.65]], dtype=np.float32),
+            )
+            with open(os.path.join(cluster_dir, "slice_result_meta.json"), "w", encoding="utf-8") as f:
+                json.dump({"finder": "gmm", "num_slices": 2}, f)
+
+            rows_path = os.path.join(tmpdir, "rows.jsonl")
+            self.assertEqual(
+                response_main(
+                    [
+                        "--projected-dir",
+                        projected_dir,
+                        "--cluster-dir",
+                        cluster_dir,
+                        "--output-path",
+                        rows_path,
+                        "--budget",
+                        "2",
+                        "--pair-selector",
+                        "beam_v1",
+                    ]
+                ),
+                0,
+            )
+
+            with open(rows_path, "r", encoding="utf-8") as f:
+                rows = [json.loads(line) for line in f if line.strip()]
+            self.assertGreater(len(rows), 0)
+            for index, row in enumerate(rows):
+                row["measured_gain"] = 0.2 if index % 2 == 0 else -0.1
+
+            labeled_rows_path = os.path.join(tmpdir, "rows_labeled.jsonl")
+            with open(labeled_rows_path, "w", encoding="utf-8") as f:
+                for row in rows:
+                    f.write(json.dumps(row) + "\n")
+
+            output_path = os.path.join(tmpdir, "recommendation_beam.json")
+            self.assertEqual(
+                recommend_main(
+                    [
+                        "--projected-dir",
+                        projected_dir,
+                        "--cluster-dir",
+                        cluster_dir,
+                        "--response-dataset",
+                        labeled_rows_path,
+                        "--baseline-seed",
+                        "0",
+                        "--budget",
+                        "2",
+                        "--output-path",
+                        output_path,
+                        "--pair-selector",
+                        "beam_v1",
+                    ]
+                ),
+                0,
+            )
+
+            with open(output_path, "r", encoding="utf-8") as f:
+                result = json.load(f)
+            self.assertIn("candidate_id", result)
+            self.assertIn("ranked_candidates", result)
+            self.assertGreater(len(result["ranked_candidates"]), 0)
+            self.assertIn("search_tree", result)
+            self.assertIsInstance(result["search_tree"], dict)
+            self.assertIn("root_id", result["search_tree"])
+            self.assertIn("nodes", result["search_tree"])
+            self.assertGreater(len(result["search_tree"]["nodes"]), 0)
+            completed_nodes = [
+                node for node in result["search_tree"]["nodes"] if node.get("node_type") == "completed"
+            ]
+            self.assertGreater(len(completed_nodes), 0)
+            ranked_candidate_ids = {candidate["candidate_id"] for candidate in result["ranked_candidates"]}
+            completed_candidate_ids = {
+                node.get("candidate_id") for node in completed_nodes if node.get("candidate_id")
+            }
+            self.assertTrue(completed_candidate_ids.issubset(ranked_candidate_ids))
+
     def test_remix_pipeline_smoke(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             projected_dir = os.path.join(tmpdir, "projected")

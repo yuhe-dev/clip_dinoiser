@@ -16,6 +16,13 @@ if __package__ in {None, ""}:
 
     ensure_numpy_pickle_compat()
     from slice_discovery.projector import SliceFeatureProjector
+    from slice_remix.beam_search import (
+        BeamSearchConfig,
+        SearchEdge,
+        TargetBeamSearchConfig,
+        generate_beam_candidates_with_trace,
+        generate_target_beam_candidates_with_trace,
+    )
     from slice_remix.actions import generate_pairwise_candidates, select_pairwise_directions
     from slice_remix.baseline import estimate_baseline_mixture, load_slice_artifacts
     from slice_remix.dataset import read_jsonl
@@ -27,6 +34,16 @@ if __package__ in {None, ""}:
         load_portrait_feature_groups,
         summarize_portrait_shift,
     )
+    from slice_remix.prior_graph import (
+        SearchBias,
+        SearchConstraints,
+        TargetPortraitSpec,
+        build_pool_target_portrait_spec,
+        build_portrait_residual_context,
+        build_prior_graph,
+        build_target_prior_graph,
+        build_target_residual_context,
+    )
     from slice_remix.recommender import build_recommendation_result, rank_candidates
     from slice_remix.surrogate import build_surrogate
 else:
@@ -34,6 +51,13 @@ else:
 
     ensure_numpy_pickle_compat()
     from .slice_discovery.projector import SliceFeatureProjector
+    from .slice_remix.beam_search import (
+        BeamSearchConfig,
+        SearchEdge,
+        TargetBeamSearchConfig,
+        generate_beam_candidates_with_trace,
+        generate_target_beam_candidates_with_trace,
+    )
     from .slice_remix.actions import generate_pairwise_candidates, select_pairwise_directions
     from .slice_remix.baseline import estimate_baseline_mixture, load_slice_artifacts
     from .slice_remix.dataset import read_jsonl
@@ -44,6 +68,16 @@ else:
         compute_slice_portraits,
         load_portrait_feature_groups,
         summarize_portrait_shift,
+    )
+    from .slice_remix.prior_graph import (
+        SearchBias,
+        SearchConstraints,
+        TargetPortraitSpec,
+        build_pool_target_portrait_spec,
+        build_portrait_residual_context,
+        build_prior_graph,
+        build_target_prior_graph,
+        build_target_residual_context,
     )
     from .slice_remix.recommender import build_recommendation_result, rank_candidates
     from .slice_remix.surrogate import build_surrogate
@@ -68,7 +102,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--assembled-feature-dir")
     parser.add_argument("--surrogate-model", choices=["linear", "quadratic"], default="linear")
     parser.add_argument("--bootstrap-models", type=int, default=1)
-    parser.add_argument("--pair-selector", choices=["first", "portrait_diversity"], default="portrait_diversity")
+    parser.add_argument("--pair-selector", choices=["first", "portrait_diversity", "beam_v1", "beam_target_v1"], default="portrait_diversity")
     parser.add_argument("--surrogate-output-path")
     return parser
 
@@ -115,9 +149,137 @@ def _select_pair_library(
     raise ValueError(f"Unsupported pair_selector='{pair_selector}'")
 
 
+def _slice_ids(num_slices: int) -> list[str]:
+    return [f"slice_{index:02d}" for index in range(num_slices)]
+
+
+def _payload_to_search_edges(payload: object, slice_ids: list[str]) -> list[SearchEdge]:
+    index_by_id = {slice_id: index for index, slice_id in enumerate(slice_ids)}
+    edges: list[SearchEdge] = []
+    for edge in payload.edges:
+        if not edge.admissible:
+            continue
+        edges.append(
+            SearchEdge(
+                donor=index_by_id[edge.donor],
+                receiver=index_by_id[edge.receiver],
+                score=float(edge.score),
+                amplitude_band=tuple(float(value) for value in edge.amplitude_band),
+                balance_score=float(edge.balance_score),
+                risk_score=float(edge.risk_score),
+                fit_score=float(getattr(edge, "fit_score", edge.score)),
+                bias_score=float(getattr(edge, "bias_score", 0.0)),
+            )
+        )
+    return edges
+
+
+def _shift_quality_laplacian_target(target_spec: TargetPortraitSpec, *, block_name: str = "quality.laplacian", mass: float = 0.08) -> TargetPortraitSpec:
+    if block_name not in target_spec.shape_targets:
+        return target_spec
+    original = np.asarray(target_spec.shape_targets[block_name], dtype=np.float32)
+    if original.ndim != 1 or original.size < 3:
+        return target_spec
+
+    updated = original.copy()
+    low_count = max(1, min(2, updated.size // 3 if updated.size >= 6 else 1))
+    source_indices = np.arange(low_count, dtype=np.int64)
+    target_start = max(low_count + 1, updated.size // 2)
+    target_indices = np.arange(target_start, updated.size, dtype=np.int64)
+    if target_indices.size == 0:
+        target_indices = np.arange(updated.size - 1, updated.size, dtype=np.int64)
+
+    removable = float(updated[source_indices].sum())
+    transfer = min(float(mass), max(0.0, removable * 0.5))
+    if transfer <= 1e-8:
+        return target_spec
+
+    source_weights = updated[source_indices]
+    source_total = float(source_weights.sum())
+    if source_total > 1e-8:
+        updated[source_indices] -= transfer * (source_weights / source_total)
+    target_weights = np.linspace(1.0, 2.0, num=target_indices.size, dtype=np.float32)
+    target_weights /= float(target_weights.sum())
+    updated[target_indices] += transfer * target_weights
+    updated = np.clip(updated, 0.0, None)
+    total = float(updated.sum())
+    if total > 1e-8:
+        updated /= total
+    return TargetPortraitSpec(
+        shape_targets={
+            name: (updated.astype(np.float32) if name == block_name else np.asarray(values, dtype=np.float32).copy())
+            for name, values in target_spec.shape_targets.items()
+        },
+        scalar_targets={
+            name: np.asarray(values, dtype=np.float32).copy()
+            for name, values in target_spec.scalar_targets.items()
+        },
+        block_weights={name: float(weight) for name, weight in target_spec.block_weights.items()},
+        source="quality_laplacian_smooth_shift",
+    )
+
+
 def _default_surrogate_output_path(recommendation_output_path: str) -> str:
     base, _ = os.path.splitext(recommendation_output_path)
     return f"{base}_surrogate.json"
+
+
+def _attach_search_tree_metadata(
+    *,
+    trace: dict[str, object],
+    ranked: list[dict[str, object]],
+    slice_ids: list[str],
+) -> dict[str, object]:
+    ranked_candidate_ids_by_node: dict[str, tuple[str, int]] = {}
+    for rank_index, candidate in enumerate(ranked, start=1):
+        search_node_id = str(candidate.get("search_node_id", ""))
+        candidate_id = str(candidate.get("candidate_id", ""))
+        if not search_node_id or not candidate_id:
+            continue
+        ranked_candidate_ids_by_node[search_node_id] = (candidate_id, rank_index)
+
+    recommended_candidate_id = str(ranked[0].get("candidate_id", "")) if ranked else ""
+    raw_nodes = [dict(node) for node in trace.get("nodes", [])]
+    child_counts: dict[str, int] = {}
+    for node in raw_nodes:
+        parent_id = node.get("parent_id")
+        if isinstance(parent_id, str):
+            child_counts[parent_id] = child_counts.get(parent_id, 0) + 1
+
+    nodes: list[dict[str, object]] = []
+    for node in raw_nodes:
+        enriched = dict(node)
+        candidate_id, rank_index = ranked_candidate_ids_by_node.get(str(enriched.get("node_id", "")), ("", None))
+        enriched["candidate_id"] = candidate_id or None
+        enriched["candidate_rank"] = rank_index
+        enriched["is_recommended"] = bool(candidate_id and candidate_id == recommended_candidate_id)
+        action = enriched.get("action")
+        if isinstance(action, dict):
+            donor = action.get("donor")
+            receiver = action.get("receiver")
+            if isinstance(donor, int) and 0 <= donor < len(slice_ids):
+                action["donor"] = slice_ids[donor]
+            if isinstance(receiver, int) and 0 <= receiver < len(slice_ids):
+                action["receiver"] = slice_ids[receiver]
+        translated_plan: list[dict[str, object]] = []
+        for step in enriched.get("plan", []) or []:
+            translated_step = dict(step)
+            donor = translated_step.get("donor")
+            receiver = translated_step.get("receiver")
+            if isinstance(donor, int) and 0 <= donor < len(slice_ids):
+                translated_step["donor"] = slice_ids[donor]
+            if isinstance(receiver, int) and 0 <= receiver < len(slice_ids):
+                translated_step["receiver"] = slice_ids[receiver]
+            translated_plan.append(translated_step)
+        enriched["plan"] = translated_plan
+        if enriched.get("node_type") != "root" and candidate_id and child_counts.get(str(enriched.get("node_id", "")), 0) == 0:
+            enriched["node_type"] = "completed"
+        nodes.append(enriched)
+
+    return {
+        "root_id": trace.get("root_id"),
+        "nodes": nodes,
+    }
 
 
 def run(args: argparse.Namespace, log_fn=_progress) -> int:
@@ -159,18 +321,90 @@ def run(args: argparse.Namespace, log_fn=_progress) -> int:
     sample_indices = rng.choice(len(artifacts.sample_ids), size=int(args.budget), replace=False)
     baseline_mixture = estimate_baseline_mixture(artifacts.membership, sample_indices.tolist())
     amplitudes = _parse_float_csv(args.amplitudes)
-    pair_library = _select_pair_library(
-        baseline_mixture=baseline_mixture,
-        portraits=portraits,
-        max_pairs=int(args.max_pairs),
-        amplitudes=amplitudes,
-        pair_selector=args.pair_selector,
-    )
-    candidates = generate_pairwise_candidates(
-        baseline_mixture,
-        amplitudes=amplitudes,
-        ordered_pairs=pair_library,
-    )
+    search_tree_trace: dict[str, object] | None = None
+    search_tree_slice_ids: list[str] = []
+    if args.pair_selector == "beam_v1":
+        slice_ids = _slice_ids(artifacts.membership.shape[1])
+        search_tree_slice_ids = slice_ids
+        portrait_context = build_portrait_residual_context(
+            feature_groups=feature_groups,
+            feature_label_map=feature_label_map,
+            memberships=artifacts.membership,
+            baseline_sample_indices=sample_indices.tolist(),
+        )
+        payload = build_prior_graph(
+            feature_groups=feature_groups,
+            feature_label_map=feature_label_map,
+            memberships=artifacts.membership,
+            baseline_sample_indices=sample_indices.tolist(),
+            slice_ids=slice_ids,
+            portrait_context=portrait_context,
+            baseline_seed=int(args.baseline_seed),
+            budget=int(args.budget),
+        )
+        candidates, search_tree_trace = generate_beam_candidates_with_trace(
+            baseline_mixture=baseline_mixture,
+            pool_mixture=artifacts.membership.mean(axis=0, dtype=np.float32),
+            edges=_payload_to_search_edges(payload, slice_ids),
+            portrait_context=portrait_context,
+            config=BeamSearchConfig(
+                max_depth=min(4, max(2, len(baseline_mixture) - 1)),
+                beam_width=max(8, int(args.max_pairs) * 2),
+                proposal_edges_per_node=max(12, int(args.max_pairs) * 4),
+            ),
+        )
+    elif args.pair_selector == "beam_target_v1":
+        slice_ids = _slice_ids(artifacts.membership.shape[1])
+        search_tree_slice_ids = slice_ids
+        pool_target = build_pool_target_portrait_spec(
+            feature_groups=feature_groups,
+            feature_label_map=feature_label_map,
+            memberships=artifacts.membership,
+        )
+        target_spec = _shift_quality_laplacian_target(pool_target)
+        target_context = build_target_residual_context(
+            feature_groups=feature_groups,
+            feature_label_map=feature_label_map,
+            memberships=artifacts.membership,
+            baseline_sample_indices=sample_indices.tolist(),
+            target_spec=target_spec,
+        )
+        payload = build_target_prior_graph(
+            feature_groups=feature_groups,
+            feature_label_map=feature_label_map,
+            memberships=artifacts.membership,
+            baseline_sample_indices=sample_indices.tolist(),
+            slice_ids=slice_ids,
+            target_spec=target_spec,
+            target_context=target_context,
+            constraints=SearchConstraints(),
+            bias=SearchBias(),
+            baseline_seed=int(args.baseline_seed),
+            budget=int(args.budget),
+        )
+        candidates, search_tree_trace = generate_target_beam_candidates_with_trace(
+            baseline_mixture=baseline_mixture,
+            edges=_payload_to_search_edges(payload, slice_ids),
+            target_context=target_context,
+            config=TargetBeamSearchConfig(
+                max_depth=min(4, max(2, len(baseline_mixture) - 1)),
+                beam_width=max(8, int(args.max_pairs) * 2),
+                proposal_edges_per_node=max(12, int(args.max_pairs) * 4),
+            ),
+        )
+    else:
+        pair_library = _select_pair_library(
+            baseline_mixture=baseline_mixture,
+            portraits=portraits,
+            max_pairs=int(args.max_pairs),
+            amplitudes=amplitudes,
+            pair_selector=args.pair_selector,
+        )
+        candidates = generate_pairwise_candidates(
+            baseline_mixture,
+            amplitudes=amplitudes,
+            ordered_pairs=pair_library,
+        )
     log_fn(f"generated runtime candidates count={len(candidates)} selector={args.pair_selector}")
 
     candidate_rows: list[dict[str, object]] = []
@@ -205,7 +439,9 @@ def run(args: argparse.Namespace, log_fn=_progress) -> int:
                     "receivers": list(candidate.receivers),
                     "amplitude": float(candidate.amplitude),
                     "pair_selector": args.pair_selector,
+                    "plan": list(candidate.metadata.get("plan", [])),
                 },
+                "search_node_id": candidate.metadata.get("search_node_id"),
                 "execution": {
                     "expected_slice_quotas": summarize_target_quotas(target_mixture, int(args.budget)),
                     "max_weight_sample_id": artifacts.sample_ids[int(np.argmax(weights))],
@@ -234,6 +470,12 @@ def run(args: argparse.Namespace, log_fn=_progress) -> int:
         for candidate in ranked
     ]
     ranked[0]["ranked_candidates"] = compact_ranked
+    if search_tree_trace is not None:
+        ranked[0]["search_tree"] = _attach_search_tree_metadata(
+            trace=search_tree_trace,
+            ranked=ranked,
+            slice_ids=search_tree_slice_ids,
+        )
     result = build_recommendation_result(ranked[0])
 
     os.makedirs(os.path.dirname(output_path), exist_ok=True)

@@ -268,13 +268,14 @@ class SliceDebugScriptTests(unittest.TestCase):
             self.assertTrue(os.path.exists(os.path.join(projector_dir, "projected_features_meta.json")))
             self.assertTrue(os.path.exists(os.path.join(projector_dir, "projector_debug.json")))
 
-    def test_cluster_debug_script_writes_artifacts_for_soft_kmeans_and_gmm(self):
+    def test_cluster_debug_script_writes_artifacts_for_soft_kmeans_gmm_and_vmf(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             data_root, schema_path = self._write_fixture_bundle(tmpdir)
             assembler_dir = os.path.join(tmpdir, "assembled")
             projector_dir = os.path.join(tmpdir, "projected")
             soft_dir = os.path.join(tmpdir, "soft")
             gmm_dir = os.path.join(tmpdir, "gmm")
+            vmf_dir = os.path.join(tmpdir, "vmf")
 
             assembler_main(
                 [
@@ -319,16 +320,35 @@ class SliceDebugScriptTests(unittest.TestCase):
                     "2",
                 ]
             )
+            vmf_exit = cluster_main(
+                [
+                    "--projected-dir",
+                    projector_dir,
+                    "--output-dir",
+                    vmf_dir,
+                    "--finder",
+                    "vmf",
+                    "--num-slices",
+                    "2",
+                ]
+            )
 
             self.assertEqual(soft_exit, 0)
             self.assertEqual(gmm_exit, 0)
+            self.assertEqual(vmf_exit, 0)
             self.assertTrue(os.path.exists(os.path.join(soft_dir, "cluster_debug.json")))
             self.assertTrue(os.path.exists(os.path.join(gmm_dir, "cluster_debug.json")))
+            self.assertTrue(os.path.exists(os.path.join(vmf_dir, "cluster_debug.json")))
 
             with open(os.path.join(gmm_dir, "cluster_debug.json"), "r", encoding="utf-8") as f:
                 gmm_debug = json.load(f)
             self.assertEqual(gmm_debug["finder"], "gmm")
             self.assertIn("log_likelihood_trace", gmm_debug)
+
+            with open(os.path.join(vmf_dir, "cluster_debug.json"), "r", encoding="utf-8") as f:
+                vmf_debug = json.load(f)
+            self.assertEqual(vmf_debug["finder"], "vmf")
+            self.assertIn("mean_kappa_trace", vmf_debug)
 
     def test_debug_scripts_can_run_help_without_package_context(self):
         script_names = [

@@ -1,0 +1,53 @@
+{
+  "finder": "vmf",
+  "num_slices": 24,
+  "sample_count": 50000,
+  "projected_dir": "/Users/yuhe/research/UIST 2026/clip_dinoiser/artifacts/report_prep_gmm_k8/projected",
+  "selection_mode": "auto",
+  "selected_num_slices": 24,
+  "block_ranges": {
+    "quality.laplacian": [
+      0,
+      17
+    ],
+    "quality.noise_pca": [
+      17,
+      34
+    ],
+    "quality.bga": [
+      34,
+      48
+    ],
+    "difficulty.small_ratio": [
+      48,
+      68
+    ],
+    "difficulty.visual_semantic_gap": [
+      68,
+      85
+    ],
+    "difficulty.empirical_iou": [
+      85,
+      99
+    ],
+    "coverage.knn_local_density": [
+      99,
+      154
+    ],
+    "coverage.prototype_distance": [
+      154,
+      210
+    ]
+  },
+  "candidate_ks": [
+    4,
+    6,
+    8,
+    12,
+    16,
+    24,
+    32,
+    48,
+    64
+  ]
+}

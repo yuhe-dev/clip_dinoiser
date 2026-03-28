@@ -67,11 +67,30 @@ class RemixResponseDatasetCliTests(unittest.TestCase):
                 "--budget",
                 "1000",
                 "--pair-selector",
-                "portrait_diversity",
+                "beam_v1",
             ]
         )
 
-        self.assertEqual(args.pair_selector, "portrait_diversity")
+        self.assertEqual(args.pair_selector, "beam_v1")
+
+    def test_response_dataset_cli_parser_accepts_target_beam_selector(self):
+        parser = build_parser()
+        args = parser.parse_args(
+            [
+                "--projected-dir",
+                "/tmp/projected",
+                "--cluster-dir",
+                "/tmp/cluster",
+                "--output-path",
+                "/tmp/rows.jsonl",
+                "--budget",
+                "1000",
+                "--pair-selector",
+                "beam_target_v1",
+            ]
+        )
+
+        self.assertEqual(args.pair_selector, "beam_target_v1")
 
     def test_response_dataset_cli_parser_accepts_assembled_feature_dir(self):
         parser = build_parser()
