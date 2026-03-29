@@ -51,11 +51,15 @@ class ValidationAccelerationTests(unittest.TestCase):
         self.assertEqual(len(first), 3)
 
     def test_resolve_proxy_test_cfg_whole_and_coarse_slide(self):
-        self.assertEqual(resolve_proxy_test_cfg("whole"), {"mode": "whole"})
-        self.assertEqual(
-            resolve_proxy_test_cfg("coarse_slide"),
-            {"mode": "slide", "stride": (448, 448), "crop_size": (448, 448)},
-        )
+        whole = resolve_proxy_test_cfg("whole")
+        self.assertEqual(whole["mode"], "whole")
+        self.assertEqual(whole.mode, "whole")
+
+        coarse_slide = resolve_proxy_test_cfg("coarse_slide")
+        self.assertEqual(coarse_slide["mode"], "slide")
+        self.assertEqual(coarse_slide.mode, "slide")
+        self.assertEqual(coarse_slide.stride, (448, 448))
+        self.assertEqual(coarse_slide.crop_size, (448, 448))
 
     def test_build_validation_payload_uses_summary_only_for_proxy(self):
         eval_results = {"mIoU": 0.42, "mAcc": 0.51, "aAcc": 0.77, "IoU.cat": 0.1}

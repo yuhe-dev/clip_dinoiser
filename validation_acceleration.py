@@ -5,6 +5,14 @@ import random
 from typing import Any, Iterable
 
 
+class AttrDict(dict):
+    def __getattr__(self, name: str) -> Any:
+        try:
+            return self[name]
+        except KeyError as exc:
+            raise AttributeError(name) from exc
+
+
 def _dataset_infos(dataset: object) -> tuple[list[dict[str, Any]], str]:
     if hasattr(dataset, "img_infos"):
         return list(getattr(dataset, "img_infos")), "img_infos"
@@ -54,9 +62,9 @@ def sample_dataset_basenames(dataset: object, seed: int, limit: int) -> list[str
 
 def resolve_proxy_test_cfg(inference_mode: str) -> dict[str, Any]:
     if inference_mode == "whole":
-        return {"mode": "whole"}
+        return AttrDict({"mode": "whole"})
     if inference_mode == "coarse_slide":
-        return {"mode": "slide", "stride": (448, 448), "crop_size": (448, 448)}
+        return AttrDict({"mode": "slide", "stride": (448, 448), "crop_size": (448, 448)})
     raise ValueError(f"Unsupported proxy inference mode: {inference_mode}")
 
 
