@@ -1,0 +1,14 @@
+{
+  "candidate_id": "baseline_full50k",
+  "subset_manifest": "/home/yuhe/clip_dinoiser/artifacts/remix_full50k_eval/manifests/baseline_full50k.json",
+  "result_path": "/home/yuhe/clip_dinoiser/artifacts/remix_full50k_eval/runs/baseline_full50k/result.json",
+  "seed": 0,
+  "timing": {
+    "subset_size": 50000,
+    "started_at": "2026-03-29T10:29:12.419618+00:00",
+    "finished_at": "2026-03-29T10:46:17.804314+00:00",
+    "train_seconds": 713.92,
+    "eval_seconds": 297.401,
+    "total_seconds": 1025.385
+  }
+}
