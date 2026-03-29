@@ -1,0 +1,185 @@
+[2026-03-29 22:38:41 CLIP_DINOiser_fast] (run_remix_training_experiment.py 140): INFO Training finished. Running evaluation...
+[2026-03-29 22:41:52 CLIP_DINOiser_fast] (logging.py 102): INFO per class results:
+[2026-03-29 22:41:52 CLIP_DINOiser_fast] (logging.py 102): INFO 
++------------------+-------+-------+
+|      Class       |  IoU  |  Acc  |
++------------------+-------+-------+
+|      person      | 16.16 | 17.28 |
+|     bicycle      | 44.56 | 83.78 |
+|       car        | 38.03 | 68.34 |
+|    motorcycle    | 61.76 | 75.38 |
+|     airplane     | 66.77 | 96.42 |
+|       bus        | 65.48 | 82.76 |
+|      train       | 37.12 | 47.67 |
+|      truck       |  19.0 | 23.69 |
+|       boat       | 52.26 | 79.64 |
+|  traffic light   | 23.78 | 64.71 |
+|   fire hydrant   | 45.67 |  63.1 |
+|    stop sign     | 11.94 | 82.85 |
+|  parking meter   |  7.6  |  9.67 |
+|      bench       | 22.72 | 33.29 |
+|       bird       | 46.56 | 80.33 |
+|       cat        | 69.35 | 97.07 |
+|       dog        | 67.97 | 93.29 |
+|      horse       | 50.09 | 72.52 |
+|      sheep       | 51.63 | 74.08 |
+|       cow        | 63.18 | 90.67 |
+|     elephant     | 86.01 | 96.78 |
+|       bear       |  84.1 | 94.17 |
+|      zebra       | 78.52 | 93.75 |
+|     giraffe      | 45.56 | 80.29 |
+|     backpack     |  2.2  | 15.64 |
+|     umbrella     | 40.58 | 56.84 |
+|     handbag      |  0.19 |  0.32 |
+|       tie        |  1.37 | 45.58 |
+|     suitcase     | 55.44 | 64.29 |
+|     frisbee      |  5.36 | 63.74 |
+|       skis       | 11.97 | 71.25 |
+|    snowboard     |  0.0  |  0.21 |
+|   sports ball    |  1.11 | 41.75 |
+|       kite       | 35.95 | 60.55 |
+|   baseball bat   |  0.0  |  0.0  |
+|  baseball glove  |  0.0  |  0.0  |
+|    skateboard    | 11.09 | 13.77 |
+|    surfboard     | 28.41 | 89.06 |
+|  tennis racket   |  4.31 |  20.3 |
+|      bottle      | 36.49 | 51.91 |
+|    wine glass    | 18.91 | 38.94 |
+|       cup        |  1.57 |  2.55 |
+|       fork       |  0.0  |  0.0  |
+|      knife       |  0.0  |  0.0  |
+|      spoon       | 60.91 | 91.45 |
+|       bowl       |  7.91 | 14.73 |
+|      banana      |  16.9 | 17.29 |
+|      apple       |  0.0  |  0.0  |
+|     sandwich     |  0.0  |  0.0  |
+|      orange      |  0.0  |  0.0  |
+|     broccoli     |  0.0  |  0.0  |
+|      carrot      | 22.95 | 22.98 |
+|     hot dog      |  0.0  |  0.0  |
+|      pizza       |  9.94 | 14.87 |
+|      donut       |  0.0  |  0.0  |
+|       cake       | 16.65 | 31.96 |
+|      chair       |  1.07 |  1.24 |
+|      couch       | 27.76 |  37.6 |
+|   potted plant   |  2.38 |  2.4  |
+|       bed        | 36.73 | 46.57 |
+|   dining table   | 15.34 | 18.47 |
+|      toilet      | 32.45 | 94.54 |
+|        tv        |  16.0 | 18.17 |
+|      laptop      | 41.44 | 54.53 |
+|      mouse       | 40.95 |  88.3 |
+|      remote      |  7.62 | 60.83 |
+|     keyboard     | 42.94 | 94.43 |
+|    cell phone    | 21.95 | 27.99 |
+|    microwave     | 20.81 | 22.22 |
+|       oven       | 31.44 | 60.89 |
+|     toaster      |  0.0  |  0.0  |
+|       sink       | 21.82 | 41.44 |
+|   refrigerator   | 25.09 | 29.65 |
+|       book       | 37.13 | 42.49 |
+|      clock       |  6.97 | 12.62 |
+|       vase       | 60.55 | 77.49 |
+|     scissors     |  0.0  |  0.0  |
+|    teddy bear    |  0.7  |  0.71 |
+|    hair drier    |  0.0  |  nan  |
+|    toothbrush    |  0.0  |  0.0  |
+|      banner      |  2.17 | 85.94 |
+|     blanket      |  6.48 |  15.3 |
+|      branch      |  1.14 |  2.86 |
+|      bridge      | 24.99 | 27.44 |
+|  building-other  | 22.57 | 45.65 |
+|       bush       |  4.44 | 19.35 |
+|     cabinet      | 29.52 | 47.03 |
+|       cage       | 20.79 |  29.9 |
+|    cardboard     |  1.08 |  1.58 |
+|      carpet      | 54.26 | 61.53 |
+|  ceiling-other   | 26.25 | 48.43 |
+|   ceiling-tile   |  0.0  |  nan  |
+|      cloth       |  0.0  |  0.0  |
+|     clothes      |  2.05 | 10.11 |
+|      clouds      | 54.96 | 61.32 |
+|     counter      |  11.2 | 31.79 |
+|     cupboard     |  0.0  |  0.0  |
+|     curtain      | 27.89 | 31.91 |
+|    desk-stuff    | 20.28 | 27.57 |
+|       dirt       |  6.97 |  8.1  |
+|    door-stuff    |  5.61 |  6.01 |
+|      fence       | 22.96 | 36.38 |
+|   floor-marble   |  14.1 | 54.67 |
+|   floor-other    |  5.82 | 39.44 |
+|   floor-stone    | 10.06 |  11.1 |
+|    floor-tile    | 24.26 | 26.32 |
+|    floor-wood    | 37.62 | 42.64 |
+|      flower      |  0.0  |  0.0  |
+|       fog        |  0.81 |  1.43 |
+|    food-other    |  6.9  | 59.39 |
+|      fruit       | 11.78 | 68.43 |
+| furniture-other  |  5.95 |  9.05 |
+|      grass       |  52.0 | 62.56 |
+|      gravel      |  1.14 |  1.16 |
+|   ground-other   |  1.58 | 19.21 |
+|       hill       |  0.35 |  0.53 |
+|      house       | 13.64 | 42.04 |
+|      leaves      |  0.0  |  0.0  |
+|      light       |  2.48 |  13.2 |
+|       mat        |  0.0  |  nan  |
+|      metal       |  5.58 |  5.97 |
+|   mirror-stuff   | 14.01 | 20.69 |
+|       moss       |  0.0  |  0.0  |
+|     mountain     | 41.86 | 59.96 |
+|       mud        |  0.0  |  0.0  |
+|      napkin      |  0.0  |  0.0  |
+|       net        |  3.13 | 13.53 |
+|      paper       |  0.67 |  2.72 |
+|     pavement     | 32.94 | 55.25 |
+|      pillow      |  0.32 |  0.57 |
+|   plant-other    | 11.56 | 22.95 |
+|     plastic      |  2.23 |  2.3  |
+|     platform     |  0.56 |  1.01 |
+|   playingfield   |  1.57 |  1.59 |
+|     railing      |  0.85 |  2.3  |
+|     railroad     | 37.08 | 92.13 |
+|      river       |  56.6 | 69.09 |
+|       road       | 32.08 | 43.77 |
+|       rock       | 38.68 | 54.49 |
+|       roof       | 12.22 | 54.73 |
+|       rug        |  1.71 |  2.3  |
+|      salad       |  0.0  |  nan  |
+|       sand       | 32.15 | 37.73 |
+|       sea        | 42.46 | 55.09 |
+|      shelf       | 33.74 | 36.82 |
+|    sky-other     | 51.21 |  57.2 |
+|    skyscraper    | 12.62 | 20.05 |
+|       snow       | 58.56 | 73.58 |
+|   solid-other    |  1.7  |  4.13 |
+|      stairs      |  0.0  |  0.0  |
+|      stone       | 37.87 | 52.23 |
+|      straw       |  0.01 |  0.01 |
+| structural-other |  0.0  |  0.0  |
+|      table       | 15.57 | 19.94 |
+|       tent       |  22.9 | 71.93 |
+|  textile-other   |  1.9  |  2.3  |
+|      towel       | 28.83 | 69.15 |
+|       tree       | 25.23 | 28.34 |
+|    vegetable     | 26.64 | 47.05 |
+|    wall-brick    | 42.85 | 64.17 |
+|  wall-concrete   |  2.19 |  2.21 |
+|    wall-other    |  2.32 |  4.21 |
+|    wall-panel    |  0.01 |  0.02 |
+|    wall-stone    |  37.6 | 52.62 |
+|    wall-tile     | 46.97 |  61.6 |
+|    wall-wood     |  0.55 |  0.58 |
+|   water-other    | 18.73 | 51.78 |
+|    waterdrops    |  0.0  |  nan  |
+|   window-blind   | 21.35 | 22.08 |
+|   window-other   | 25.29 | 55.15 |
+|       wood       |  2.27 |  4.56 |
++------------------+-------+-------+
+[2026-03-29 22:41:52 CLIP_DINOiser_fast] (logging.py 102): INFO Summary:
+[2026-03-29 22:41:52 CLIP_DINOiser_fast] (logging.py 102): INFO 
++-------+-------+-------+
+|  aAcc |  mIoU |  mAcc |
++-------+-------+-------+
+| 37.11 | 20.21 | 35.02 |
++-------+-------+-------+

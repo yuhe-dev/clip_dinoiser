@@ -20,7 +20,693 @@
       "aAcc": 37.17
     },
     "full_summary": null,
-    "dataset_size": 300
+    "dataset_size": 300,
+    "per_class": {
+      "person": {
+        "IoU": 16.26,
+        "Acc": 17.38
+      },
+      "bicycle": {
+        "IoU": 44.24,
+        "Acc": 82.93
+      },
+      "car": {
+        "IoU": 38.56,
+        "Acc": 69.63
+      },
+      "motorcycle": {
+        "IoU": 61.71,
+        "Acc": 75.36
+      },
+      "airplane": {
+        "IoU": 66.73,
+        "Acc": 96.62
+      },
+      "bus": {
+        "IoU": 67.22,
+        "Acc": 85.37
+      },
+      "train": {
+        "IoU": 37.81,
+        "Acc": 48.61
+      },
+      "truck": {
+        "IoU": 18.84,
+        "Acc": 23.33
+      },
+      "boat": {
+        "IoU": 52.33,
+        "Acc": 79.77
+      },
+      "traffic light": {
+        "IoU": 22.94,
+        "Acc": 61.75
+      },
+      "fire hydrant": {
+        "IoU": 45.97,
+        "Acc": 64.74
+      },
+      "stop sign": {
+        "IoU": 11.78,
+        "Acc": 80.6
+      },
+      "parking meter": {
+        "IoU": 7.97,
+        "Acc": 10.31
+      },
+      "bench": {
+        "IoU": 22.93,
+        "Acc": 33.54
+      },
+      "bird": {
+        "IoU": 47.48,
+        "Acc": 79.89
+      },
+      "cat": {
+        "IoU": 70.22,
+        "Acc": 96.53
+      },
+      "dog": {
+        "IoU": 68.48,
+        "Acc": 93.29
+      },
+      "horse": {
+        "IoU": 50.81,
+        "Acc": 73.69
+      },
+      "sheep": {
+        "IoU": 52.74,
+        "Acc": 73.73
+      },
+      "cow": {
+        "IoU": 62.74,
+        "Acc": 90.92
+      },
+      "elephant": {
+        "IoU": 85.64,
+        "Acc": 97.05
+      },
+      "bear": {
+        "IoU": 84.15,
+        "Acc": 93.99
+      },
+      "zebra": {
+        "IoU": 78.22,
+        "Acc": 94.17
+      },
+      "giraffe": {
+        "IoU": 45.24,
+        "Acc": 81.45
+      },
+      "backpack": {
+        "IoU": 1.68,
+        "Acc": 11.52
+      },
+      "umbrella": {
+        "IoU": 39.81,
+        "Acc": 55.79
+      },
+      "handbag": {
+        "IoU": 0.18,
+        "Acc": 0.32
+      },
+      "tie": {
+        "IoU": 1.37,
+        "Acc": 45.51
+      },
+      "suitcase": {
+        "IoU": 54.87,
+        "Acc": 64.42
+      },
+      "frisbee": {
+        "IoU": 5.47,
+        "Acc": 63.13
+      },
+      "skis": {
+        "IoU": 12.07,
+        "Acc": 69.71
+      },
+      "snowboard": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "sports ball": {
+        "IoU": 1.04,
+        "Acc": 41.21
+      },
+      "kite": {
+        "IoU": 36.68,
+        "Acc": 60.28
+      },
+      "baseball bat": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "baseball glove": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "skateboard": {
+        "IoU": 11.68,
+        "Acc": 14.5
+      },
+      "surfboard": {
+        "IoU": 28.22,
+        "Acc": 89.03
+      },
+      "tennis racket": {
+        "IoU": 4.39,
+        "Acc": 20.7
+      },
+      "bottle": {
+        "IoU": 36.36,
+        "Acc": 51.94
+      },
+      "wine glass": {
+        "IoU": 23.17,
+        "Acc": 50.17
+      },
+      "cup": {
+        "IoU": 1.81,
+        "Acc": 2.9
+      },
+      "fork": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "knife": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "spoon": {
+        "IoU": 60.45,
+        "Acc": 90.07
+      },
+      "bowl": {
+        "IoU": 8.29,
+        "Acc": 15.53
+      },
+      "banana": {
+        "IoU": 17.22,
+        "Acc": 17.63
+      },
+      "apple": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "sandwich": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "orange": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "broccoli": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "carrot": {
+        "IoU": 24.71,
+        "Acc": 24.75
+      },
+      "hot dog": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "pizza": {
+        "IoU": 11.04,
+        "Acc": 16.62
+      },
+      "donut": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "cake": {
+        "IoU": 17.63,
+        "Acc": 33.81
+      },
+      "chair": {
+        "IoU": 1.11,
+        "Acc": 1.28
+      },
+      "couch": {
+        "IoU": 27.0,
+        "Acc": 36.15
+      },
+      "potted plant": {
+        "IoU": 2.24,
+        "Acc": 2.26
+      },
+      "bed": {
+        "IoU": 36.78,
+        "Acc": 46.44
+      },
+      "dining table": {
+        "IoU": 15.09,
+        "Acc": 18.0
+      },
+      "toilet": {
+        "IoU": 33.46,
+        "Acc": 94.45
+      },
+      "tv": {
+        "IoU": 16.13,
+        "Acc": 18.2
+      },
+      "laptop": {
+        "IoU": 40.6,
+        "Acc": 52.9
+      },
+      "mouse": {
+        "IoU": 41.03,
+        "Acc": 87.3
+      },
+      "remote": {
+        "IoU": 7.03,
+        "Acc": 54.31
+      },
+      "keyboard": {
+        "IoU": 42.28,
+        "Acc": 94.74
+      },
+      "cell phone": {
+        "IoU": 22.78,
+        "Acc": 28.32
+      },
+      "microwave": {
+        "IoU": 23.69,
+        "Acc": 25.54
+      },
+      "oven": {
+        "IoU": 31.52,
+        "Acc": 60.72
+      },
+      "toaster": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "sink": {
+        "IoU": 21.8,
+        "Acc": 42.0
+      },
+      "refrigerator": {
+        "IoU": 25.21,
+        "Acc": 29.58
+      },
+      "book": {
+        "IoU": 37.25,
+        "Acc": 42.59
+      },
+      "clock": {
+        "IoU": 7.0,
+        "Acc": 12.68
+      },
+      "vase": {
+        "IoU": 58.7,
+        "Acc": 76.85
+      },
+      "scissors": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "teddy bear": {
+        "IoU": 0.49,
+        "Acc": 0.5
+      },
+      "hair drier": {
+        "IoU": 0.0,
+        "Acc": NaN
+      },
+      "toothbrush": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "banner": {
+        "IoU": 2.19,
+        "Acc": 85.94
+      },
+      "blanket": {
+        "IoU": 5.68,
+        "Acc": 12.9
+      },
+      "branch": {
+        "IoU": 1.62,
+        "Acc": 3.99
+      },
+      "bridge": {
+        "IoU": 24.98,
+        "Acc": 27.26
+      },
+      "building-other": {
+        "IoU": 22.32,
+        "Acc": 45.14
+      },
+      "bush": {
+        "IoU": 4.52,
+        "Acc": 19.58
+      },
+      "cabinet": {
+        "IoU": 29.84,
+        "Acc": 47.69
+      },
+      "cage": {
+        "IoU": 20.51,
+        "Acc": 29.8
+      },
+      "cardboard": {
+        "IoU": 0.95,
+        "Acc": 1.39
+      },
+      "carpet": {
+        "IoU": 51.54,
+        "Acc": 59.88
+      },
+      "ceiling-other": {
+        "IoU": 26.35,
+        "Acc": 48.43
+      },
+      "ceiling-tile": {
+        "IoU": 0.0,
+        "Acc": NaN
+      },
+      "cloth": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "clothes": {
+        "IoU": 2.05,
+        "Acc": 10.07
+      },
+      "clouds": {
+        "IoU": 54.71,
+        "Acc": 61.11
+      },
+      "counter": {
+        "IoU": 11.85,
+        "Acc": 33.25
+      },
+      "cupboard": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "curtain": {
+        "IoU": 27.97,
+        "Acc": 32.18
+      },
+      "desk-stuff": {
+        "IoU": 21.08,
+        "Acc": 28.75
+      },
+      "dirt": {
+        "IoU": 7.25,
+        "Acc": 8.43
+      },
+      "door-stuff": {
+        "IoU": 5.57,
+        "Acc": 5.96
+      },
+      "fence": {
+        "IoU": 23.75,
+        "Acc": 37.07
+      },
+      "floor-marble": {
+        "IoU": 14.1,
+        "Acc": 54.88
+      },
+      "floor-other": {
+        "IoU": 5.58,
+        "Acc": 38.65
+      },
+      "floor-stone": {
+        "IoU": 10.09,
+        "Acc": 11.29
+      },
+      "floor-tile": {
+        "IoU": 24.2,
+        "Acc": 26.25
+      },
+      "floor-wood": {
+        "IoU": 37.82,
+        "Acc": 43.05
+      },
+      "flower": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "fog": {
+        "IoU": 0.48,
+        "Acc": 0.78
+      },
+      "food-other": {
+        "IoU": 6.87,
+        "Acc": 59.03
+      },
+      "fruit": {
+        "IoU": 10.64,
+        "Acc": 67.65
+      },
+      "furniture-other": {
+        "IoU": 5.89,
+        "Acc": 8.93
+      },
+      "grass": {
+        "IoU": 51.78,
+        "Acc": 62.68
+      },
+      "gravel": {
+        "IoU": 1.15,
+        "Acc": 1.18
+      },
+      "ground-other": {
+        "IoU": 1.64,
+        "Acc": 19.98
+      },
+      "hill": {
+        "IoU": 0.43,
+        "Acc": 0.65
+      },
+      "house": {
+        "IoU": 13.55,
+        "Acc": 41.99
+      },
+      "leaves": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "light": {
+        "IoU": 2.47,
+        "Acc": 13.29
+      },
+      "mat": {
+        "IoU": 0.0,
+        "Acc": NaN
+      },
+      "metal": {
+        "IoU": 5.61,
+        "Acc": 5.97
+      },
+      "mirror-stuff": {
+        "IoU": 13.75,
+        "Acc": 20.39
+      },
+      "moss": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "mountain": {
+        "IoU": 41.18,
+        "Acc": 59.16
+      },
+      "mud": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "napkin": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "net": {
+        "IoU": 3.27,
+        "Acc": 13.8
+      },
+      "paper": {
+        "IoU": 0.66,
+        "Acc": 2.72
+      },
+      "pavement": {
+        "IoU": 33.07,
+        "Acc": 55.2
+      },
+      "pillow": {
+        "IoU": 0.21,
+        "Acc": 0.36
+      },
+      "plant-other": {
+        "IoU": 11.44,
+        "Acc": 21.23
+      },
+      "plastic": {
+        "IoU": 1.85,
+        "Acc": 1.89
+      },
+      "platform": {
+        "IoU": 0.01,
+        "Acc": 0.02
+      },
+      "playingfield": {
+        "IoU": 1.62,
+        "Acc": 1.65
+      },
+      "railing": {
+        "IoU": 0.07,
+        "Acc": 0.19
+      },
+      "railroad": {
+        "IoU": 37.79,
+        "Acc": 92.22
+      },
+      "river": {
+        "IoU": 57.5,
+        "Acc": 68.91
+      },
+      "road": {
+        "IoU": 32.11,
+        "Acc": 43.56
+      },
+      "rock": {
+        "IoU": 38.7,
+        "Acc": 54.46
+      },
+      "roof": {
+        "IoU": 11.85,
+        "Acc": 55.05
+      },
+      "rug": {
+        "IoU": 1.53,
+        "Acc": 2.06
+      },
+      "salad": {
+        "IoU": 0.0,
+        "Acc": NaN
+      },
+      "sand": {
+        "IoU": 33.9,
+        "Acc": 39.96
+      },
+      "sea": {
+        "IoU": 41.8,
+        "Acc": 55.05
+      },
+      "shelf": {
+        "IoU": 33.25,
+        "Acc": 35.93
+      },
+      "sky-other": {
+        "IoU": 51.2,
+        "Acc": 57.26
+      },
+      "skyscraper": {
+        "IoU": 12.12,
+        "Acc": 19.63
+      },
+      "snow": {
+        "IoU": 58.29,
+        "Acc": 74.17
+      },
+      "solid-other": {
+        "IoU": 1.67,
+        "Acc": 4.18
+      },
+      "stairs": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "stone": {
+        "IoU": 38.13,
+        "Acc": 52.52
+      },
+      "straw": {
+        "IoU": 0.02,
+        "Acc": 0.02
+      },
+      "structural-other": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "table": {
+        "IoU": 15.83,
+        "Acc": 20.22
+      },
+      "tent": {
+        "IoU": 22.59,
+        "Acc": 72.76
+      },
+      "textile-other": {
+        "IoU": 1.37,
+        "Acc": 1.68
+      },
+      "towel": {
+        "IoU": 28.62,
+        "Acc": 68.69
+      },
+      "tree": {
+        "IoU": 24.73,
+        "Acc": 27.75
+      },
+      "vegetable": {
+        "IoU": 25.54,
+        "Acc": 45.45
+      },
+      "wall-brick": {
+        "IoU": 42.99,
+        "Acc": 63.93
+      },
+      "wall-concrete": {
+        "IoU": 2.17,
+        "Acc": 2.19
+      },
+      "wall-other": {
+        "IoU": 2.38,
+        "Acc": 4.33
+      },
+      "wall-panel": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "wall-stone": {
+        "IoU": 37.88,
+        "Acc": 53.13
+      },
+      "wall-tile": {
+        "IoU": 48.85,
+        "Acc": 64.22
+      },
+      "wall-wood": {
+        "IoU": 0.71,
+        "Acc": 0.76
+      },
+      "water-other": {
+        "IoU": 19.14,
+        "Acc": 52.65
+      },
+      "waterdrops": {
+        "IoU": 0.0,
+        "Acc": NaN
+      },
+      "window-blind": {
+        "IoU": 21.49,
+        "Acc": 22.09
+      },
+      "window-other": {
+        "IoU": 25.36,
+        "Acc": 54.93
+      },
+      "wood": {
+        "IoU": 2.28,
+        "Acc": 4.56
+      }
+    }
   },
   "timing": {
     "subset_size": 1000,

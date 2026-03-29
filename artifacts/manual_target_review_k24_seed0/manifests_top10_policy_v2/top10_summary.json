@@ -1,0 +1,72 @@
+[
+  {
+    "rank": 1,
+    "candidate_id": "cand_progress_top01",
+    "search_node_id": "node_21",
+    "progress": 0.941358880221175,
+    "manifest_path": "./artifacts/manual_target_review_k24_seed0/manifests_top10_policy_v2/cand_progress_top01.json"
+  },
+  {
+    "rank": 2,
+    "candidate_id": "cand_progress_top02",
+    "search_node_id": "node_20",
+    "progress": 0.9400329084247449,
+    "manifest_path": "./artifacts/manual_target_review_k24_seed0/manifests_top10_policy_v2/cand_progress_top02.json"
+  },
+  {
+    "rank": 3,
+    "candidate_id": "cand_progress_top03",
+    "search_node_id": "node_24",
+    "progress": 0.938532579650544,
+    "manifest_path": "./artifacts/manual_target_review_k24_seed0/manifests_top10_policy_v2/cand_progress_top03.json"
+  },
+  {
+    "rank": 4,
+    "candidate_id": "cand_progress_top04",
+    "search_node_id": "node_23",
+    "progress": 0.9370502137772312,
+    "manifest_path": "./artifacts/manual_target_review_k24_seed0/manifests_top10_policy_v2/cand_progress_top04.json"
+  },
+  {
+    "rank": 5,
+    "candidate_id": "cand_progress_top05",
+    "search_node_id": "node_28",
+    "progress": 0.9365639174777206,
+    "manifest_path": "./artifacts/manual_target_review_k24_seed0/manifests_top10_policy_v2/cand_progress_top05.json"
+  },
+  {
+    "rank": 6,
+    "candidate_id": "cand_progress_top06",
+    "search_node_id": "node_27",
+    "progress": 0.9363266196670111,
+    "manifest_path": "./artifacts/manual_target_review_k24_seed0/manifests_top10_policy_v2/cand_progress_top06.json"
+  },
+  {
+    "rank": 7,
+    "candidate_id": "cand_progress_top07",
+    "search_node_id": "node_29",
+    "progress": 0.9358212551884306,
+    "manifest_path": "./artifacts/manual_target_review_k24_seed0/manifests_top10_policy_v2/cand_progress_top07.json"
+  },
+  {
+    "rank": 8,
+    "candidate_id": "cand_progress_top08",
+    "search_node_id": "node_25",
+    "progress": 0.9354841659653345,
+    "manifest_path": "./artifacts/manual_target_review_k24_seed0/manifests_top10_policy_v2/cand_progress_top08.json"
+  },
+  {
+    "rank": 9,
+    "candidate_id": "cand_progress_top09",
+    "search_node_id": "node_26",
+    "progress": 0.9352992873067926,
+    "manifest_path": "./artifacts/manual_target_review_k24_seed0/manifests_top10_policy_v2/cand_progress_top09.json"
+  },
+  {
+    "rank": 10,
+    "candidate_id": "cand_progress_top10",
+    "search_node_id": "node_14",
+    "progress": 0.9244469392600821,
+    "manifest_path": "./artifacts/manual_target_review_k24_seed0/manifests_top10_policy_v2/cand_progress_top10.json"
+  }
+]
