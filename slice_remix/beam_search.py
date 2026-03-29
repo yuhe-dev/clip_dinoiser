@@ -810,15 +810,18 @@ def _make_target_node(
     depth: int,
     parent_key: tuple[int, ...] | None,
     action: dict[str, float | int] | None,
+    current_gap: float | None = None,
+    opportunity_override: float | None = None,
 ) -> _SearchNode:
     delta_q = (np.asarray(mixture, dtype=np.float32) - np.asarray(baseline, dtype=np.float32)).astype(np.float32)
     canonical_plan = _canonicalize_plan(delta_q=delta_q, edges=edges)
-    current_gap = compute_target_residual_gap(context=target_context, mixture=mixture)
+    if current_gap is None:
+        current_gap = compute_target_residual_gap(context=target_context, mixture=mixture)
     baseline_gap = float(target_context.baseline_gap)
     if np.allclose(np.asarray(mixture, dtype=np.float32), np.asarray(target_context.baseline_mixture, dtype=np.float32), atol=1e-8):
         progress = 0.0
     else:
-        progress = 0.0 if baseline_gap <= 1e-8 else float((baseline_gap - current_gap) / baseline_gap)
+        progress = 0.0 if baseline_gap <= 1e-8 else float((baseline_gap - float(current_gap)) / baseline_gap)
     complexity = _complexity(
         mixture=mixture,
         baseline=baseline,
@@ -827,15 +830,18 @@ def _make_target_node(
         receiver_caps=receiver_caps,
     )
     effective_progress = float(progress / (1.0 + complexity))
-    opportunity = _target_opportunity(
-        mixture=mixture,
-        edges=edges,
-        target_context=target_context,
-        donor_floors=donor_floors,
-        receiver_caps=receiver_caps,
-        config=config,
-        last_edge=last_edge,
-    )
+    if opportunity_override is None:
+        opportunity = _target_opportunity(
+            mixture=mixture,
+            edges=edges,
+            target_context=target_context,
+            donor_floors=donor_floors,
+            receiver_caps=receiver_caps,
+            config=config,
+            last_edge=last_edge,
+        )
+    else:
+        opportunity = float(opportunity_override)
     priority = float(effective_progress + float(config.lambda_opportunity) * opportunity)
     return _SearchNode(
         state_key=_state_key(mixture),
@@ -1078,6 +1084,8 @@ def _expand_target_node(
             next_mixture[edge.receiver] += float(amplitude)
             if np.any(next_mixture < -1e-8):
                 continue
+            child_gap = _current_target_gap(mixture=next_mixture, target_context=target_context)
+            child_improvement = max(0.0, float(current_gap - child_gap))
             next_plan = _merge_plan(
                 node.plan,
                 donor=edge.donor,
@@ -1102,6 +1110,8 @@ def _expand_target_node(
                     "receiver": int(edge.receiver),
                     "amplitude": float(amplitude),
                 },
+                current_gap=float(child_gap),
+                opportunity_override=float(child_improvement),
             )
             if child.progress > node.progress + float(config.stop_epsilon):
                 children.append(child)
