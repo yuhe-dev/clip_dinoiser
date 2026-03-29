@@ -240,6 +240,90 @@ def _candidate_review_lines(candidates: list, limit: int) -> list[str]:
     return lines
 
 
+def _leaf_progress_path_lines(trace: dict[str, object], *, limit: int = 5) -> list[str]:
+    raw_nodes = [node for node in trace.get("nodes", []) if isinstance(node, dict)]
+    if not raw_nodes:
+        return ["- progress paths: <empty trace>"]
+
+    by_id = {str(node.get("node_id", "")): node for node in raw_nodes if str(node.get("node_id", ""))}
+    child_counts: dict[str, int] = {}
+    for node in raw_nodes:
+        parent_id = node.get("parent_id")
+        if isinstance(parent_id, str):
+            child_counts[parent_id] = child_counts.get(parent_id, 0) + 1
+
+    leaves = [node for node in raw_nodes if child_counts.get(str(node.get("node_id", "")), 0) == 0]
+    leaves.sort(key=lambda node: (float(node.get("progress", 0.0)), int(node.get("depth", 0))), reverse=True)
+
+    lines: list[str] = []
+    for leaf in leaves[: max(1, int(limit))]:
+        path: list[str] = []
+        cursor = leaf
+        while cursor is not None:
+            node_id = str(cursor.get("node_id", ""))
+            path.append(f"{node_id}({float(cursor.get('progress', 0.0)):.4f})")
+            parent_id = cursor.get("parent_id")
+            cursor = by_id.get(parent_id) if isinstance(parent_id, str) else None
+        lines.append("- " + " -> ".join(reversed(path)))
+    return lines or ["- progress paths: <no leaves>"]
+
+
+def _runtime_summary_lines(
+    *,
+    payload: object,
+    trace: dict[str, object],
+    baseline_gap: float,
+    candidate_count: int,
+) -> list[str]:
+    raw_nodes = [node for node in trace.get("nodes", []) if isinstance(node, dict)]
+    admissible_edges = [
+        edge for edge in getattr(payload, "edges", [])
+        if bool(getattr(edge, "admissible", False))
+    ]
+
+    child_counts: dict[str, int] = {}
+    for node in raw_nodes:
+        parent_id = node.get("parent_id")
+        if isinstance(parent_id, str):
+            child_counts[parent_id] = child_counts.get(parent_id, 0) + 1
+
+    leaf_nodes = [node for node in raw_nodes if child_counts.get(str(node.get("node_id", "")), 0) == 0]
+    completed_leaf_nodes = [node for node in leaf_nodes if str(node.get("node_type", "")) == "completed"]
+    max_depth = max((int(node.get("depth", 0)) for node in raw_nodes), default=0)
+
+    lines = [
+        "runtime summary:",
+        (
+            f"  prior graph: nodes={len(getattr(payload, 'nodes', []))} "
+            f"admissible_edges={len(admissible_edges)} baseline_gap={float(baseline_gap):.6f}"
+        ),
+        (
+            f"  leaf nodes: total={len(leaf_nodes)} completed={len(completed_leaf_nodes)} "
+            f"max_depth={max_depth} completed_candidates={int(candidate_count)}"
+        ),
+    ]
+
+    layer_summaries = [layer for layer in trace.get("layer_summaries", []) if isinstance(layer, dict)]
+    if layer_summaries:
+        lines.append("  layer expansion:")
+        for layer in layer_summaries:
+            lines.append(
+                "    "
+                f"depth {int(layer.get('depth', 0))}: "
+                f"beam_in={int(layer.get('beam_in', 0))} "
+                f"expanded={int(layer.get('expanded_children', 0))} "
+                f"deduped={int(layer.get('deduped_children', 0))} "
+                f"beam_out={int(layer.get('beam_out', 0))} "
+                f"best_parent_progress={float(layer.get('best_parent_progress', 0.0)):.4f} "
+                f"best_child_progress={float(layer.get('best_child_progress') or 0.0):.4f} "
+                f"stopped={layer.get('stopped')}"
+            )
+
+    lines.append("  top progress paths:")
+    lines.extend("    " + line for line in _leaf_progress_path_lines(trace))
+    return lines
+
+
 def run(args: argparse.Namespace, log_fn=_progress) -> int:
     cluster_dir = os.path.abspath(args.cluster_dir)
     projected_dir = _resolve_projected_dir(cluster_dir, args.projected_dir)
@@ -315,6 +399,12 @@ def run(args: argparse.Namespace, log_fn=_progress) -> int:
         baseline_seed=int(args.baseline_seed),
         budget=int(args.budget),
     )
+    admissible_edges = [edge for edge in payload.edges if edge.admissible]
+    log_fn(
+        "prior graph summary: "
+        f"nodes={len(payload.nodes)} admissible_edges={len(admissible_edges)} "
+        f"baseline_gap={float(baseline_gap):.6f}"
+    )
     prior_graph_json = _serialize_prior_graph(payload)
     prior_graph_json["graph_context"]["portrait_source"] = portrait_source
     prior_graph_json["graph_context"]["target_spec"] = {
@@ -342,6 +432,13 @@ def run(args: argparse.Namespace, log_fn=_progress) -> int:
             stop_epsilon=float(args.beam_stop_epsilon),
         ),
     )
+    for line in _runtime_summary_lines(
+        payload=payload,
+        trace=trace,
+        baseline_gap=float(baseline_gap),
+        candidate_count=len(candidates),
+    ):
+        log_fn(line)
     beam_payload = {
         "trace": _json_ready(trace),
         "candidates": [_json_ready(asdict(candidate)) for candidate in candidates],
@@ -350,7 +447,6 @@ def run(args: argparse.Namespace, log_fn=_progress) -> int:
     with open(beam_trace_path, "w", encoding="utf-8") as f:
         json.dump(beam_payload, f, indent=2, ensure_ascii=False)
 
-    admissible_edges = [edge for edge in payload.edges if edge.admissible]
     top_edges = sorted(admissible_edges, key=lambda edge: edge.score, reverse=True)[: min(12, len(admissible_edges))]
     highest_risk = sorted(admissible_edges, key=lambda edge: edge.risk_score, reverse=True)[: min(6, len(admissible_edges))]
     lowest_risk = sorted(admissible_edges, key=lambda edge: edge.risk_score)[: min(6, len(admissible_edges))]

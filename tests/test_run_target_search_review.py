@@ -2,6 +2,7 @@ import os
 import sys
 import tempfile
 import unittest
+from types import SimpleNamespace
 
 import numpy as np
 
@@ -11,7 +12,11 @@ if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
 
-from clip_dinoiser.run_target_search_review import _shift_quality_laplacian_target, build_parser
+from clip_dinoiser.run_target_search_review import (
+    _runtime_summary_lines,
+    _shift_quality_laplacian_target,
+    build_parser,
+)
 from clip_dinoiser.slice_remix.prior_graph import TargetPortraitSpec
 
 
@@ -61,3 +66,72 @@ class RunTargetSearchReviewTests(unittest.TestCase):
                 original.scalar_targets["quality.laplacian"],
             )
         )
+
+    def test_runtime_summary_lines_cover_graph_layers_and_progress_paths(self):
+        payload = SimpleNamespace(
+            nodes=[object(), object(), object()],
+            edges=[
+                SimpleNamespace(admissible=True),
+                SimpleNamespace(admissible=False),
+                SimpleNamespace(admissible=True),
+            ],
+        )
+        trace = {
+            "root_id": "n0",
+            "nodes": [
+                {
+                    "node_id": "n0",
+                    "parent_id": None,
+                    "depth": 0,
+                    "progress": 0.0,
+                    "node_type": "root",
+                },
+                {
+                    "node_id": "n1",
+                    "parent_id": "n0",
+                    "depth": 1,
+                    "progress": 0.21,
+                    "node_type": "partial",
+                },
+                {
+                    "node_id": "n2",
+                    "parent_id": "n1",
+                    "depth": 2,
+                    "progress": 0.34,
+                    "node_type": "completed",
+                },
+                {
+                    "node_id": "n3",
+                    "parent_id": "n0",
+                    "depth": 1,
+                    "progress": 0.18,
+                    "node_type": "completed",
+                },
+            ],
+            "layer_summaries": [
+                {
+                    "depth": 0,
+                    "beam_in": 1,
+                    "expanded_children": 2,
+                    "deduped_children": 2,
+                    "beam_out": 2,
+                    "best_parent_progress": 0.0,
+                    "best_child_progress": 0.21,
+                    "pruned_summary": {"proposal_pruned": 4},
+                    "stopped": None,
+                }
+            ],
+        }
+
+        lines = _runtime_summary_lines(
+            payload=payload,
+            trace=trace,
+            baseline_gap=12.5,
+            candidate_count=2,
+        )
+        joined = "\n".join(lines)
+
+        self.assertIn("prior graph: nodes=3 admissible_edges=2", joined)
+        self.assertIn("depth 0: beam_in=1 expanded=2 deduped=2 beam_out=2", joined)
+        self.assertIn("leaf nodes: total=2 completed=2 max_depth=2", joined)
+        self.assertIn("n0(0.0000) -> n1(0.2100) -> n2(0.3400)", joined)
