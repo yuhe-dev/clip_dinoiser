@@ -40,6 +40,37 @@ class SliceRemixPolicyTests(unittest.TestCase):
         self.assertEqual(len(selected), 2)
         self.assertEqual(len(set(selected)), 2)
 
+    def test_sample_budgeted_subset_with_target_mixture_tracks_target(self):
+        sample_ids = ["a.jpg", "b.jpg", "c.jpg", "d.jpg", "e.jpg", "f.jpg"]
+        memberships = np.asarray(
+            [
+                [0.95, 0.05],
+                [0.90, 0.10],
+                [0.80, 0.20],
+                [0.20, 0.80],
+                [0.10, 0.90],
+                [0.05, 0.95],
+            ],
+            dtype=np.float32,
+        )
+        target = np.asarray([0.5, 0.5], dtype=np.float32)
+        weights = compute_importance_weights(memberships, target)
+
+        selected = sample_budgeted_subset(
+            sample_ids,
+            weights,
+            budget=2,
+            seed=0,
+            memberships=memberships,
+            target_mixture=target,
+        )
+
+        self.assertEqual(len(selected), 2)
+        self.assertEqual(len(set(selected)), 2)
+        selected_idx = [sample_ids.index(sample_id) for sample_id in selected]
+        realized = memberships[selected_idx].mean(axis=0)
+        self.assertLess(float(np.abs(realized - target).sum()), 0.3)
+
 
 if __name__ == "__main__":
     unittest.main()

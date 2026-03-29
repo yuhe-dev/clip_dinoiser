@@ -383,6 +383,8 @@ def run(args: argparse.Namespace, log_fn=_progress) -> int:
                 weights,
                 budget=int(args.budget),
                 seed=int(baseline_seed) + candidate_index,
+                memberships=artifacts.membership,
+                target_mixture=target_mixture,
             )
             row["execution"] = {
                 "expected_slice_quotas": summarize_target_quotas(target_mixture, int(args.budget)),

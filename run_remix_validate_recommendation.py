@@ -59,6 +59,8 @@ def run(args: argparse.Namespace) -> int:
         weights,
         budget=budget,
         seed=selection_seed,
+        memberships=artifacts.membership,
+        target_mixture=target_mixture,
     )
 
     payload = {
