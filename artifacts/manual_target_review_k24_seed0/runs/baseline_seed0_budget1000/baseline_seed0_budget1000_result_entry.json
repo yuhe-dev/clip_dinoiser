@@ -1,0 +1,14 @@
+{
+  "candidate_id": "baseline_seed0_budget1000",
+  "subset_manifest": "/home/yuhe/clip_dinoiser/artifacts/manual_target_review_k24_seed0/manifests_top10/baseline_seed0_budget1000.json",
+  "result_path": "/home/yuhe/clip_dinoiser/artifacts/manual_target_review_k24_seed0/runs/baseline_seed0_budget1000/result.json",
+  "seed": 0,
+  "timing": {
+    "subset_size": 1000,
+    "started_at": "2026-03-29T11:57:12.136286+00:00",
+    "finished_at": "2026-03-29T11:59:25.979690+00:00",
+    "train_seconds": 19.054,
+    "eval_seconds": 106.984,
+    "total_seconds": 133.843
+  }
+}

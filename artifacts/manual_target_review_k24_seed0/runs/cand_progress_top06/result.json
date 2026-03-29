@@ -1,0 +1,33 @@
+{
+  "validation_mode": "proxy",
+  "validation_config": {
+    "proxy_subset_size": 300,
+    "proxy_seed": 0,
+    "proxy_inference_mode": "whole",
+    "full_eval_top_k": 3
+  },
+  "coco_stuff": {
+    "validation_mode": "proxy",
+    "used_inference_mode": "whole",
+    "summary": {
+      "mIoU": 20.21,
+      "mAcc": 34.92,
+      "aAcc": 37.15
+    },
+    "proxy_summary": {
+      "mIoU": 20.21,
+      "mAcc": 34.92,
+      "aAcc": 37.15
+    },
+    "full_summary": null,
+    "dataset_size": 300
+  },
+  "timing": {
+    "subset_size": 1000,
+    "started_at": "2026-03-29T12:14:52.953661+00:00",
+    "finished_at": "2026-03-29T12:17:13.688695+00:00",
+    "train_seconds": 19.248,
+    "eval_seconds": 112.274,
+    "total_seconds": 140.735
+  }
+}

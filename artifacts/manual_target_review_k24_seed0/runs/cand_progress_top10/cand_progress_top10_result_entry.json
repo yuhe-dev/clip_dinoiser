@@ -1,0 +1,14 @@
+{
+  "candidate_id": "cand_progress_top10",
+  "subset_manifest": "/home/yuhe/clip_dinoiser/artifacts/manual_target_review_k24_seed0/manifests_top10/cand_progress_top10.json",
+  "result_path": "/home/yuhe/clip_dinoiser/artifacts/manual_target_review_k24_seed0/runs/cand_progress_top10/result.json",
+  "seed": 0,
+  "timing": {
+    "subset_size": 1000,
+    "started_at": "2026-03-29T12:24:26.472451+00:00",
+    "finished_at": "2026-03-29T12:26:28.904513+00:00",
+    "train_seconds": 19.202,
+    "eval_seconds": 94.445,
+    "total_seconds": 122.432
+  }
+}
