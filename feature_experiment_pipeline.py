@@ -34,6 +34,22 @@ from segmentation.evaluation import build_seg_dataloader, build_seg_dataset, bui
 from feature_utils.data_feature.implementations.quality import LaplacianSharpness, BoundaryGradientAdherence
 from feature_utils.data_feature.sampler import StratifiedSampler
 from feature_utils.visualizer import plot_metric_distribution, plot_class_distribution_comparison
+try:
+    from validation_acceleration import (
+        build_validation_payload,
+        is_cuda_oom_error,
+        resolve_proxy_test_cfg,
+        sample_dataset_basenames,
+        subset_dataset_by_basenames,
+    )
+except ImportError:
+    from clip_dinoiser.validation_acceleration import (
+        build_validation_payload,
+        is_cuda_oom_error,
+        resolve_proxy_test_cfg,
+        sample_dataset_basenames,
+        subset_dataset_by_basenames,
+    )
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
@@ -147,61 +163,139 @@ def do_train(model, train_cfg, loaders, out_path):
         }, os.path.join(ch_path, 'last.pt'))
 
 
-def run_val(model, loader, eval_key, logger, cfg):
+def _validation_mode(cfg) -> str:
+    return str(cfg.evaluate.get("validation_mode", "proxy"))
+
+
+def _eval_workers_per_gpu(cfg) -> int:
+    return int(cfg.evaluate.get("workers_per_gpu", 4))
+
+
+def build_eval_dataset(key, mode, cfg):
+    dataset = build_seg_dataset(cfg.evaluate.get(key))
+    if mode != "proxy":
+        return dataset
+
+    proxy_subset_size = int(cfg.evaluate.get("proxy_subset_size", 300))
+    proxy_seed = int(cfg.evaluate.get("proxy_seed", cfg.seed))
+    keep_basenames = sample_dataset_basenames(dataset, seed=proxy_seed, limit=proxy_subset_size)
+    subset_dataset_by_basenames(dataset, keep_basenames)
+    return dataset
+
+
+def _run_seg_eval(
+    model,
+    loader,
+    eval_key,
+    logger,
+    cfg,
+    *,
+    validation_mode,
+):
     model.clip_backbone.decode_head.update_vocab(loader.dataset.CLASSES)
-    seg_model = build_seg_inference(model, loader.dataset, cfg, eval_key)
-    seg_model.cuda()
-    
-    results = multi_gpu_test(
-        model=MMDistributedDataParallel(seg_model, device_ids=[torch.cuda.current_device()]),
-        data_loader=loader, tmpdir=None, gpu_collect=True, pre_eval=True
-    )
-    item = results[0]
-    print(type(item), len(item))
-    for k, name in enumerate(["inter", "union", "pred", "gt"]):
-        v = item[k]
-        print(name, type(v), v.shape, "nonzero:", int((v > 0).sum()))
-    print("first nonzero idx in gt:", (item[3] > 0).nonzero()[:10].view(-1).tolist())
+    requested_inference_mode = "slide"
+    test_cfg_override = None
+    if validation_mode == "proxy":
+        requested_inference_mode = str(cfg.evaluate.get("proxy_inference_mode", "whole"))
+        test_cfg_override = resolve_proxy_test_cfg(requested_inference_mode)
+
+    def _execute_eval(inference_mode, override_cfg):
+        seg_model = build_seg_inference(
+            model,
+            loader.dataset,
+            cfg,
+            eval_key,
+            test_cfg_override=override_cfg,
+        )
+        seg_model.cuda()
+        results = multi_gpu_test(
+            model=MMDistributedDataParallel(seg_model, device_ids=[torch.cuda.current_device()]),
+            data_loader=loader,
+            tmpdir=None,
+            gpu_collect=True,
+            pre_eval=True,
+        )
+        return results, inference_mode
+
+    try:
+        results, used_inference_mode = _execute_eval(requested_inference_mode, test_cfg_override)
+    except RuntimeError as exc:
+        if validation_mode == "proxy" and requested_inference_mode == "whole" and is_cuda_oom_error(exc):
+            logger.warning("[Validation] proxy whole inference OOM; retrying with coarse_slide.")
+            torch.cuda.empty_cache()
+            results, used_inference_mode = _execute_eval(
+                "coarse_slide",
+                resolve_proxy_test_cfg("coarse_slide"),
+            )
+        else:
+            raise
 
     if dist.get_rank() == 0:
-        # 这里的 eval_results 包含了全类别信息
         eval_results = loader.dataset.evaluate(results, metric="mIoU", logger=logger)
-        
-        # 整理成易读的格式
-        metrics_dict = {
-            "summary": {
-                "mIoU": float(eval_results.get('mIoU', 0) * 100),
-                "mAcc": float(eval_results.get('mAcc', 0) * 100),
-                "aAcc": float(eval_results.get('aAcc', 0) * 100)
-            },
-            "per_class": {}
-        }
-        # 遍历类别，记录每个类的 IoU 和 Acc
-        for i, class_name in enumerate(loader.dataset.CLASSES):
-            metrics_dict["per_class"][class_name] = {
-                "IoU": float(eval_results.get(f'IoU.{class_name}', 0) * 100),
-                "Acc": float(eval_results.get(f'Acc.{class_name}', 0) * 100)
-            }
-        return [metrics_dict]
-    else:
-        return [None]
+        payload = build_validation_payload(
+            eval_results=eval_results,
+            classes=loader.dataset.CLASSES,
+            validation_mode=validation_mode,
+            used_inference_mode=used_inference_mode,
+        )
+        payload["dataset_size"] = len(loader.dataset)
+        return [payload]
+    return [None]
+
+
+def run_proxy_val(model, loader, eval_key, logger, cfg):
+    return _run_seg_eval(
+        model,
+        loader,
+        eval_key,
+        logger,
+        cfg,
+        validation_mode="proxy",
+    )
+
+
+def run_full_val(model, loader, eval_key, logger, cfg):
+    return _run_seg_eval(
+        model,
+        loader,
+        eval_key,
+        logger,
+        cfg,
+        validation_mode="full",
+    )
 
 @torch.no_grad()
 def validate(model, cfg):
     model.eval()
-    all_metrics = {}
+    validation_mode = _validation_mode(cfg)
+    all_metrics = {
+        "validation_mode": validation_mode,
+        "validation_config": {
+            "proxy_subset_size": int(cfg.evaluate.get("proxy_subset_size", 300)),
+            "proxy_seed": int(cfg.evaluate.get("proxy_seed", cfg.seed)),
+            "proxy_inference_mode": str(cfg.evaluate.get("proxy_inference_mode", "whole")),
+            "full_eval_top_k": int(cfg.evaluate.get("full_eval_top_k", 3)),
+        },
+    }
     tasks = cfg.evaluate.task
     for key in tasks:
-        loader = build_seg_dataloader(build_seg_dataset(cfg.evaluate.get(key)))
+        dataset = build_eval_dataset(key, validation_mode, cfg)
+        loader = build_seg_dataloader(
+            dataset,
+            workers_per_gpu=_eval_workers_per_gpu(cfg),
+        )
         model.apply_found = (key in ["voc", "coco_object"])
-        
-        metric_list = run_val(model, loader, cfg.evaluate.get(key), get_logger(), cfg)
+
+        if validation_mode == "proxy":
+            metric_list = run_proxy_val(model, loader, cfg.evaluate.get(key), get_logger(), cfg)
+        else:
+            metric_list = run_full_val(model, loader, cfg.evaluate.get(key), get_logger(), cfg)
         dist.broadcast_object_list(metric_list)
         dist.barrier()
-        
+
         if metric_list[0] is not None:
             all_metrics[key] = metric_list[0]
-            
+
     return all_metrics
 
 @dataclass

@@ -16,26 +16,28 @@ def build_seg_dataset(config):
     return dataset
 
 
-def build_seg_dataloader(dataset, dist=True):
+def build_seg_dataloader(dataset, dist=True, workers_per_gpu=None):
     # batch size is set to 1 to handle varying image size (due to different aspect ratio)
+    resolved_workers = int(workers_per_gpu) if workers_per_gpu is not None else (4 if dist else 1)
+    persistent_workers = resolved_workers > 0
     if dist:
         data_loader = build_dataloader(
             dataset,
             samples_per_gpu=1,
-            workers_per_gpu=2,
+            workers_per_gpu=resolved_workers,
             dist=dist,
             shuffle=False,
-            persistent_workers=True,
+            persistent_workers=persistent_workers,
             pin_memory=False,
         )
     else:
         data_loader = build_dataloader(
             dataset=dataset,
             samples_per_gpu=1,
-            workers_per_gpu=1,
+            workers_per_gpu=resolved_workers,
             dist=dist,
             shuffle=False,
-            persistent_workers=True,
+            persistent_workers=persistent_workers,
             pin_memory=False,
         )
 
@@ -47,11 +49,14 @@ def build_seg_inference(
         dataset,
         config,
         seg_config,
+        test_cfg_override=None,
 ):
     dset_cfg = mmcv.Config.fromfile(seg_config)  # dataset config
     classnames = dataset.CLASSES
     kwargs = dict()
-    if hasattr(dset_cfg, "test_cfg"):
+    if test_cfg_override is not None:
+        kwargs["test_cfg"] = test_cfg_override
+    elif hasattr(dset_cfg, "test_cfg"):
         kwargs["test_cfg"] = dset_cfg.test_cfg
 
     seg_model = DinoCLIP_Infrencer(model, num_classes=len(classnames), **kwargs, **config.evaluate)

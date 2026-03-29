@@ -39,6 +39,12 @@ experiment:
 
 evaluate:
   eval_only: true
+  validation_mode: proxy
+  proxy_subset_size: 300
+  proxy_seed: ${seed}
+  proxy_inference_mode: whole
+  full_eval_top_k: 3
+  workers_per_gpu: 4
   task:
     # - voc
     # - context

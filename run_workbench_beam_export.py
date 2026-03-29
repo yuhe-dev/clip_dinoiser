@@ -313,6 +313,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--beam-min-transfer-mass", type=float, default=0.03)
     parser.add_argument("--beam-receiver-headroom", type=float, default=0.15)
     parser.add_argument("--candidate-limit", type=int, default=12)
+    parser.add_argument("--round-count", type=int, default=1)
     return parser
 
 
@@ -324,7 +325,7 @@ def run(args: argparse.Namespace, log_fn=_progress) -> int:
 
     baseline_seed = int(args.baseline_seed if args.baseline_seed is not None else task_context.get("baseline_seed", 0))
     budget = int(args.budget if args.budget is not None else task_context.get("baseline_budget", 0))
-    round_count = int(task_context.get("round_count", 3))
+    round_count = max(1, int(args.round_count))
 
     projected = SliceFeatureProjector.load(os.path.abspath(args.projected_dir))
     artifacts = load_slice_artifacts(os.path.abspath(args.cluster_dir))
@@ -442,6 +443,11 @@ def run(args: argparse.Namespace, log_fn=_progress) -> int:
     for output_root in args.output_root:
         root = Path(output_root).resolve()
         root.mkdir(parents=True, exist_ok=True)
+        exported_task_context = dict(task_context)
+        exported_task_context["baseline_seed"] = baseline_seed
+        exported_task_context["baseline_budget"] = budget
+        exported_task_context["round_count"] = round_count
+        _write_json(root / "task_context.json", exported_task_context)
         _write_json(root / "prior_graph.json", prior_graph)
         for round_id, payload in round_payloads.items():
             _write_json(root / f"recommendation_round_{round_id}.json", payload)
