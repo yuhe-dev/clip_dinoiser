@@ -10,6 +10,7 @@ if ROOT not in sys.path:
 
 from clip_dinoiser.validation_acceleration import (
     build_validation_payload,
+    parse_per_class_from_log,
     resolve_proxy_test_cfg,
     sample_dataset_basenames,
     select_full_eval_shortlist,
@@ -61,8 +62,8 @@ class ValidationAccelerationTests(unittest.TestCase):
         self.assertEqual(coarse_slide.stride, (448, 448))
         self.assertEqual(coarse_slide.crop_size, (448, 448))
 
-    def test_build_validation_payload_uses_summary_only_for_proxy(self):
-        eval_results = {"mIoU": 0.42, "mAcc": 0.51, "aAcc": 0.77, "IoU.cat": 0.1}
+    def test_build_validation_payload_keeps_per_class_for_proxy_when_available(self):
+        eval_results = {"mIoU": 0.42, "mAcc": 0.51, "aAcc": 0.77, "IoU.cat": 0.1, "Acc.cat": 0.2}
 
         payload = build_validation_payload(
             eval_results=eval_results,
@@ -75,7 +76,8 @@ class ValidationAccelerationTests(unittest.TestCase):
         self.assertEqual(payload["summary"]["mIoU"], 42.0)
         self.assertEqual(payload["proxy_summary"]["mIoU"], 42.0)
         self.assertIsNone(payload["full_summary"])
-        self.assertNotIn("per_class", payload)
+        self.assertEqual(payload["per_class"]["cat"]["IoU"], 10.0)
+        self.assertEqual(payload["per_class"]["cat"]["Acc"], 20.0)
         self.assertEqual(payload["used_inference_mode"], "whole")
 
     def test_build_validation_payload_keeps_per_class_for_full(self):
@@ -170,6 +172,26 @@ class ValidationAccelerationTests(unittest.TestCase):
         shortlist = select_full_eval_shortlist(candidates, top_k=3)
 
         self.assertEqual(shortlist, ["top1_multistep", "diverse", "multistep_second"])
+
+    def test_parse_per_class_from_log_extracts_last_table(self):
+        log_text = """
+[2026-03-29 20:14:44 X] INFO per class results:
+[2026-03-29 20:14:44 X] INFO 
++------------------+-------+-------+
+|      Class       |  IoU  |  Acc  |
++------------------+-------+-------+
+|      person      | 16.26 | 17.36 |
+|     bicycle      | 44.29 | 83.13 |
++------------------+-------+-------+
+[2026-03-29 20:14:44 X] INFO Summary:
+"""
+
+        payload = parse_per_class_from_log(log_text)
+
+        self.assertEqual(payload["person"]["IoU"], 16.26)
+        self.assertEqual(payload["person"]["Acc"], 17.36)
+        self.assertEqual(payload["bicycle"]["IoU"], 44.29)
+        self.assertEqual(payload["bicycle"]["Acc"], 83.13)
 
 
 if __name__ == "__main__":

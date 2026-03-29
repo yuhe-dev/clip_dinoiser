@@ -3,6 +3,7 @@ from __future__ import annotations
 import os
 import random
 from typing import Any, Iterable
+import re
 
 
 class AttrDict(dict):
@@ -87,15 +88,57 @@ def build_validation_payload(
         "proxy_summary": summary if validation_mode == "proxy" else None,
         "full_summary": summary if validation_mode == "full" else None,
     }
-    if validation_mode == "full":
-        payload["per_class"] = {
-            class_name: {
-                "IoU": float(eval_results.get(f"IoU.{class_name}", 0.0) * 100.0),
-                "Acc": float(eval_results.get(f"Acc.{class_name}", 0.0) * 100.0),
-            }
-            for class_name in classes
+    per_class = {
+        class_name: {
+            "IoU": float(eval_results.get(f"IoU.{class_name}", 0.0) * 100.0),
+            "Acc": float(eval_results.get(f"Acc.{class_name}", 0.0) * 100.0),
         }
+        for class_name in classes
+        if f"IoU.{class_name}" in eval_results or f"Acc.{class_name}" in eval_results
+    }
+    if per_class:
+        payload["per_class"] = per_class
     return payload
+
+
+_TABLE_ROW_RE = re.compile(r"^\|\s*(?P<class>.*?)\s*\|\s*(?P<iou>.*?)\s*\|\s*(?P<acc>.*?)\s*\|$")
+
+
+def parse_per_class_from_log(log_text: str) -> dict[str, dict[str, float]]:
+    lines = log_text.splitlines()
+    last_table: dict[str, dict[str, float]] = {}
+    in_table = False
+    current: dict[str, dict[str, float]] = {}
+
+    for raw_line in lines:
+        line = raw_line.strip()
+        if "per class results:" in line:
+            in_table = True
+            current = {}
+            continue
+        if not in_table:
+            continue
+        if "Summary:" in line:
+            if current:
+                last_table = current
+            in_table = False
+            continue
+        match = _TABLE_ROW_RE.match(line)
+        if match is None:
+            continue
+        class_name = match.group("class").strip()
+        if class_name in {"Class", ""}:
+            continue
+        try:
+            iou = float(match.group("iou").strip())
+            acc = float(match.group("acc").strip())
+        except ValueError:
+            continue
+        current[class_name] = {"IoU": iou, "Acc": acc}
+
+    if in_table and current:
+        last_table = current
+    return last_table
 
 
 def _proxy_miou(candidate: dict[str, Any]) -> float:
