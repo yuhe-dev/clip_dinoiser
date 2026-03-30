@@ -1,0 +1,110 @@
+[
+  {
+    "baseline_seed": 0,
+    "baseline_trial_id": "baseline_seed0_b1000",
+    "session_dir": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0000",
+    "session_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0000/session.json",
+    "prior_graph_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0000/prior_graph.json",
+    "search_tree_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0000/search_tree.json",
+    "completed_candidates_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0000/completed_candidates.json"
+  },
+  {
+    "baseline_seed": 1,
+    "baseline_trial_id": "baseline_seed1_b1000",
+    "session_dir": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0001",
+    "session_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0001/session.json",
+    "prior_graph_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0001/prior_graph.json",
+    "search_tree_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0001/search_tree.json",
+    "completed_candidates_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0001/completed_candidates.json"
+  },
+  {
+    "baseline_seed": 2,
+    "baseline_trial_id": "baseline_seed2_b1000",
+    "session_dir": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0002",
+    "session_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0002/session.json",
+    "prior_graph_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0002/prior_graph.json",
+    "search_tree_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0002/search_tree.json",
+    "completed_candidates_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0002/completed_candidates.json"
+  },
+  {
+    "baseline_seed": 3,
+    "baseline_trial_id": "baseline_seed3_b1000",
+    "session_dir": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0003",
+    "session_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0003/session.json",
+    "prior_graph_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0003/prior_graph.json",
+    "search_tree_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0003/search_tree.json",
+    "completed_candidates_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0003/completed_candidates.json"
+  },
+  {
+    "baseline_seed": 4,
+    "baseline_trial_id": "baseline_seed4_b1000",
+    "session_dir": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0004",
+    "session_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0004/session.json",
+    "prior_graph_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0004/prior_graph.json",
+    "search_tree_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0004/search_tree.json",
+    "completed_candidates_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0004/completed_candidates.json"
+  },
+  {
+    "baseline_seed": 5,
+    "baseline_trial_id": "baseline_seed5_b1000",
+    "session_dir": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0005",
+    "session_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0005/session.json",
+    "prior_graph_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0005/prior_graph.json",
+    "search_tree_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0005/search_tree.json",
+    "completed_candidates_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0005/completed_candidates.json"
+  },
+  {
+    "baseline_seed": 6,
+    "baseline_trial_id": "baseline_seed6_b1000",
+    "session_dir": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0006",
+    "session_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0006/session.json",
+    "prior_graph_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0006/prior_graph.json",
+    "search_tree_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0006/search_tree.json",
+    "completed_candidates_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0006/completed_candidates.json"
+  },
+  {
+    "baseline_seed": 7,
+    "baseline_trial_id": "baseline_seed7_b1000",
+    "session_dir": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0007",
+    "session_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0007/session.json",
+    "prior_graph_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0007/prior_graph.json",
+    "search_tree_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0007/search_tree.json",
+    "completed_candidates_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0007/completed_candidates.json"
+  },
+  {
+    "baseline_seed": 8,
+    "baseline_trial_id": "baseline_seed8_b1000",
+    "session_dir": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0008",
+    "session_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0008/session.json",
+    "prior_graph_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0008/prior_graph.json",
+    "search_tree_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0008/search_tree.json",
+    "completed_candidates_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0008/completed_candidates.json"
+  },
+  {
+    "baseline_seed": 9,
+    "baseline_trial_id": "baseline_seed9_b1000",
+    "session_dir": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0009",
+    "session_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0009/session.json",
+    "prior_graph_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0009/prior_graph.json",
+    "search_tree_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0009/search_tree.json",
+    "completed_candidates_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0009/completed_candidates.json"
+  },
+  {
+    "baseline_seed": 10,
+    "baseline_trial_id": "baseline_seed10_b1000",
+    "session_dir": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0010",
+    "session_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0010/session.json",
+    "prior_graph_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0010/prior_graph.json",
+    "search_tree_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0010/search_tree.json",
+    "completed_candidates_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0010/completed_candidates.json"
+  },
+  {
+    "baseline_seed": 11,
+    "baseline_trial_id": "baseline_seed11_b1000",
+    "session_dir": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0011",
+    "session_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0011/session.json",
+    "prior_graph_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0011/prior_graph.json",
+    "search_tree_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0011/search_tree.json",
+    "completed_candidates_path": "/home/yuhe/clip_dinoiser/artifacts/search_tree_census_semantic_k24_v1/sessions/baseline_seed_0011/completed_candidates.json"
+  }
+]

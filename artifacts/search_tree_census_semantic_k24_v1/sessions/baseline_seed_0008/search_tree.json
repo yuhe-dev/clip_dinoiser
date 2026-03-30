@@ -1,0 +1,2087 @@
+{
+  "root_id": "root",
+  "nodes": [
+    {
+      "node_id": "root",
+      "parent_id": null,
+      "depth": 0,
+      "node_type": "root",
+      "status": "expanded",
+      "action": null,
+      "plan": [],
+      "delta_q": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "progress": 0.0,
+      "opportunity": 0.025279502753205577,
+      "complexity": 0.0,
+      "priority": 0.006319875688301394,
+      "candidate_id": null,
+      "is_recommended": false,
+      "pruned_summary": {
+        "infeasible": 46,
+        "proposal_pruned": 448,
+        "no_gain": 7
+      },
+      "candidate_rank": null
+    },
+    {
+      "node_id": "node_1",
+      "parent_id": "root",
+      "depth": 1,
+      "node_type": "partial",
+      "status": "expanded",
+      "action": {
+        "donor": "slice_08",
+        "receiver": "slice_09",
+        "amplitude": 0.00394651060923934
+      },
+      "plan": [
+        {
+          "donor": "slice_08",
+          "receiver": "slice_09",
+          "amplitude": 0.003946509212255478,
+          "score": -0.028359522978511752
+        }
+      ],
+      "delta_q": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.003946509212255478,
+        0.003946509212255478,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "progress": 0.6491750997053342,
+      "opportunity": 0.006396724586292256,
+      "complexity": 0.05067107772481614,
+      "priority": 0.619466288625248,
+      "candidate_id": null,
+      "is_recommended": false,
+      "pruned_summary": {
+        "repeat_edge": 1,
+        "infeasible": 46,
+        "proposal_pruned": 447,
+        "no_gain": 11
+      },
+      "candidate_rank": null
+    },
+    {
+      "node_id": "node_2",
+      "parent_id": "root",
+      "depth": 1,
+      "node_type": "partial",
+      "status": "expanded",
+      "action": {
+        "donor": "slice_08",
+        "receiver": "slice_06",
+        "amplitude": 0.00394651060923934
+      },
+      "plan": [
+        {
+          "donor": "slice_08",
+          "receiver": "slice_06",
+          "amplitude": 0.003946509212255478,
+          "score": -0.04519616639400677
+        }
+      ],
+      "delta_q": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.003946509212255478,
+        0.0,
+        -0.003946509212255478,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "progress": 0.6162073720978207,
+      "opportunity": 0.0068730110475856586,
+      "complexity": 0.05076428945513739,
+      "priority": 0.5881555520513008,
+      "candidate_id": null,
+      "is_recommended": false,
+      "pruned_summary": {
+        "repeat_edge": 1,
+        "infeasible": 46,
+        "proposal_pruned": 447,
+        "no_gain": 9
+      },
+      "candidate_rank": null
+    },
+    {
+      "node_id": "node_3",
+      "parent_id": "root",
+      "depth": 1,
+      "node_type": "partial",
+      "status": "expanded",
+      "action": {
+        "donor": "slice_23",
+        "receiver": "slice_06",
+        "amplitude": 0.017384966164827348
+      },
+      "plan": [
+        {
+          "donor": "slice_23",
+          "receiver": "slice_06",
+          "amplitude": 0.01738496497273445,
+          "score": 0.1725770018018305
+        }
+      ],
+      "delta_q": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.01738496497273445,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.0173849668353796
+      ],
+      "progress": 0.6438831973823094,
+      "opportunity": 0.004021644282552542,
+      "complexity": 0.12418993011764858,
+      "priority": 0.5737584487312101,
+      "candidate_id": null,
+      "is_recommended": false,
+      "pruned_summary": {
+        "repeat_edge": 1,
+        "infeasible": 46,
+        "proposal_pruned": 447,
+        "no_gain": 7
+      },
+      "candidate_rank": null
+    },
+    {
+      "node_id": "node_4",
+      "parent_id": "root",
+      "depth": 1,
+      "node_type": "partial",
+      "status": "expanded",
+      "action": {
+        "donor": "slice_04",
+        "receiver": "slice_09",
+        "amplitude": 0.00394651060923934
+      },
+      "plan": [
+        {
+          "donor": "slice_04",
+          "receiver": "slice_09",
+          "amplitude": 0.003946509212255478,
+          "score": 0.2940506492058852
+        }
+      ],
+      "delta_q": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.003946509212255478,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.003946509212255478,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "progress": 0.5419677710378512,
+      "opportunity": 0.007633039430222993,
+      "complexity": 0.05425716137540513,
+      "priority": 0.5159837538582691,
+      "candidate_id": null,
+      "is_recommended": false,
+      "pruned_summary": {
+        "repeat_edge": 1,
+        "infeasible": 46,
+        "proposal_pruned": 447,
+        "no_gain": 9
+      },
+      "candidate_rank": null
+    },
+    {
+      "node_id": "node_5",
+      "parent_id": "root",
+      "depth": 1,
+      "node_type": "partial",
+      "status": "expanded",
+      "action": {
+        "donor": "slice_04",
+        "receiver": "slice_11",
+        "amplitude": 0.00394651060923934
+      },
+      "plan": [
+        {
+          "donor": "slice_04",
+          "receiver": "slice_11",
+          "amplitude": 0.003946509212255478,
+          "score": 0.24502090356889406
+        }
+      ],
+      "delta_q": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.003946509212255478,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.003946509212255478,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "progress": 0.4925872954914489,
+      "opportunity": 0.007889468016553101,
+      "complexity": 0.054566886977872986,
+      "priority": 0.4690715160235825,
+      "candidate_id": null,
+      "is_recommended": false,
+      "pruned_summary": {
+        "repeat_edge": 1,
+        "infeasible": 46,
+        "proposal_pruned": 447,
+        "no_gain": 7
+      },
+      "candidate_rank": null
+    },
+    {
+      "node_id": "node_6",
+      "parent_id": "root",
+      "depth": 1,
+      "node_type": "partial",
+      "status": "expanded",
+      "action": {
+        "donor": "slice_04",
+        "receiver": "slice_06",
+        "amplitude": 0.00394651060923934
+      },
+      "plan": [
+        {
+          "donor": "slice_04",
+          "receiver": "slice_06",
+          "amplitude": 0.003946509212255478,
+          "score": 0.2388520719796619
+        }
+      ],
+      "delta_q": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.003946509212255478,
+        0.0,
+        0.003946509212255478,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "progress": 0.4091143028261483,
+      "opportunity": 0.011503958177959869,
+      "complexity": 0.05435037310572638,
+      "priority": 0.39090098888228014,
+      "candidate_id": null,
+      "is_recommended": false,
+      "pruned_summary": {
+        "repeat_edge": 1,
+        "infeasible": 46,
+        "proposal_pruned": 447,
+        "no_gain": 10
+      },
+      "candidate_rank": null
+    },
+    {
+      "node_id": "node_7",
+      "parent_id": "root",
+      "depth": 1,
+      "node_type": "partial",
+      "status": "expanded",
+      "action": {
+        "donor": "slice_23",
+        "receiver": "slice_09",
+        "amplitude": 0.00394651060923934
+      },
+      "plan": [
+        {
+          "donor": "slice_23",
+          "receiver": "slice_09",
+          "amplitude": 0.003946509212255478,
+          "score": 0.1712565391692643
+        }
+      ],
+      "delta_q": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.003946509212255478,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.003946509212255478
+      ],
+      "progress": 0.3727610423060811,
+      "opportunity": 0.014457023053422646,
+      "complexity": 0.05050437346748684,
+      "priority": 0.3584543228024655,
+      "candidate_id": null,
+      "is_recommended": false,
+      "pruned_summary": {
+        "repeat_edge": 1,
+        "infeasible": 46,
+        "proposal_pruned": 447,
+        "no_gain": 11
+      },
+      "candidate_rank": null
+    },
+    {
+      "node_id": "node_8",
+      "parent_id": "root",
+      "depth": 1,
+      "node_type": "partial",
+      "status": "expanded",
+      "action": {
+        "donor": "slice_04",
+        "receiver": "slice_06",
+        "amplitude": 0.008958825170993806
+      },
+      "plan": [
+        {
+          "donor": "slice_04",
+          "receiver": "slice_06",
+          "amplitude": 0.00895882397890091,
+          "score": 0.2388520719796619
+        }
+      ],
+      "delta_q": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.008958825841546059,
+        0.0,
+        0.00895882397890091,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "progress": 0.337890363088231,
+      "opportunity": 0.013278012771125692,
+      "complexity": 0.08656535243642503,
+      "priority": 0.3142905481746349,
+      "candidate_id": null,
+      "is_recommended": false,
+      "pruned_summary": {
+        "repeat_edge": 1,
+        "infeasible": 46,
+        "proposal_pruned": 447,
+        "no_gain": 6
+      },
+      "candidate_rank": null
+    },
+    {
+      "node_id": "node_9",
+      "parent_id": "node_1",
+      "depth": 2,
+      "node_type": "completed",
+      "status": "expanded",
+      "action": {
+        "donor": "slice_07",
+        "receiver": "slice_06",
+        "amplitude": 0.0066153197549283504
+      },
+      "plan": [
+        {
+          "donor": "slice_07",
+          "receiver": "slice_06",
+          "amplitude": 0.0066153183579444885,
+          "score": -0.14890750298572464
+        },
+        {
+          "donor": "slice_08",
+          "receiver": "slice_09",
+          "amplitude": 0.003946509212255478,
+          "score": -0.028359522978511752
+        }
+      ],
+      "delta_q": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0066153183579444885,
+        -0.006615320220589638,
+        -0.003946509212255478,
+        0.003946509212255478,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "progress": 0.8466200060001536,
+      "opportunity": 0.0003083772432719272,
+      "complexity": 0.09075836232606915,
+      "priority": 0.7762526756693834,
+      "candidate_id": "seed8_cand_11",
+      "is_recommended": false,
+      "pruned_summary": {
+        "repeat_edge": 1,
+        "infeasible": 54,
+        "proposal_pruned": 447,
+        "no_gain": 6
+      },
+      "candidate_rank": 11
+    },
+    {
+      "node_id": "node_10",
+      "parent_id": "node_1",
+      "depth": 2,
+      "node_type": "completed",
+      "status": "expanded",
+      "action": {
+        "donor": "slice_07",
+        "receiver": "slice_06",
+        "amplitude": 0.007504922598600389
+      },
+      "plan": [
+        {
+          "donor": "slice_07",
+          "receiver": "slice_06",
+          "amplitude": 0.007504921406507492,
+          "score": -0.14890750298572464
+        },
+        {
+          "donor": "slice_08",
+          "receiver": "slice_09",
+          "amplitude": 0.003946509212255478,
+          "score": -0.028359522978511752
+        }
+      ],
+      "delta_q": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.007504921406507492,
+        -0.007504923269152641,
+        -0.003946509212255478,
+        0.003946509212255478,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "progress": 0.8403940663306583,
+      "opportunity": 0.00040168660838035803,
+      "complexity": 0.09370937835479128,
+      "priority": 0.7684892486682977,
+      "candidate_id": "seed8_cand_01",
+      "is_recommended": true,
+      "pruned_summary": {
+        "repeat_edge": 1,
+        "infeasible": 54,
+        "proposal_pruned": 447,
+        "no_gain": 7
+      },
+      "candidate_rank": 1
+    },
+    {
+      "node_id": "node_11",
+      "parent_id": "node_1",
+      "depth": 2,
+      "node_type": "partial",
+      "status": "expanded",
+      "action": {
+        "donor": "slice_11",
+        "receiver": "slice_06",
+        "amplitude": 0.00394651060923934
+      },
+      "plan": [
+        {
+          "donor": "slice_08",
+          "receiver": "slice_06",
+          "amplitude": 0.003946509212255478,
+          "score": -0.04519616639400677
+        },
+        {
+          "donor": "slice_11",
+          "receiver": "slice_09",
+          "amplitude": 0.003946509212255478,
+          "score": 0.10171712468428232
+        }
+      ],
+      "delta_q": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.003946509212255478,
+        0.0,
+        -0.003946509212255478,
+        0.003946509212255478,
+        0.0,
+        -0.003946509212255478,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "progress": 0.7839183152581094,
+      "opportunity": 0.002533628728216965,
+      "complexity": 0.07860680809919385,
+      "priority": 0.7274212499545212,
+      "candidate_id": null,
+      "is_recommended": false,
+      "pruned_summary": {
+        "repeat_edge": 1,
+        "infeasible": 47,
+        "proposal_pruned": 447,
+        "no_gain": 15
+      },
+      "candidate_rank": null
+    },
+    {
+      "node_id": "node_12",
+      "parent_id": "node_1",
+      "depth": 2,
+      "node_type": "partial",
+      "status": "expanded",
+      "action": {
+        "donor": "slice_13",
+        "receiver": "slice_17",
+        "amplitude": 0.007165230344980955
+      },
+      "plan": [
+        {
+          "donor": "slice_08",
+          "receiver": "slice_09",
+          "amplitude": 0.003946509212255478,
+          "score": -0.028359522978511752
+        },
+        {
+          "donor": "slice_13",
+          "receiver": "slice_17",
+          "amplitude": 0.007165230810642242,
+          "score": 0.04528747682985787
+        }
+      ],
+      "delta_q": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.003946509212255478,
+        0.003946509212255478,
+        0.0,
+        0.0,
+        0.0,
+        -0.007165230810642242,
+        0.0,
+        0.0,
+        0.0,
+        0.007165230810642242,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "progress": 0.7873971362151074,
+      "opportunity": 0.001240299667147904,
+      "complexity": 0.08870841454768526,
+      "priority": 0.7235497648958888,
+      "candidate_id": null,
+      "is_recommended": false,
+      "pruned_summary": {
+        "repeat_edge": 1,
+        "infeasible": 46,
+        "proposal_pruned": 447,
+        "no_gain": 20
+      },
+      "candidate_rank": null
+    },
+    {
+      "node_id": "node_13",
+      "parent_id": "node_1",
+      "depth": 2,
+      "node_type": "partial",
+      "status": "expanded",
+      "action": {
+        "donor": "slice_20",
+        "receiver": "slice_06",
+        "amplitude": 0.00394651060923934
+      },
+      "plan": [
+        {
+          "donor": "slice_08",
+          "receiver": "slice_06",
+          "amplitude": 0.003946509212255478,
+          "score": -0.04519616639400677
+        },
+        {
+          "donor": "slice_20",
+          "receiver": "slice_09",
+          "amplitude": 0.003946509212255478,
+          "score": -0.2654451693563307
+        }
+      ],
+      "delta_q": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.003946509212255478,
+        0.0,
+        -0.003946509212255478,
+        0.003946509212255478,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.003946509212255478,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "progress": 0.7808998784982311,
+      "opportunity": 0.0011755786793171328,
+      "complexity": 0.08032363048498181,
+      "priority": 0.7231327333867675,
+      "candidate_id": null,
+      "is_recommended": false,
+      "pruned_summary": {
+        "repeat_edge": 1,
+        "infeasible": 51,
+        "proposal_pruned": 447,
+        "no_gain": 13
+      },
+      "candidate_rank": null
+    },
+    {
+      "node_id": "node_14",
+      "parent_id": "node_2",
+      "depth": 2,
+      "node_type": "partial",
+      "status": "expanded",
+      "action": {
+        "donor": "slice_20",
+        "receiver": "slice_09",
+        "amplitude": 0.00641723582521081
+      },
+      "plan": [
+        {
+          "donor": "slice_08",
+          "receiver": "slice_06",
+          "amplitude": 0.003946509212255478,
+          "score": -0.04519616639400677
+        },
+        {
+          "donor": "slice_20",
+          "receiver": "slice_09",
+          "amplitude": 0.006417237222194672,
+          "score": -0.2654451693563307
+        }
+      ],
+      "delta_q": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.003946509212255478,
+        0.0,
+        -0.003946509212255478,
+        0.006417237222194672,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.006417237222194672,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "progress": 0.7847417145648692,
+      "opportunity": 0.002265359875094717,
+      "complexity": 0.08750023833219556,
+      "priority": 0.7221677584368369,
+      "candidate_id": null,
+      "is_recommended": false,
+      "pruned_summary": {
+        "repeat_edge": 1,
+        "infeasible": 46,
+        "proposal_pruned": 447,
+        "no_gain": 22
+      },
+      "candidate_rank": null
+    },
+    {
+      "node_id": "node_15",
+      "parent_id": "node_1",
+      "depth": 2,
+      "node_type": "partial",
+      "status": "expanded",
+      "action": {
+        "donor": "slice_22",
+        "receiver": "slice_06",
+        "amplitude": 0.00394651060923934
+      },
+      "plan": [
+        {
+          "donor": "slice_08",
+          "receiver": "slice_06",
+          "amplitude": 0.003946509212255478,
+          "score": -0.04519616639400677
+        },
+        {
+          "donor": "slice_22",
+          "receiver": "slice_09",
+          "amplitude": 0.003946509212255478,
+          "score": 0.03983086710729099
+        }
+      ],
+      "delta_q": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.003946509212255478,
+        0.0,
+        -0.003946509212255478,
+        0.003946509212255478,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.003946509212255478,
+        0.0
+      ],
+      "progress": 0.7798262974106793,
+      "opportunity": 0.00162835624526391,
+      "complexity": 0.08195610236430513,
+      "priority": 0.7211630381304069,
+      "candidate_id": null,
+      "is_recommended": false,
+      "pruned_summary": {
+        "repeat_edge": 1,
+        "infeasible": 47,
+        "proposal_pruned": 447,
+        "no_gain": 14
+      },
+      "candidate_rank": null
+    },
+    {
+      "node_id": "node_16",
+      "parent_id": "node_11",
+      "depth": 3,
+      "node_type": "partial",
+      "status": "expanded",
+      "action": {
+        "donor": "slice_13",
+        "receiver": "slice_22",
+        "amplitude": 0.007165230344980955
+      },
+      "plan": [
+        {
+          "donor": "slice_08",
+          "receiver": "slice_06",
+          "amplitude": 0.003946509212255478,
+          "score": -0.04519616639400677
+        },
+        {
+          "donor": "slice_11",
+          "receiver": "slice_09",
+          "amplitude": 0.003946509212255478,
+          "score": 0.10171712468428232
+        },
+        {
+          "donor": "slice_13",
+          "receiver": "slice_22",
+          "amplitude": 0.007165230810642242,
+          "score": -0.11844583482161197
+        }
+      ],
+      "delta_q": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.003946509212255478,
+        0.0,
+        -0.003946509212255478,
+        0.003946509212255478,
+        0.0,
+        -0.003946509212255478,
+        0.0,
+        -0.007165230810642242,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.007165230810642242,
+        0.0
+      ],
+      "progress": 0.8626878310752506,
+      "opportunity": 0.000374872560997395,
+      "complexity": 0.11396993617504692,
+      "priority": 0.7745202112262259,
+      "candidate_id": "seed8_cand_06",
+      "is_recommended": false,
+      "pruned_summary": {
+        "repeat_edge": 1,
+        "infeasible": 54,
+        "proposal_pruned": 447,
+        "no_gain": 12
+      },
+      "candidate_rank": 6
+    },
+    {
+      "node_id": "node_17",
+      "parent_id": "node_11",
+      "depth": 3,
+      "node_type": "partial",
+      "status": "expanded",
+      "action": {
+        "donor": "slice_13",
+        "receiver": "slice_22",
+        "amplitude": 0.0055558704771101475
+      },
+      "plan": [
+        {
+          "donor": "slice_08",
+          "receiver": "slice_06",
+          "amplitude": 0.003946509212255478,
+          "score": -0.04519616639400677
+        },
+        {
+          "donor": "slice_11",
+          "receiver": "slice_09",
+          "amplitude": 0.003946509212255478,
+          "score": 0.10171712468428232
+        },
+        {
+          "donor": "slice_13",
+          "receiver": "slice_22",
+          "amplitude": 0.005555871874094009,
+          "score": -0.11844583482161197
+        }
+      ],
+      "delta_q": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.003946509212255478,
+        0.0,
+        -0.003946509212255478,
+        0.003946509212255478,
+        0.0,
+        -0.003946509212255478,
+        0.0,
+        -0.005555871874094009,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.005555871874094009,
+        0.0
+      ],
+      "progress": 0.8549682852112266,
+      "opportunity": 0.00048110677115595704,
+      "complexity": 0.11099250204321266,
+      "priority": 0.7696738818151142,
+      "candidate_id": "seed8_cand_07",
+      "is_recommended": false,
+      "pruned_summary": {
+        "repeat_edge": 1,
+        "infeasible": 55,
+        "proposal_pruned": 447,
+        "no_gain": 8
+      },
+      "candidate_rank": 7
+    },
+    {
+      "node_id": "node_18",
+      "parent_id": "node_14",
+      "depth": 3,
+      "node_type": "completed",
+      "status": "expanded",
+      "action": {
+        "donor": "slice_07",
+        "receiver": "slice_00",
+        "amplitude": 0.00394651060923934
+      },
+      "plan": [
+        {
+          "donor": "slice_07",
+          "receiver": "slice_00",
+          "amplitude": 0.003946509212255478,
+          "score": -0.1335668222556409
+        },
+        {
+          "donor": "slice_08",
+          "receiver": "slice_06",
+          "amplitude": 0.003946509212255478,
+          "score": -0.04519616639400677
+        },
+        {
+          "donor": "slice_20",
+          "receiver": "slice_09",
+          "amplitude": 0.006417237222194672,
+          "score": -0.2654451693563307
+        }
+      ],
+      "delta_q": [
+        0.003946511074900627,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.003946509212255478,
+        -0.003946509212255478,
+        -0.003946509212255478,
+        0.006417237222194672,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.006417237222194672,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "progress": 0.8550354119416053,
+      "opportunity": 0.00013988429656179753,
+      "complexity": 0.11535408848149764,
+      "priority": 0.7666394250065198,
+      "candidate_id": "seed8_cand_09",
+      "is_recommended": false,
+      "pruned_summary": {
+        "repeat_edge": 1,
+        "infeasible": 56,
+        "proposal_pruned": 447,
+        "no_gain": 6
+      },
+      "candidate_rank": 9
+    },
+    {
+      "node_id": "node_19",
+      "parent_id": "node_11",
+      "depth": 3,
+      "node_type": "partial",
+      "status": "expanded",
+      "action": {
+        "donor": "slice_13",
+        "receiver": "slice_11",
+        "amplitude": 0.00394651060923934
+      },
+      "plan": [
+        {
+          "donor": "slice_08",
+          "receiver": "slice_06",
+          "amplitude": 0.003946509212255478,
+          "score": -0.04519616639400677
+        },
+        {
+          "donor": "slice_13",
+          "receiver": "slice_09",
+          "amplitude": 0.003946509212255478,
+          "score": -0.19161940100490163
+        }
+      ],
+      "delta_q": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.003946509212255478,
+        0.0,
+        -0.003946509212255478,
+        0.003946509212255478,
+        0.0,
+        0.0,
+        0.0,
+        -0.003946509212255478,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "progress": 0.8208729277161019,
+      "opportunity": 0.0005847213451604643,
+      "complexity": 0.0797242660453354,
+      "priority": 0.7604078078003847,
+      "candidate_id": "seed8_cand_04",
+      "is_recommended": false,
+      "pruned_summary": {
+        "repeat_edge": 1,
+        "infeasible": 52,
+        "proposal_pruned": 447,
+        "no_gain": 15
+      },
+      "candidate_rank": 4
+    },
+    {
+      "node_id": "node_20",
+      "parent_id": "node_19",
+      "depth": 3,
+      "node_type": "partial",
+      "status": "expanded",
+      "action": {
+        "donor": "slice_11",
+        "receiver": "slice_22",
+        "amplitude": 0.00394651060923934
+      },
+      "plan": [
+        {
+          "donor": "slice_08",
+          "receiver": "slice_06",
+          "amplitude": 0.003946509212255478,
+          "score": -0.04519616639400677
+        },
+        {
+          "donor": "slice_11",
+          "receiver": "slice_09",
+          "amplitude": 0.003946509212255478,
+          "score": 0.10171712468428232
+        },
+        {
+          "donor": "slice_13",
+          "receiver": "slice_22",
+          "amplitude": 0.003946509212255478,
+          "score": -0.11844583482161197
+        }
+      ],
+      "delta_q": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.003946509212255478,
+        0.0,
+        -0.003946509212255478,
+        0.003946509212255478,
+        0.0,
+        -0.003946509212255478,
+        0.0,
+        -0.003946509212255478,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.003946509212255478,
+        0.0
+      ],
+      "progress": 0.838282062264628,
+      "opportunity": 0.0010456569074597918,
+      "complexity": 0.10801505466590182,
+      "priority": 0.7568233929965433,
+      "candidate_id": "seed8_cand_08",
+      "is_recommended": false,
+      "pruned_summary": {
+        "repeat_edge": 1,
+        "infeasible": 53,
+        "proposal_pruned": 447,
+        "no_gain": 12
+      },
+      "candidate_rank": 8
+    },
+    {
+      "node_id": "node_21",
+      "parent_id": "node_11",
+      "depth": 3,
+      "node_type": "partial",
+      "status": "expanded",
+      "action": {
+        "donor": "slice_13",
+        "receiver": "slice_22",
+        "amplitude": 0.011993309846147895
+      },
+      "plan": [
+        {
+          "donor": "slice_08",
+          "receiver": "slice_06",
+          "amplitude": 0.003946509212255478,
+          "score": -0.04519616639400677
+        },
+        {
+          "donor": "slice_11",
+          "receiver": "slice_09",
+          "amplitude": 0.003946509212255478,
+          "score": 0.10171712468428232
+        },
+        {
+          "donor": "slice_13",
+          "receiver": "slice_22",
+          "amplitude": 0.01199331134557724,
+          "score": -0.11844583482161197
+        }
+      ],
+      "delta_q": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.003946509212255478,
+        0.0,
+        -0.003946509212255478,
+        0.003946509212255478,
+        0.0,
+        -0.003946509212255478,
+        0.0,
+        -0.01199331134557724,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.01199331134557724,
+        0.0
+      ],
+      "progress": 0.8480826717680401,
+      "opportunity": 0.0007883792861516078,
+      "complexity": 0.12290225181602625,
+      "priority": 0.7554566647408865,
+      "candidate_id": null,
+      "is_recommended": false,
+      "pruned_summary": {
+        "repeat_edge": 1,
+        "infeasible": 50,
+        "proposal_pruned": 447,
+        "no_gain": 17
+      },
+      "candidate_rank": null
+    },
+    {
+      "node_id": "node_22",
+      "parent_id": "node_14",
+      "depth": 3,
+      "node_type": "partial",
+      "status": "expanded",
+      "action": {
+        "donor": "slice_17",
+        "receiver": "slice_05",
+        "amplitude": 0.00394651060923934
+      },
+      "plan": [
+        {
+          "donor": "slice_08",
+          "receiver": "slice_05",
+          "amplitude": 0.003946509212255478,
+          "score": -0.11235529973480096
+        },
+        {
+          "donor": "slice_17",
+          "receiver": "slice_06",
+          "amplitude": 0.003946509212255478,
+          "score": -0.270088544352764
+        },
+        {
+          "donor": "slice_20",
+          "receiver": "slice_09",
+          "amplitude": 0.006417237222194672,
+          "score": -0.2654451693563307
+        }
+      ],
+      "delta_q": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.003946509212255478,
+        0.003946509212255478,
+        0.0,
+        -0.003946509212255478,
+        0.006417237222194672,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.003946509212255478,
+        0.0,
+        0.0,
+        -0.006417237222194672,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "progress": 0.8398467800932445,
+      "opportunity": 0.0003391114861152408,
+      "complexity": 0.11373836219598706,
+      "priority": 0.7541638404237935,
+      "candidate_id": null,
+      "is_recommended": false,
+      "pruned_summary": {
+        "repeat_edge": 1,
+        "infeasible": 54,
+        "proposal_pruned": 447,
+        "no_gain": 12
+      },
+      "candidate_rank": null
+    },
+    {
+      "node_id": "node_23",
+      "parent_id": "node_14",
+      "depth": 3,
+      "node_type": "partial",
+      "status": "expanded",
+      "action": {
+        "donor": "slice_07",
+        "receiver": "slice_05",
+        "amplitude": 0.00394651060923934
+      },
+      "plan": [
+        {
+          "donor": "slice_07",
+          "receiver": "slice_05",
+          "amplitude": 0.003946509212255478,
+          "score": -0.18069321487090512
+        },
+        {
+          "donor": "slice_08",
+          "receiver": "slice_06",
+          "amplitude": 0.003946509212255478,
+          "score": -0.04519616639400677
+        },
+        {
+          "donor": "slice_20",
+          "receiver": "slice_09",
+          "amplitude": 0.006417237222194672,
+          "score": -0.2654451693563307
+        }
+      ],
+      "delta_q": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.003946509212255478,
+        0.003946509212255478,
+        -0.003946509212255478,
+        -0.003946509212255478,
+        0.006417237222194672,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.006417237222194672,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "progress": 0.8400972233357469,
+      "opportunity": 0.0002631858141386341,
+      "complexity": 0.11529429508868046,
+      "priority": 0.7533174063964944,
+      "candidate_id": null,
+      "is_recommended": false,
+      "pruned_summary": {
+        "repeat_edge": 1,
+        "infeasible": 54,
+        "proposal_pruned": 447,
+        "no_gain": 12
+      },
+      "candidate_rank": null
+    },
+    {
+      "node_id": "node_24",
+      "parent_id": "node_21",
+      "depth": 4,
+      "node_type": "completed",
+      "status": "completed",
+      "action": {
+        "donor": "slice_22",
+        "receiver": "slice_13",
+        "amplitude": 0.00394651060923934
+      },
+      "plan": [
+        {
+          "donor": "slice_08",
+          "receiver": "slice_06",
+          "amplitude": 0.003946509212255478,
+          "score": -0.04519616639400677
+        },
+        {
+          "donor": "slice_11",
+          "receiver": "slice_09",
+          "amplitude": 0.003946509212255478,
+          "score": 0.10171712468428232
+        },
+        {
+          "donor": "slice_13",
+          "receiver": "slice_22",
+          "amplitude": 0.008046802133321762,
+          "score": -0.11844583482161197
+        }
+      ],
+      "delta_q": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.003946509212255478,
+        0.0,
+        -0.003946509212255478,
+        0.003946509212255478,
+        0.0,
+        -0.003946509212255478,
+        0.0,
+        -0.008046802133321762,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.008046802133321762,
+        0.0
+      ],
+      "progress": 0.8655990819470724,
+      "opportunity": 0.00031864795282398814,
+      "complexity": 0.1156009080041434,
+      "priority": 0.7759835499616079,
+      "candidate_id": "seed8_cand_12",
+      "is_recommended": false,
+      "pruned_summary": {},
+      "candidate_rank": 12
+    },
+    {
+      "node_id": "node_25",
+      "parent_id": "node_20",
+      "depth": 4,
+      "node_type": "completed",
+      "status": "completed",
+      "action": {
+        "donor": "slice_13",
+        "receiver": "slice_22",
+        "amplitude": 0.00394651060923934
+      },
+      "plan": [
+        {
+          "donor": "slice_08",
+          "receiver": "slice_06",
+          "amplitude": 0.003946509212255478,
+          "score": -0.04519616639400677
+        },
+        {
+          "donor": "slice_11",
+          "receiver": "slice_09",
+          "amplitude": 0.003946509212255478,
+          "score": 0.10171712468428232
+        },
+        {
+          "donor": "slice_13",
+          "receiver": "slice_22",
+          "amplitude": 0.007893018424510956,
+          "score": -0.11844583482161197
+        }
+      ],
+      "delta_q": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.003946509212255478,
+        0.0,
+        -0.003946509212255478,
+        0.003946509212255478,
+        0.0,
+        -0.003946509212255478,
+        0.0,
+        -0.007893018424510956,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.007893018424510956,
+        0.0
+      ],
+      "progress": 0.8651977073919481,
+      "opportunity": 0.00033023392981161814,
+      "complexity": 0.11531639847778467,
+      "priority": 0.77582449913068,
+      "candidate_id": "seed8_cand_02",
+      "is_recommended": false,
+      "pruned_summary": {},
+      "candidate_rank": 2
+    },
+    {
+      "node_id": "node_26",
+      "parent_id": "node_21",
+      "depth": 4,
+      "node_type": "completed",
+      "status": "completed",
+      "action": {
+        "donor": "slice_22",
+        "receiver": "slice_13",
+        "amplitude": 0.005639185560867191
+      },
+      "plan": [
+        {
+          "donor": "slice_08",
+          "receiver": "slice_06",
+          "amplitude": 0.003946509212255478,
+          "score": -0.04519616639400677
+        },
+        {
+          "donor": "slice_11",
+          "receiver": "slice_09",
+          "amplitude": 0.003946509212255478,
+          "score": 0.10171712468428232
+        },
+        {
+          "donor": "slice_13",
+          "receiver": "slice_22",
+          "amplitude": 0.006354127079248428,
+          "score": -0.11844583482161197
+        }
+      ],
+      "delta_q": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.003946509212255478,
+        0.0,
+        -0.003946509212255478,
+        0.003946509212255478,
+        0.0,
+        -0.003946509212255478,
+        0.0,
+        -0.006354127079248428,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.006354127079248428,
+        0.0
+      ],
+      "progress": 0.8591069320231272,
+      "opportunity": 0.0004508830152829312,
+      "complexity": 0.11246933294955082,
+      "priority": 0.7723649587057021,
+      "candidate_id": "seed8_cand_10",
+      "is_recommended": false,
+      "pruned_summary": {},
+      "candidate_rank": 10
+    },
+    {
+      "node_id": "node_27",
+      "parent_id": "node_21",
+      "depth": 4,
+      "node_type": "completed",
+      "status": "completed",
+      "action": {
+        "donor": "slice_22",
+        "receiver": "slice_13",
+        "amplitude": 0.0064855230366811165
+      },
+      "plan": [
+        {
+          "donor": "slice_08",
+          "receiver": "slice_06",
+          "amplitude": 0.003946509212255478,
+          "score": -0.04519616639400677
+        },
+        {
+          "donor": "slice_11",
+          "receiver": "slice_09",
+          "amplitude": 0.003946509212255478,
+          "score": 0.10171712468428232
+        },
+        {
+          "donor": "slice_13",
+          "receiver": "slice_22",
+          "amplitude": 0.0055077895522117615,
+          "score": -0.11844583482161197
+        }
+      ],
+      "delta_q": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.003946509212255478,
+        0.0,
+        -0.003946509212255478,
+        0.003946509212255478,
+        0.0,
+        -0.003946509212255478,
+        0.0,
+        -0.0055077895522117615,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0055077895522117615,
+        0.0
+      ],
+      "progress": 0.8546641681275121,
+      "opportunity": 0.0005445494640414005,
+      "complexity": 0.11090354542225456,
+      "priority": 0.7694776086839854,
+      "candidate_id": "seed8_cand_03",
+      "is_recommended": false,
+      "pruned_summary": {},
+      "candidate_rank": 3
+    },
+    {
+      "node_id": "node_28",
+      "parent_id": "node_16",
+      "depth": 4,
+      "node_type": "completed",
+      "status": "completed",
+      "action": {
+        "donor": "slice_03",
+        "receiver": "slice_19",
+        "amplitude": 0.00394651060923934
+      },
+      "plan": [
+        {
+          "donor": "slice_03",
+          "receiver": "slice_06",
+          "amplitude": 0.003946509212255478,
+          "score": 0.16644236324971579
+        },
+        {
+          "donor": "slice_08",
+          "receiver": "slice_09",
+          "amplitude": 0.003946509212255478,
+          "score": -0.028359522978511752
+        },
+        {
+          "donor": "slice_11",
+          "receiver": "slice_19",
+          "amplitude": 0.003946509212255478,
+          "score": 0.013917816647663658
+        },
+        {
+          "donor": "slice_13",
+          "receiver": "slice_22",
+          "amplitude": 0.007165230810642242,
+          "score": -0.11844583482161197
+        }
+      ],
+      "delta_q": [
+        0.0,
+        0.0,
+        0.0,
+        -0.003946509212255478,
+        0.0,
+        0.0,
+        0.003946509212255478,
+        0.0,
+        -0.003946509212255478,
+        0.003946509212255478,
+        0.0,
+        -0.003946509212255478,
+        0.0,
+        -0.007165230810642242,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.003946509212255478,
+        0.0,
+        0.0,
+        0.007165230810642242,
+        0.0
+      ],
+      "progress": 0.8721502944073546,
+      "opportunity": 6.823547796097357e-05,
+      "complexity": 0.14117997917144195,
+      "priority": 0.7642701217742414,
+      "candidate_id": "seed8_cand_05",
+      "is_recommended": false,
+      "pruned_summary": {},
+      "candidate_rank": 5
+    },
+    {
+      "node_id": "node_29",
+      "parent_id": "node_17",
+      "depth": 4,
+      "node_type": "completed",
+      "status": "completed",
+      "action": {
+        "donor": "slice_03",
+        "receiver": "slice_19",
+        "amplitude": 0.00394651060923934
+      },
+      "plan": [
+        {
+          "donor": "slice_03",
+          "receiver": "slice_06",
+          "amplitude": 0.003946509212255478,
+          "score": 0.16644236324971579
+        },
+        {
+          "donor": "slice_08",
+          "receiver": "slice_09",
+          "amplitude": 0.003946509212255478,
+          "score": -0.028359522978511752
+        },
+        {
+          "donor": "slice_11",
+          "receiver": "slice_19",
+          "amplitude": 0.003946509212255478,
+          "score": 0.013917816647663658
+        },
+        {
+          "donor": "slice_13",
+          "receiver": "slice_22",
+          "amplitude": 0.005555871874094009,
+          "score": -0.11844583482161197
+        }
+      ],
+      "delta_q": [
+        0.0,
+        0.0,
+        0.0,
+        -0.003946509212255478,
+        0.0,
+        0.0,
+        0.003946509212255478,
+        0.0,
+        -0.003946509212255478,
+        0.003946509212255478,
+        0.0,
+        -0.003946509212255478,
+        0.0,
+        -0.005555871874094009,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.003946509212255478,
+        0.0,
+        0.0,
+        0.005555871874094009,
+        0.0
+      ],
+      "progress": 0.8609309028763296,
+      "opportunity": 0.00039822970569909573,
+      "complexity": 0.13894690357256625,
+      "priority": 0.7560003814032262,
+      "candidate_id": null,
+      "is_recommended": false,
+      "pruned_summary": {},
+      "candidate_rank": null
+    },
+    {
+      "node_id": "node_30",
+      "parent_id": "node_17",
+      "depth": 4,
+      "node_type": "completed",
+      "status": "completed",
+      "action": {
+        "donor": "slice_13",
+        "receiver": "slice_00",
+        "amplitude": 0.00394651060923934
+      },
+      "plan": [
+        {
+          "donor": "slice_08",
+          "receiver": "slice_00",
+          "amplitude": 0.003946509212255478,
+          "score": -0.11408409324092253
+        },
+        {
+          "donor": "slice_11",
+          "receiver": "slice_06",
+          "amplitude": 0.003946509212255478,
+          "score": 0.08832930472217679
+        },
+        {
+          "donor": "slice_13",
+          "receiver": "slice_09",
+          "amplitude": 0.003946509212255478,
+          "score": -0.19161940100490163
+        },
+        {
+          "donor": "slice_13",
+          "receiver": "slice_22",
+          "amplitude": 0.005555871874094009,
+          "score": -0.11844583482161197
+        }
+      ],
+      "delta_q": [
+        0.003946511074900627,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.003946509212255478,
+        0.0,
+        -0.003946509212255478,
+        0.003946509212255478,
+        0.0,
+        -0.003946509212255478,
+        0.0,
+        -0.009502381086349487,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.005555871874094009,
+        0.0
+      ],
+      "progress": 0.8778641254772918,
+      "opportunity": 0.0,
+      "complexity": 0.1699388410980904,
+      "priority": 0.7503504410994161,
+      "candidate_id": null,
+      "is_recommended": false,
+      "pruned_summary": {},
+      "candidate_rank": null
+    }
+  ],
+  "layer_summaries": [
+    {
+      "depth": 0,
+      "beam_in": 1,
+      "expanded_children": 17,
+      "deduped_children": 17,
+      "beam_out": 8,
+      "best_parent_progress": 0.0,
+      "best_child_progress": 0.6491750997053342,
+      "pruned_summary": {
+        "repeat_edge": 0,
+        "infeasible": 46,
+        "proposal_pruned": 448,
+        "no_gain": 7
+      },
+      "stopped": null
+    },
+    {
+      "depth": 1,
+      "beam_in": 8,
+      "expanded_children": 162,
+      "deduped_children": 150,
+      "beam_out": 8,
+      "best_parent_progress": 0.6491750997053342,
+      "best_child_progress": 0.8466200060001536,
+      "pruned_summary": {
+        "repeat_edge": 8,
+        "infeasible": 368,
+        "proposal_pruned": 3576,
+        "no_gain": 70
+      },
+      "stopped": null
+    },
+    {
+      "depth": 2,
+      "beam_in": 8,
+      "expanded_children": 114,
+      "deduped_children": 109,
+      "beam_out": 8,
+      "best_parent_progress": 0.8466200060001536,
+      "best_child_progress": 0.8703537734138391,
+      "pruned_summary": {
+        "repeat_edge": 8,
+        "infeasible": 397,
+        "proposal_pruned": 3576,
+        "no_gain": 107
+      },
+      "stopped": null
+    },
+    {
+      "depth": 3,
+      "beam_in": 8,
+      "expanded_children": 65,
+      "deduped_children": 65,
+      "beam_out": 8,
+      "best_parent_progress": 0.8626878310752506,
+      "best_child_progress": 0.8806152190434806,
+      "pruned_summary": {
+        "repeat_edge": 8,
+        "infeasible": 428,
+        "proposal_pruned": 3576,
+        "no_gain": 94
+      },
+      "stopped": null
+    }
+  ]
+}
