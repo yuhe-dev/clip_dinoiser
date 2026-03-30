@@ -25,8 +25,9 @@ if __package__ in {None, ""}:
     )
     from slice_remix.actions import generate_pairwise_candidates, select_pairwise_directions
     from slice_remix.baseline import estimate_baseline_mixture, load_slice_artifacts
+    from slice_remix.class_coverage import load_class_presence_matrix, select_focus_class_spec
     from slice_remix.dataset import build_response_row, write_jsonl
-    from slice_remix.policy import compute_importance_weights, sample_budgeted_subset, summarize_target_quotas
+    from slice_remix.policy import compute_importance_weights, materialize_budgeted_subset, summarize_target_quotas
     from slice_remix.portraits import build_feature_label_map, compute_portrait_shift, compute_slice_portraits, load_portrait_feature_groups
     from slice_remix.prior_graph import (
         SearchBias,
@@ -37,6 +38,14 @@ if __package__ in {None, ""}:
         build_prior_graph,
         build_target_prior_graph,
         build_target_residual_context,
+    )
+    from slice_remix.realized_features import (
+        aggregate_feature_groups_by_indices,
+        build_sample_index,
+        resolve_sample_indices,
+        serialize_feature_groups,
+        subtract_feature_groups,
+        summarize_feature_groups,
     )
 else:
     from .slice_discovery.runtime_compat import ensure_numpy_pickle_compat
@@ -52,8 +61,9 @@ else:
     )
     from .slice_remix.actions import generate_pairwise_candidates, select_pairwise_directions
     from .slice_remix.baseline import estimate_baseline_mixture, load_slice_artifacts
+    from .slice_remix.class_coverage import load_class_presence_matrix, select_focus_class_spec
     from .slice_remix.dataset import build_response_row, write_jsonl
-    from .slice_remix.policy import compute_importance_weights, sample_budgeted_subset, summarize_target_quotas
+    from .slice_remix.policy import compute_importance_weights, materialize_budgeted_subset, summarize_target_quotas
     from .slice_remix.portraits import build_feature_label_map, compute_portrait_shift, compute_slice_portraits, load_portrait_feature_groups
     from .slice_remix.prior_graph import (
         SearchBias,
@@ -64,6 +74,14 @@ else:
         build_prior_graph,
         build_target_prior_graph,
         build_target_residual_context,
+    )
+    from .slice_remix.realized_features import (
+        aggregate_feature_groups_by_indices,
+        build_sample_index,
+        resolve_sample_indices,
+        serialize_feature_groups,
+        subtract_feature_groups,
+        summarize_feature_groups,
     )
 
 
@@ -83,6 +101,13 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--schema-path")
     parser.add_argument("--assembled-feature-dir")
     parser.add_argument("--pair-selector", choices=["first", "portrait_diversity", "beam_v1", "beam_target_v1"], default="portrait_diversity")
+    parser.add_argument("--annotation-root")
+    parser.add_argument("--baseline-result-path")
+    parser.add_argument("--full-result-path")
+    parser.add_argument("--focus-class-gap-threshold", type=float, default=10.0)
+    parser.add_argument("--focus-class-top-k", type=int, default=25)
+    parser.add_argument("--coverage-alpha", type=float, default=0.25)
+    parser.add_argument("--coverage-repair-budget", type=int, default=64)
     return parser
 
 
@@ -96,6 +121,30 @@ def _parse_float_csv(raw: str) -> list[float]:
 
 def _progress(message: str) -> None:
     print(f"[remix_response_dataset] {message}", file=sys.stderr, flush=True)
+
+
+def _load_optional_coverage_inputs(args: argparse.Namespace, sample_ids: list[str]) -> tuple[np.ndarray | None, dict[str, object] | None]:
+    if not (args.annotation_root and args.baseline_result_path and args.full_result_path):
+        return None, None
+    with open(os.path.abspath(args.baseline_result_path), "r", encoding="utf-8") as f:
+        baseline_result = json.load(f)
+    with open(os.path.abspath(args.full_result_path), "r", encoding="utf-8") as f:
+        full_result = json.load(f)
+    focus_spec = select_focus_class_spec(
+        baseline_result=baseline_result,
+        full_result=full_result,
+        min_iou_gap=float(args.focus_class_gap_threshold),
+        top_k=int(args.focus_class_top_k),
+    )
+    if not focus_spec["class_indices"]:
+        return None, focus_spec
+    class_names = list(((full_result.get("coco_stuff") or {}).get("per_class") or {}).keys())
+    class_presence = load_class_presence_matrix(
+        sample_ids=sample_ids,
+        annotation_root=os.path.abspath(args.annotation_root),
+        num_classes=len(class_names),
+    )
+    return class_presence, focus_spec
 
 
 def _ordered_pairs(num_slices: int, max_pairs: int) -> list[tuple[int, int]]:
@@ -246,8 +295,10 @@ def run(args: argparse.Namespace, log_fn=_progress) -> int:
         feature_groups,
         schema_path=os.path.abspath(args.schema_path) if args.schema_path else None,
     )
+    sample_index = build_sample_index(artifacts.sample_ids)
     amplitudes = _parse_float_csv(args.amplitudes)
     baseline_seeds = _parse_int_csv(args.baseline_seeds)
+    class_presence, focus_spec = _load_optional_coverage_inputs(args, artifacts.sample_ids)
     log_fn(f"preparing baseline trials count={len(baseline_seeds)} amplitudes={amplitudes}")
 
     rows: list[dict[str, object]] = []
@@ -257,6 +308,10 @@ def run(args: argparse.Namespace, log_fn=_progress) -> int:
         sample_indices = rng.choice(len(artifacts.sample_ids), size=int(args.budget), replace=False)
         baseline_sample_ids = [artifacts.sample_ids[int(index)] for index in sample_indices.tolist()]
         baseline_mixture = estimate_baseline_mixture(artifacts.membership, sample_indices.tolist())
+        baseline_realized_features = aggregate_feature_groups_by_indices(
+            feature_groups,
+            sample_indices.tolist(),
+        )
         baseline_manifest_path = None
         if args.subset_manifest_dir:
             baseline_manifest_path = _write_subset_manifest(
@@ -354,13 +409,38 @@ def run(args: argparse.Namespace, log_fn=_progress) -> int:
         for candidate_index, candidate in enumerate(candidates):
             target_mixture = np.asarray(candidate.target_mixture, dtype=np.float32)
             candidate_id = f"cand_{baseline_seed}_{candidate_index}"
+            expected_delta_phi = compute_portrait_shift(portraits, baseline_mixture, target_mixture)
+            weights = compute_importance_weights(artifacts.membership, target_mixture)
+            materialization = materialize_budgeted_subset(
+                artifacts.sample_ids,
+                weights,
+                budget=int(args.budget),
+                seed=int(baseline_seed) + candidate_index,
+                memberships=artifacts.membership,
+                target_mixture=target_mixture,
+                class_presence=class_presence,
+                focus_class_indices=(focus_spec or {}).get("class_indices"),
+                focus_class_weights=np.asarray((focus_spec or {}).get("class_weights", []), dtype=np.float32) if focus_spec else None,
+                coverage_alpha=float(args.coverage_alpha),
+                coverage_repair_budget=int(args.coverage_repair_budget),
+            )
+            selected_ids = list(materialization.selected_ids)
+            selected_indices = list(materialization.selected_indices) or resolve_sample_indices(sample_index, selected_ids)
+            target_realized_features = aggregate_feature_groups_by_indices(
+                feature_groups,
+                selected_indices,
+            )
+            realized_delta_phi = subtract_feature_groups(
+                target_realized_features,
+                baseline_realized_features,
+            )
             row = build_response_row(
                 baseline_trial_id=f"baseline_{baseline_seed}",
                 candidate_id=candidate_id,
                 baseline_mixture=baseline_mixture,
                 target_mixture=target_mixture,
                 delta_q=candidate.delta_q,
-                delta_phi=compute_portrait_shift(portraits, baseline_mixture, target_mixture),
+                delta_phi=realized_delta_phi,
                 context={
                     "budget": int(args.budget),
                     "baseline_seed": int(baseline_seed),
@@ -368,6 +448,12 @@ def run(args: argparse.Namespace, log_fn=_progress) -> int:
                 measured_gain=None,
             )
             row["portrait_source"] = portrait_source
+            row["feature_description_mode"] = "realized_sample_aggregation"
+            row["baseline_features_raw"] = serialize_feature_groups(baseline_realized_features)
+            row["target_features_raw"] = serialize_feature_groups(target_realized_features)
+            row["baseline_features_summary"] = summarize_feature_groups(baseline_realized_features)
+            row["target_features_summary"] = summarize_feature_groups(target_realized_features)
+            row["expected_delta_phi"] = serialize_feature_groups(expected_delta_phi)
             row["support_size"] = int(candidate.support_size)
             row["l1_shift"] = float(np.abs(np.asarray(candidate.delta_q, dtype=np.float32)).sum())
             row["rationale"] = {
@@ -377,19 +463,23 @@ def run(args: argparse.Namespace, log_fn=_progress) -> int:
                 "pair_selector": args.pair_selector,
                 "plan": list(candidate.metadata.get("plan", [])),
             }
-            weights = compute_importance_weights(artifacts.membership, target_mixture)
-            selected_ids = sample_budgeted_subset(
-                artifacts.sample_ids,
-                weights,
-                budget=int(args.budget),
-                seed=int(baseline_seed) + candidate_index,
-                memberships=artifacts.membership,
-                target_mixture=target_mixture,
-            )
             row["execution"] = {
                 "expected_slice_quotas": summarize_target_quotas(target_mixture, int(args.budget)),
                 "max_weight_sample_id": artifacts.sample_ids[int(np.argmax(weights))],
                 "selected_sample_ids": selected_ids,
+                "selection_seed": int(baseline_seed) + candidate_index,
+                "materialization_policy": "quota_mixture_coverage_v1" if class_presence is not None else "quota_mixture_v2",
+                "focus_class_indices": list((focus_spec or {}).get("class_indices", [])),
+                "focus_class_names": list((focus_spec or {}).get("class_names", [])),
+                "realized_mixture": [float(value) for value in np.asarray(materialization.realized_mixture, dtype=np.float32).tolist()],
+                "mixture_l1_before_coverage_repair": (
+                    None if materialization.mixture_l1_before_coverage_repair is None
+                    else float(materialization.mixture_l1_before_coverage_repair)
+                ),
+                "mixture_l1_after_coverage_repair": float(materialization.mixture_l1_after_coverage_repair),
+                "focus_coverage_before": [int(value) for value in materialization.focus_coverage_before],
+                "focus_coverage_after": [int(value) for value in materialization.focus_coverage_after],
+                "accepted_coverage_swaps": int(materialization.accepted_coverage_swaps),
             }
             if baseline_manifest_path is not None:
                 row["execution"]["baseline_manifest_path"] = baseline_manifest_path
@@ -398,8 +488,8 @@ def run(args: argparse.Namespace, log_fn=_progress) -> int:
                     os.path.abspath(args.subset_manifest_dir),
                     candidate_id,
                     selected_ids,
-                os.path.abspath(args.pool_image_root) if args.pool_image_root else None,
-            )
+                    os.path.abspath(args.pool_image_root) if args.pool_image_root else None,
+                )
             rows.append(row)
 
     output_path = os.path.abspath(args.output_path)

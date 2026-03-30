@@ -68,6 +68,107 @@ class RemixPipelineSmokeTests(unittest.TestCase):
             self.assertTrue(any("computing slice portraits" in msg for msg in logs))
             self.assertTrue(any("writing response rows" in msg for msg in logs))
 
+    def test_response_dataset_rows_use_realized_sample_aggregation_features(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            projected_dir = os.path.join(tmpdir, "projected")
+            cluster_dir = os.path.join(tmpdir, "cluster")
+            manifest_dir = os.path.join(tmpdir, "manifests")
+            os.makedirs(projected_dir, exist_ok=True)
+            os.makedirs(cluster_dir, exist_ok=True)
+
+            sample_ids = np.asarray(["a.jpg", "b.jpg", "c.jpg", "d.jpg"], dtype=object)
+            projected_matrix = np.asarray(
+                [
+                    [0.0, 1.0],
+                    [1.0, 0.0],
+                    [2.0, 2.0],
+                    [4.0, 4.0],
+                ],
+                dtype=np.float32,
+            )
+            np.savez(
+                os.path.join(projected_dir, "projected_features.npz"),
+                matrix=projected_matrix,
+                sample_ids=sample_ids,
+            )
+            with open(os.path.join(projected_dir, "projected_features_meta.json"), "w", encoding="utf-8") as f:
+                json.dump({"sample_ids": sample_ids.tolist(), "block_ranges": {"quality.laplacian": [0, 2]}}, f)
+
+            membership = np.asarray(
+                [
+                    [0.95, 0.05],
+                    [0.80, 0.20],
+                    [0.20, 0.80],
+                    [0.05, 0.95],
+                ],
+                dtype=np.float32,
+            )
+            np.savez(
+                os.path.join(cluster_dir, "slice_result.npz"),
+                sample_ids=sample_ids,
+                membership=membership,
+                hard_assignment=np.asarray([0, 0, 1, 1], dtype=np.int64),
+                slice_weights=membership.mean(axis=0),
+                centers=np.asarray([[0.5, 0.5], [3.0, 3.0]], dtype=np.float32),
+            )
+            with open(os.path.join(cluster_dir, "slice_result_meta.json"), "w", encoding="utf-8") as f:
+                json.dump({"finder": "gmm", "num_slices": 2}, f)
+
+            rows_path = os.path.join(tmpdir, "rows.jsonl")
+            self.assertEqual(
+                response_main(
+                    [
+                        "--projected-dir",
+                        projected_dir,
+                        "--cluster-dir",
+                        cluster_dir,
+                        "--output-path",
+                        rows_path,
+                        "--budget",
+                        "2",
+                        "--subset-manifest-dir",
+                        manifest_dir,
+                    ]
+                ),
+                0,
+            )
+
+            with open(rows_path, "r", encoding="utf-8") as f:
+                rows = [json.loads(line) for line in f if line.strip()]
+            self.assertGreater(len(rows), 0)
+            row = rows[0]
+            self.assertEqual(row["feature_description_mode"], "realized_sample_aggregation")
+
+            with open(row["execution"]["baseline_manifest_path"], "r", encoding="utf-8") as f:
+                baseline_manifest = json.load(f)
+
+            sample_index = {sample_id: index for index, sample_id in enumerate(sample_ids.tolist())}
+            baseline_indices = [sample_index[sample_id] for sample_id in baseline_manifest["sample_ids"]]
+            target_indices = [sample_index[sample_id] for sample_id in row["execution"]["selected_sample_ids"]]
+
+            expected_baseline = projected_matrix[np.asarray(baseline_indices, dtype=np.int64)].mean(axis=0)
+            expected_target = projected_matrix[np.asarray(target_indices, dtype=np.int64)].mean(axis=0)
+            expected_delta = expected_target - expected_baseline
+
+            self.assertTrue(
+                np.allclose(
+                    row["baseline_features_raw"]["quality.laplacian"],
+                    expected_baseline.tolist(),
+                )
+            )
+            self.assertTrue(
+                np.allclose(
+                    row["target_features_raw"]["quality.laplacian"],
+                    expected_target.tolist(),
+                )
+            )
+            self.assertTrue(
+                np.allclose(
+                    row["delta_phi"]["quality.laplacian"],
+                    expected_delta.tolist(),
+                )
+            )
+
     def test_beam_v1_response_and_recommendation_smoke(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             projected_dir = os.path.join(tmpdir, "projected")

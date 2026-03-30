@@ -111,6 +111,43 @@ class RemixResponseDatasetCliTests(unittest.TestCase):
 
         self.assertEqual(args.assembled_feature_dir, "/tmp/assembled_features")
 
+    def test_response_dataset_cli_parser_accepts_coverage_args(self):
+        parser = build_parser()
+        args = parser.parse_args(
+            [
+                "--projected-dir",
+                "/tmp/projected",
+                "--cluster-dir",
+                "/tmp/cluster",
+                "--output-path",
+                "/tmp/rows.jsonl",
+                "--budget",
+                "1000",
+                "--annotation-root",
+                "/tmp/coco_stuff164k",
+                "--baseline-result-path",
+                "/tmp/baseline.json",
+                "--full-result-path",
+                "/tmp/full.json",
+                "--focus-class-gap-threshold",
+                "12.5",
+                "--focus-class-top-k",
+                "18",
+                "--coverage-alpha",
+                "0.4",
+                "--coverage-repair-budget",
+                "96",
+            ]
+        )
+
+        self.assertEqual(args.annotation_root, "/tmp/coco_stuff164k")
+        self.assertEqual(args.baseline_result_path, "/tmp/baseline.json")
+        self.assertEqual(args.full_result_path, "/tmp/full.json")
+        self.assertEqual(args.focus_class_gap_threshold, 12.5)
+        self.assertEqual(args.focus_class_top_k, 18)
+        self.assertEqual(args.coverage_alpha, 0.4)
+        self.assertEqual(args.coverage_repair_budget, 96)
+
 
 if __name__ == "__main__":
     unittest.main()

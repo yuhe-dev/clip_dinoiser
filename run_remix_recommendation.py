@@ -26,7 +26,7 @@ if __package__ in {None, ""}:
     from slice_remix.actions import generate_pairwise_candidates, select_pairwise_directions
     from slice_remix.baseline import estimate_baseline_mixture, load_slice_artifacts
     from slice_remix.dataset import read_jsonl
-    from slice_remix.policy import compute_importance_weights, summarize_target_quotas
+    from slice_remix.policy import compute_importance_weights, materialize_budgeted_subset, summarize_target_quotas
     from slice_remix.portraits import (
         build_feature_label_map,
         compute_portrait_shift,
@@ -45,6 +45,14 @@ if __package__ in {None, ""}:
         build_target_residual_context,
     )
     from slice_remix.recommender import build_recommendation_result, rank_candidates
+    from slice_remix.realized_features import (
+        aggregate_feature_groups_by_indices,
+        build_sample_index,
+        resolve_sample_indices,
+        serialize_feature_groups,
+        subtract_feature_groups,
+        summarize_feature_groups,
+    )
     from slice_remix.surrogate import build_surrogate
 else:
     from .slice_discovery.runtime_compat import ensure_numpy_pickle_compat
@@ -61,7 +69,7 @@ else:
     from .slice_remix.actions import generate_pairwise_candidates, select_pairwise_directions
     from .slice_remix.baseline import estimate_baseline_mixture, load_slice_artifacts
     from .slice_remix.dataset import read_jsonl
-    from .slice_remix.policy import compute_importance_weights, summarize_target_quotas
+    from .slice_remix.policy import compute_importance_weights, materialize_budgeted_subset, summarize_target_quotas
     from .slice_remix.portraits import (
         build_feature_label_map,
         compute_portrait_shift,
@@ -80,6 +88,14 @@ else:
         build_target_residual_context,
     )
     from .slice_remix.recommender import build_recommendation_result, rank_candidates
+    from .slice_remix.realized_features import (
+        aggregate_feature_groups_by_indices,
+        build_sample_index,
+        resolve_sample_indices,
+        serialize_feature_groups,
+        subtract_feature_groups,
+        summarize_feature_groups,
+    )
     from .slice_remix.surrogate import build_surrogate
 
 
@@ -317,9 +333,14 @@ def run(args: argparse.Namespace, log_fn=_progress) -> int:
         feature_groups,
         schema_path=os.path.abspath(args.schema_path) if args.schema_path else None,
     )
+    sample_index = build_sample_index(artifacts.sample_ids)
     rng = np.random.default_rng(int(args.baseline_seed))
     sample_indices = rng.choice(len(artifacts.sample_ids), size=int(args.budget), replace=False)
     baseline_mixture = estimate_baseline_mixture(artifacts.membership, sample_indices.tolist())
+    baseline_realized_features = aggregate_feature_groups_by_indices(
+        feature_groups,
+        sample_indices.tolist(),
+    )
     amplitudes = _parse_float_csv(args.amplitudes)
     search_tree_trace: dict[str, object] | None = None
     search_tree_slice_ids: list[str] = []
@@ -412,7 +433,22 @@ def run(args: argparse.Namespace, log_fn=_progress) -> int:
         target_mixture = np.asarray(candidate.target_mixture, dtype=np.float32)
         weights = compute_importance_weights(artifacts.membership, target_mixture)
         selection_seed = int(args.baseline_seed) + candidate_index
-        delta_phi = compute_portrait_shift(portraits, baseline_mixture, target_mixture)
+        materialization = materialize_budgeted_subset(
+            artifacts.sample_ids,
+            weights,
+            budget=int(args.budget),
+            seed=selection_seed,
+            memberships=artifacts.membership,
+            target_mixture=target_mixture,
+        )
+        selected_ids = list(materialization.selected_ids)
+        selected_indices = list(materialization.selected_indices) or resolve_sample_indices(sample_index, selected_ids)
+        target_realized_features = aggregate_feature_groups_by_indices(
+            feature_groups,
+            selected_indices,
+        )
+        delta_phi = subtract_feature_groups(target_realized_features, baseline_realized_features)
+        expected_delta_phi = compute_portrait_shift(portraits, baseline_mixture, target_mixture)
         candidate_rows.append(
             {
                 "candidate_id": f"cand_{args.baseline_seed}_{candidate_index}",
@@ -420,6 +456,12 @@ def run(args: argparse.Namespace, log_fn=_progress) -> int:
                 "target_mixture": list(candidate.target_mixture),
                 "delta_q": list(candidate.delta_q),
                 "delta_phi": delta_phi,
+                "feature_description_mode": "realized_sample_aggregation",
+                "baseline_features_raw": serialize_feature_groups(baseline_realized_features),
+                "target_features_raw": serialize_feature_groups(target_realized_features),
+                "baseline_features_summary": summarize_feature_groups(baseline_realized_features),
+                "target_features_summary": summarize_feature_groups(target_realized_features),
+                "expected_delta_phi": serialize_feature_groups(expected_delta_phi),
                 "context": {
                     "budget": int(args.budget),
                     "baseline_seed": int(args.baseline_seed),
@@ -446,6 +488,14 @@ def run(args: argparse.Namespace, log_fn=_progress) -> int:
                     "expected_slice_quotas": summarize_target_quotas(target_mixture, int(args.budget)),
                     "max_weight_sample_id": artifacts.sample_ids[int(np.argmax(weights))],
                     "selection_seed": selection_seed,
+                    "selected_sample_ids": selected_ids,
+                    "realized_mixture": [float(value) for value in np.asarray(materialization.realized_mixture, dtype=np.float32).tolist()],
+                    "mixture_l1_before_coverage_repair": (
+                        None if materialization.mixture_l1_before_coverage_repair is None
+                        else float(materialization.mixture_l1_before_coverage_repair)
+                    ),
+                    "mixture_l1_after_coverage_repair": float(materialization.mixture_l1_after_coverage_repair),
+                    "accepted_coverage_swaps": int(materialization.accepted_coverage_swaps),
                 },
             }
         )
