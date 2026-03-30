@@ -170,3 +170,12 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
+
+/data/coco_stuff164k_eval_cache_slide/
+/data/coco_stuff164k_eval_cache_slide_smoke/
+
+/data/coco_stuff164k_eval_cache_slide/
+/data/coco_stuff164k_eval_cache_slide_smoke/
+
+/artifacts/manual_target_review_k24_seed0/runs_policy_v3/
+/artifacts/manual_target_review_k24_seed0/runs_policy_v3_cached_slide/
