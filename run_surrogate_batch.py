@@ -6,6 +6,7 @@ import os
 import subprocess
 import sys
 import time
+from typing import Any
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -44,6 +45,59 @@ def filter_rows(rows: list[dict[str, object]], *, split: str, limit: int) -> lis
     return selected
 
 
+def _launch_row(
+    row: dict[str, object],
+    *,
+    args: argparse.Namespace,
+    gpu_id: str,
+    port: int,
+    runs_root: str,
+    log_fn,
+) -> dict[str, Any] | None:
+    experiment_id = str(row["experiment_id"])
+    out_dir = os.path.join(runs_root, experiment_id)
+    os.makedirs(out_dir, exist_ok=True)
+    result_path = os.path.join(out_dir, "result.json")
+    log_path = os.path.join(out_dir, "stdout.log")
+    if os.path.exists(result_path):
+        log_fn(f"skip experiment_id={experiment_id} reason=result_exists")
+        return None
+
+    command = [
+        str(args.python_bin),
+        "-m",
+        "torch.distributed.run",
+        "--nproc_per_node=1",
+        "--master_port",
+        str(port),
+        "run_remix_training_experiment.py",
+        "--config",
+        str(args.config),
+        "--subset-manifest",
+        str(row["manifest_path"]),
+        "--output-dir",
+        out_dir,
+        "--result-name",
+        "result.json",
+        "--seed",
+        str(int(row.get("training_seed", 0))),
+    ]
+    log_fn(f"launch gpu={gpu_id} port={port} experiment_id={experiment_id}")
+    with open(log_path, "w", encoding="utf-8") as log_file:
+        process = subprocess.Popen(
+            command,
+            cwd=os.getcwd(),
+            env={**os.environ, "CUDA_VISIBLE_DEVICES": gpu_id, "OMP_NUM_THREADS": "4", "MKL_NUM_THREADS": "4"},
+            stdout=log_file,
+            stderr=subprocess.STDOUT,
+        )
+    return {
+        "process": process,
+        "gpu_id": gpu_id,
+        "experiment_id": experiment_id,
+    }
+
+
 def run(args: argparse.Namespace, log_fn=_progress) -> int:
     rows = filter_rows(
         read_jsonl(os.path.abspath(args.dataset_jsonl)),
@@ -56,78 +110,52 @@ def run(args: argparse.Namespace, log_fn=_progress) -> int:
     os.makedirs(args.runs_root, exist_ok=True)
 
     pending = [row for row in rows if row.get("manifest_path")]
-    active: list[dict[str, object]] = []
+    active: dict[int, dict[str, Any]] = {}
     cursor = 0
     finished = 0
+    runs_root = os.path.abspath(args.runs_root)
     while cursor < len(pending) or active:
-        while cursor < len(pending) and len(active) < len(gpu_ids):
+        while cursor < len(pending):
+            free_slots = [slot for slot in range(len(gpu_ids)) if slot not in active]
+            if not free_slots:
+                break
             row = pending[cursor]
-            slot = len(active)
+            slot = free_slots[0]
             gpu_id = gpu_ids[slot]
             port = int(args.master_port_base) + slot
-            experiment_id = str(row["experiment_id"])
-            out_dir = os.path.join(os.path.abspath(args.runs_root), experiment_id)
-            os.makedirs(out_dir, exist_ok=True)
-            result_path = os.path.join(out_dir, "result.json")
-            log_path = os.path.join(out_dir, "stdout.log")
-            if os.path.exists(result_path):
-                log_fn(f"skip experiment_id={experiment_id} reason=result_exists")
+            launched = _launch_row(
+                row,
+                args=args,
+                gpu_id=gpu_id,
+                port=port,
+                runs_root=runs_root,
+                log_fn=log_fn,
+            )
+            if launched is None:
                 finished += 1
                 cursor += 1
                 continue
-
-            command = [
-                str(args.python_bin),
-                "-m",
-                "torch.distributed.run",
-                "--nproc_per_node=1",
-                "--master_port",
-                str(port),
-                "run_remix_training_experiment.py",
-                "--config",
-                str(args.config),
-                "--subset-manifest",
-                str(row["manifest_path"]),
-                "--output-dir",
-                out_dir,
-                "--result-name",
-                "result.json",
-                "--seed",
-                str(int(row.get("training_seed", 0))),
-            ]
-            log_fn(f"launch gpu={gpu_id} port={port} experiment_id={experiment_id}")
-            with open(log_path, "w", encoding="utf-8") as log_file:
-                process = subprocess.Popen(
-                    command,
-                    cwd=os.getcwd(),
-                    env={**os.environ, "CUDA_VISIBLE_DEVICES": gpu_id, "OMP_NUM_THREADS": "4", "MKL_NUM_THREADS": "4"},
-                    stdout=log_file,
-                    stderr=subprocess.STDOUT,
-                )
-            active.append(
-                {
-                    "process": process,
-                    "gpu_id": gpu_id,
-                    "experiment_id": experiment_id,
-                }
-            )
+            active[slot] = launched
             cursor += 1
 
+        if not active:
+            continue
         time.sleep(2.0)
-        next_active: list[dict[str, object]] = []
-        for item in active:
+        finished_slots: list[int] = []
+        for slot, item in active.items():
             process = item["process"]
             code = process.poll()
             if code is None:
-                next_active.append(item)
                 continue
             finished += 1
+            finished_slots.append(slot)
             experiment_id = str(item["experiment_id"])
             if int(code) == 0:
                 log_fn(f"done experiment_id={experiment_id}")
             else:
                 log_fn(f"failed experiment_id={experiment_id} exit_code={code}")
-        active = next_active
+        for slot in finished_slots:
+            active.pop(slot, None)
 
     log_fn(f"all jobs finished count={finished}")
     return 0
