@@ -6,8 +6,12 @@
 # Copyright (c) 2021-22, NVIDIA Corporation & affiliates. All Rights Reserved.
 # ------------------------------------------------------------------------------
 custom_imports = dict(
-    imports=["segmentation.datasets.coco_object", "segmentation.datasets.pascal_voc",
-             "segmentation.datasets.pascal_voc20",
-             ],
+    imports=[
+        "segmentation.datasets.coco_object",
+        "segmentation.datasets.coco_stuff",
+        "segmentation.datasets.coco_stuff_cached",
+        "segmentation.datasets.pascal_voc",
+        "segmentation.datasets.pascal_voc20",
+    ],
     allow_failed_imports=False,
 )
