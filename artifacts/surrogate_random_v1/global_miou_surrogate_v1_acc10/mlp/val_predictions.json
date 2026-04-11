@@ -1,0 +1,114 @@
+[
+  {
+    "experiment_id": "rand_subset_s0011_t00",
+    "split": "val",
+    "actual": 24.28,
+    "predicted": 24.31002961091341,
+    "error": 0.0300296109134095
+  },
+  {
+    "experiment_id": "rand_subset_s0013_t00",
+    "split": "val",
+    "actual": 24.29,
+    "predicted": 24.29868407459856,
+    "error": 0.008684074598562574
+  },
+  {
+    "experiment_id": "rand_subset_s0021_t00",
+    "split": "val",
+    "actual": 24.28,
+    "predicted": 24.296597971680118,
+    "error": 0.016597971680116785
+  },
+  {
+    "experiment_id": "rand_subset_s0022_t00",
+    "split": "val",
+    "actual": 24.31,
+    "predicted": 24.300071467876315,
+    "error": -0.009928532123684164
+  },
+  {
+    "experiment_id": "rand_subset_s0034_t00",
+    "split": "val",
+    "actual": 24.32,
+    "predicted": 24.31167718013838,
+    "error": -0.008322819861621866
+  },
+  {
+    "experiment_id": "rand_subset_s0043_t00",
+    "split": "val",
+    "actual": 24.32,
+    "predicted": 24.299774413029233,
+    "error": -0.02022558697076704
+  },
+  {
+    "experiment_id": "rand_subset_s0056_t00",
+    "split": "val",
+    "actual": 24.3,
+    "predicted": 24.288461753641357,
+    "error": -0.011538246358643534
+  },
+  {
+    "experiment_id": "rand_subset_s0063_t00",
+    "split": "val",
+    "actual": 24.32,
+    "predicted": 24.286173590451284,
+    "error": -0.033826409548716185
+  },
+  {
+    "experiment_id": "rand_subset_s0078_t00",
+    "split": "val",
+    "actual": 24.31,
+    "predicted": 24.302052420209204,
+    "error": -0.007947579790794634
+  },
+  {
+    "experiment_id": "rand_subset_s0086_t00",
+    "split": "val",
+    "actual": 24.3,
+    "predicted": 24.29663728134318,
+    "error": -0.0033627186568203626
+  },
+  {
+    "experiment_id": "rand_subset_s0099_t00",
+    "split": "val",
+    "actual": 24.28,
+    "predicted": 24.29218476316688,
+    "error": 0.012184763166878554
+  },
+  {
+    "experiment_id": "rand_subset_s0104_t00",
+    "split": "val",
+    "actual": 24.32,
+    "predicted": 24.309059848515,
+    "error": -0.010940151485002048
+  },
+  {
+    "experiment_id": "rand_subset_s0122_t00",
+    "split": "val",
+    "actual": 24.32,
+    "predicted": 24.32623772519604,
+    "error": 0.0062377251960406
+  },
+  {
+    "experiment_id": "rand_subset_s0129_t00",
+    "split": "val",
+    "actual": 24.32,
+    "predicted": 24.321477125178834,
+    "error": 0.0014771251788339157
+  },
+  {
+    "experiment_id": "rand_subset_s0133_t00",
+    "split": "val",
+    "actual": 24.31,
+    "predicted": 24.283486610345857,
+    "error": -0.026513389654141406
+  },
+  {
+    "experiment_id": "rand_subset_s0137_t00",
+    "split": "val",
+    "actual": 24.27,
+    "predicted": 24.286781510251807,
+    "error": 0.016781510251806964
+  }
+]

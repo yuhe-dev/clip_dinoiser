@@ -1,0 +1,1492 @@
+{
+  "dataset_jsonl": "/Users/yuhe/research/UIST 2026/clip_dinoiser/artifacts/surrogate_random_v1/random_subsets_labeled.jsonl",
+  "prepared_dataset": "/Users/yuhe/research/UIST 2026/clip_dinoiser/artifacts/surrogate_random_v1/global_miou_surrogate_v1_acc10/prepared_surrogate_global_miou.jsonl",
+  "target_key": "global_miou",
+  "selection_metric": "acc_at_10pct_range",
+  "splits": {
+    "train": 160,
+    "test": 16,
+    "val": 16
+  },
+  "train_target_range": 0.14000000000000057,
+  "tolerance_deltas": {
+    "5pct_range": 0.007000000000000029,
+    "10pct_range": 0.014000000000000058,
+    "20pct_range": 0.028000000000000115
+  },
+  "models": {
+    "ridge": {
+      "candidate_name": "alpha=0.1",
+      "val_metrics": {
+        "mae": 0.03413846419433697,
+        "rmse": 0.04097425835500472,
+        "r2": -4.662658774995187,
+        "spearman": 0.2630650112576428,
+        "acc_within_tolerance": 0.25,
+        "nmae_by_train_range": 0.24384617281669166,
+        "acc_at_5pct_range": 0.125,
+        "acc_at_10pct_range": 0.25,
+        "acc_at_20pct_range": 0.4375,
+        "skill_vs_baseline_mae": -0.8949364340308137
+      },
+      "test_metrics": {
+        "mae": 0.033519248189378015,
+        "rmse": 0.04073102007291413,
+        "r2": -2.1813340451095353,
+        "spearman": 0.32293955151603926,
+        "acc_within_tolerance": 0.25,
+        "nmae_by_train_range": 0.23942320135269912,
+        "acc_at_5pct_range": 0.0,
+        "acc_at_10pct_range": 0.25,
+        "acc_at_20pct_range": 0.5,
+        "skill_vs_baseline_mae": -0.8042320303786639
+      },
+      "model_artifact_path": "/Users/yuhe/research/UIST 2026/clip_dinoiser/artifacts/surrogate_random_v1/global_miou_surrogate_v1_acc10/ridge/best_model.json",
+      "candidates": [
+        {
+          "candidate_name": "alpha=0.0001",
+          "val_metrics": {
+            "mae": 0.06590119210789602,
+            "rmse": 0.07988871765775604,
+            "r2": -20.52628518450867,
+            "spearman": 0.16574616316232985,
+            "acc_within_tolerance": 0.125,
+            "nmae_by_train_range": 0.47072280077068396,
+            "acc_at_5pct_range": 0.0625,
+            "acc_at_10pct_range": 0.125,
+            "acc_at_20pct_range": 0.25,
+            "skill_vs_baseline_mae": -2.658001990377513
+          },
+          "test_metrics": {
+            "mae": 0.08047834279407917,
+            "rmse": 0.08695502207436206,
+            "r2": -13.499333491924753,
+            "spearman": -0.04464602094691787,
+            "acc_within_tolerance": 0.0,
+            "nmae_by_train_range": 0.5748453056719918,
+            "acc_at_5pct_range": 0.0,
+            "acc_at_10pct_range": 0.0,
+            "acc_at_20pct_range": 0.0625,
+            "skill_vs_baseline_mae": -3.3318872487982834
+          }
+        },
+        {
+          "candidate_name": "alpha=0.001",
+          "val_metrics": {
+            "mae": 0.06165259840248938,
+            "rmse": 0.07292985814443523,
+            "r2": -16.939441864238447,
+            "spearman": 0.2037613381995615,
+            "acc_within_tolerance": 0.0625,
+            "nmae_by_train_range": 0.44037570287492234,
+            "acc_at_5pct_range": 0.0625,
+            "acc_at_10pct_range": 0.0625,
+            "acc_at_20pct_range": 0.25,
+            "skill_vs_baseline_mae": -2.4221737187851273
+          },
+          "test_metrics": {
+            "mae": 0.0734620207263228,
+            "rmse": 0.0791933090960957,
+            "r2": -11.02640099349071,
+            "spearman": -0.03869321815399549,
+            "acc_within_tolerance": 0.0,
+            "nmae_by_train_range": 0.5247287194737321,
+            "acc_at_5pct_range": 0.0,
+            "acc_at_10pct_range": 0.0,
+            "acc_at_20pct_range": 0.0625,
+            "skill_vs_baseline_mae": -2.9542214688685813
+          }
+        },
+        {
+          "candidate_name": "alpha=0.01",
+          "val_metrics": {
+            "mae": 0.043647912404211286,
+            "rmse": 0.04923346404371388,
+            "r2": -7.175587606408344,
+            "spearman": 0.23721469223232533,
+            "acc_within_tolerance": 0.125,
+            "nmae_by_train_range": 0.3117708028872222,
+            "acc_at_5pct_range": 0.0625,
+            "acc_at_10pct_range": 0.125,
+            "acc_at_20pct_range": 0.3125,
+            "skill_vs_baseline_mae": -1.4227809140238281
+          },
+          "test_metrics": {
+            "mae": 0.046503899397099646,
+            "rmse": 0.05412219778150187,
+            "r2": -4.617066269147691,
+            "spearman": 0.022323010473458936,
+            "acc_within_tolerance": 0.1875,
+            "nmae_by_train_range": 0.33217070997928183,
+            "acc_at_5pct_range": 0.0,
+            "acc_at_10pct_range": 0.1875,
+            "acc_at_20pct_range": 0.25,
+            "skill_vs_baseline_mae": -1.503153541980177
+          }
+        },
+        {
+          "candidate_name": "alpha=0.1",
+          "val_metrics": {
+            "mae": 0.03413846419433697,
+            "rmse": 0.04097425835500472,
+            "r2": -4.662658774995187,
+            "spearman": 0.2630650112576428,
+            "acc_within_tolerance": 0.25,
+            "nmae_by_train_range": 0.24384617281669166,
+            "acc_at_5pct_range": 0.125,
+            "acc_at_10pct_range": 0.25,
+            "acc_at_20pct_range": 0.4375,
+            "skill_vs_baseline_mae": -0.8949364340308137
+          },
+          "test_metrics": {
+            "mae": 0.033519248189378015,
+            "rmse": 0.04073102007291413,
+            "r2": -2.1813340451095353,
+            "spearman": 0.32293955151603926,
+            "acc_within_tolerance": 0.25,
+            "nmae_by_train_range": 0.23942320135269912,
+            "acc_at_5pct_range": 0.0,
+            "acc_at_10pct_range": 0.25,
+            "acc_at_20pct_range": 0.5,
+            "skill_vs_baseline_mae": -0.8042320303786639
+          }
+        },
+        {
+          "candidate_name": "alpha=1",
+          "val_metrics": {
+            "mae": 0.15960163914164793,
+            "rmse": 0.1614125683036257,
+            "r2": -86.87652707287944,
+            "spearman": 0.30260079329636363,
+            "acc_within_tolerance": 0.0,
+            "nmae_by_train_range": 1.1400117081546235,
+            "acc_at_5pct_range": 0.0,
+            "acc_at_10pct_range": 0.0,
+            "acc_at_20pct_range": 0.0,
+            "skill_vs_baseline_mae": -7.859067567272586
+          },
+          "test_metrics": {
+            "mae": 0.14227051611333041,
+            "rmse": 0.14593559556153834,
+            "r2": -39.83957079615536,
+            "spearman": 0.537240452061245,
+            "acc_within_tolerance": 0.0,
+            "nmae_by_train_range": 1.0162179722380702,
+            "acc_at_5pct_range": 0.0,
+            "acc_at_10pct_range": 0.0,
+            "acc_at_20pct_range": 0.0,
+            "skill_vs_baseline_mae": -6.6579588151836075
+          }
+        },
+        {
+          "candidate_name": "alpha=10",
+          "val_metrics": {
+            "mae": 1.4337123151660527,
+            "rmse": 1.4338948926492645,
+            "r2": -6933.782189333566,
+            "spearman": 0.26458561825913207,
+            "acc_within_tolerance": 0.0,
+            "nmae_by_train_range": 10.240802251186048,
+            "acc_at_5pct_range": 0.0,
+            "acc_at_10pct_range": 0.0,
+            "acc_at_20pct_range": 0.0,
+            "skill_vs_baseline_mae": -78.5816029233528
+          },
+          "test_metrics": {
+            "mae": 1.4211387778398,
+            "rmse": 1.4213362649853547,
+            "r2": -3872.93539482858,
+            "spearman": 0.5417050541559368,
+            "acc_within_tolerance": 0.0,
+            "nmae_by_train_range": 10.150991270284244,
+            "acc_at_5pct_range": 0.0,
+            "acc_at_10pct_range": 0.0,
+            "acc_at_20pct_range": 0.0,
+            "skill_vs_baseline_mae": -75.49527483746746
+          }
+        }
+      ]
+    },
+    "pcr": {
+      "candidate_name": "k=16,alpha=0.001",
+      "val_metrics": {
+        "mae": 0.015269095037322211,
+        "rmse": 0.01820764869630621,
+        "r2": -0.1181650670397354,
+        "spearman": 0.3740693223663591,
+        "acc_within_tolerance": 0.5625,
+        "nmae_by_train_range": 0.10906496455230107,
+        "acc_at_5pct_range": 0.25,
+        "acc_at_10pct_range": 0.5625,
+        "acc_at_20pct_range": 0.875,
+        "skill_vs_baseline_mae": 0.15245266054761097
+      },
+      "test_metrics": {
+        "mae": 0.017489904033783255,
+        "rmse": 0.02347955278855236,
+        "r2": -0.05715420361430423,
+        "spearman": 0.3050811431372721,
+        "acc_within_tolerance": 0.625,
+        "nmae_by_train_range": 0.12492788595559416,
+        "acc_at_5pct_range": 0.3125,
+        "acc_at_10pct_range": 0.625,
+        "acc_at_20pct_range": 0.75,
+        "skill_vs_baseline_mae": 0.058575392630657475
+      },
+      "model_artifact_path": "/Users/yuhe/research/UIST 2026/clip_dinoiser/artifacts/surrogate_random_v1/global_miou_surrogate_v1_acc10/pcr/best_model.json",
+      "candidates": [
+        {
+          "candidate_name": "k=4,alpha=0.001",
+          "val_metrics": {
+            "mae": 0.018421876370469326,
+            "rmse": 0.020691013777528057,
+            "r2": -0.44398183257335533,
+            "spearman": 0.26154440425615355,
+            "acc_within_tolerance": 0.25,
+            "nmae_by_train_range": 0.1315848312176375,
+            "acc_at_5pct_range": 0.125,
+            "acc_at_10pct_range": 0.25,
+            "acc_at_20pct_range": 0.875,
+            "skill_vs_baseline_mae": -0.02254994597572968
+          },
+          "test_metrics": {
+            "mae": 0.01792671938544288,
+            "rmse": 0.023884553815987888,
+            "r2": -0.09393864579132094,
+            "spearman": 0.1785840837876715,
+            "acc_within_tolerance": 0.5,
+            "nmae_by_train_range": 0.12804799561030578,
+            "acc_at_5pct_range": 0.25,
+            "acc_at_10pct_range": 0.5,
+            "acc_at_20pct_range": 0.8125,
+            "skill_vs_baseline_mae": 0.03506304401314986
+          }
+        },
+        {
+          "candidate_name": "k=4,alpha=0.01",
+          "val_metrics": {
+            "mae": 0.01902059672751455,
+            "rmse": 0.02148984492919834,
+            "r2": -0.5576316123944223,
+            "spearman": 0.26154440425615355,
+            "acc_within_tolerance": 0.25,
+            "nmae_by_train_range": 0.13586140519653195,
+            "acc_at_5pct_range": 0.125,
+            "acc_at_10pct_range": 0.25,
+            "acc_at_20pct_range": 0.875,
+            "skill_vs_baseline_mae": -0.05578333960183013
+          },
+          "test_metrics": {
+            "mae": 0.017787690855320504,
+            "rmse": 0.023511279723192415,
+            "r2": -0.060013110118994906,
+            "spearman": 0.1785840837876715,
+            "acc_within_tolerance": 0.5,
+            "nmae_by_train_range": 0.12705493468086024,
+            "acc_at_5pct_range": 0.25,
+            "acc_at_10pct_range": 0.5,
+            "acc_at_20pct_range": 0.8125,
+            "skill_vs_baseline_mae": 0.04254649727457305
+          }
+        },
+        {
+          "candidate_name": "k=4,alpha=0.1",
+          "val_metrics": {
+            "mae": 0.027078417259111642,
+            "rmse": 0.03168067178946594,
+            "r2": -2.385220435417167,
+            "spearman": 0.26154440425615355,
+            "acc_within_tolerance": 0.25,
+            "nmae_by_train_range": 0.19341726613651095,
+            "acc_at_5pct_range": 0.25,
+            "acc_at_10pct_range": 0.25,
+            "acc_at_20pct_range": 0.375,
+            "skill_vs_baseline_mae": -0.5030517819454596
+          },
+          "test_metrics": {
+            "mae": 0.020075668641343913,
+            "rmse": 0.024106482408891017,
+            "r2": -0.11436223593503425,
+            "spearman": 0.1785840837876715,
+            "acc_within_tolerance": 0.375,
+            "nmae_by_train_range": 0.14339763315245593,
+            "acc_at_5pct_range": 0.1875,
+            "acc_at_10pct_range": 0.375,
+            "acc_at_20pct_range": 0.75,
+            "skill_vs_baseline_mae": -0.08060789995461182
+          }
+        },
+        {
+          "candidate_name": "k=8,alpha=0.001",
+          "val_metrics": {
+            "mae": 0.01774605190558365,
+            "rmse": 0.02037156676089258,
+            "r2": -0.3997389653114538,
+            "spearman": 0.04105638904021015,
+            "acc_within_tolerance": 0.4375,
+            "nmae_by_train_range": 0.12675751361131127,
+            "acc_at_5pct_range": 0.25,
+            "acc_at_10pct_range": 0.4375,
+            "acc_at_20pct_range": 0.8125,
+            "skill_vs_baseline_mae": 0.014963294052615983
+          },
+          "test_metrics": {
+            "mae": 0.017682638191982125,
+            "rmse": 0.022534133043311026,
+            "r2": 0.026265835838988782,
+            "spearman": 0.32442775221426984,
+            "acc_within_tolerance": 0.5625,
+            "nmae_by_train_range": 0.12630455851415753,
+            "acc_at_5pct_range": 0.25,
+            "acc_at_10pct_range": 0.5625,
+            "acc_at_20pct_range": 0.75,
+            "skill_vs_baseline_mae": 0.048201140212887905
+          }
+        },
+        {
+          "candidate_name": "k=8,alpha=0.01",
+          "val_metrics": {
+            "mae": 0.0182584786947384,
+            "rmse": 0.02115160952869519,
+            "r2": -0.5089853745392139,
+            "spearman": 0.04105638904021015,
+            "acc_within_tolerance": 0.375,
+            "nmae_by_train_range": 0.13041770496241661,
+            "acc_at_5pct_range": 0.1875,
+            "acc_at_10pct_range": 0.375,
+            "acc_at_20pct_range": 0.75,
+            "skill_vs_baseline_mae": -0.013480170393094015
+          },
+          "test_metrics": {
+            "mae": 0.017341035987471276,
+            "rmse": 0.022158328341912267,
+            "r2": 0.05847319987678923,
+            "spearman": 0.32442775221426984,
+            "acc_within_tolerance": 0.5625,
+            "nmae_by_train_range": 0.12386454276765146,
+            "acc_at_5pct_range": 0.25,
+            "acc_at_10pct_range": 0.5625,
+            "acc_at_20pct_range": 0.75,
+            "skill_vs_baseline_mae": 0.0665884750225555
+          }
+        },
+        {
+          "candidate_name": "k=8,alpha=0.1",
+          "val_metrics": {
+            "mae": 0.02646848662599055,
+            "rmse": 0.031244246761486915,
+            "r2": -2.2925949493719813,
+            "spearman": 0.04105638904021015,
+            "acc_within_tolerance": 0.3125,
+            "nmae_by_train_range": 0.18906061875707458,
+            "acc_at_5pct_range": 0.1875,
+            "acc_at_10pct_range": 0.3125,
+            "acc_at_20pct_range": 0.4375,
+            "skill_vs_baseline_mae": -0.4691961353541767
+          },
+          "test_metrics": {
+            "mae": 0.018651327481932656,
+            "rmse": 0.02298440069397496,
+            "r2": -0.013036440950330297,
+            "spearman": 0.32442775221426984,
+            "acc_within_tolerance": 0.4375,
+            "nmae_by_train_range": 0.13322376772808986,
+            "acc_at_5pct_range": 0.1875,
+            "acc_at_10pct_range": 0.4375,
+            "acc_at_20pct_range": 0.8125,
+            "skill_vs_baseline_mae": -0.003940251340379675
+          }
+        },
+        {
+          "candidate_name": "k=16,alpha=0.001",
+          "val_metrics": {
+            "mae": 0.015269095037322211,
+            "rmse": 0.01820764869630621,
+            "r2": -0.1181650670397354,
+            "spearman": 0.3740693223663591,
+            "acc_within_tolerance": 0.5625,
+            "nmae_by_train_range": 0.10906496455230107,
+            "acc_at_5pct_range": 0.25,
+            "acc_at_10pct_range": 0.5625,
+            "acc_at_20pct_range": 0.875,
+            "skill_vs_baseline_mae": 0.15245266054761097
+          },
+          "test_metrics": {
+            "mae": 0.017489904033783255,
+            "rmse": 0.02347955278855236,
+            "r2": -0.05715420361430423,
+            "spearman": 0.3050811431372721,
+            "acc_within_tolerance": 0.625,
+            "nmae_by_train_range": 0.12492788595559416,
+            "acc_at_5pct_range": 0.3125,
+            "acc_at_10pct_range": 0.625,
+            "acc_at_20pct_range": 0.75,
+            "skill_vs_baseline_mae": 0.058575392630657475
+          }
+        },
+        {
+          "candidate_name": "k=16,alpha=0.01",
+          "val_metrics": {
+            "mae": 0.015952439535443785,
+            "rmse": 0.01886127536222873,
+            "r2": -0.19988686854012094,
+            "spearman": 0.3740693223663591,
+            "acc_within_tolerance": 0.5625,
+            "nmae_by_train_range": 0.11394599668174087,
+            "acc_at_5pct_range": 0.1875,
+            "acc_at_10pct_range": 0.5625,
+            "acc_at_20pct_range": 0.875,
+            "skill_vs_baseline_mae": 0.11452200323644013
+          },
+          "test_metrics": {
+            "mae": 0.01714831266989103,
+            "rmse": 0.023082596627543486,
+            "r2": -0.021710894156498517,
+            "spearman": 0.3050811431372721,
+            "acc_within_tolerance": 0.5625,
+            "nmae_by_train_range": 0.1224879476420783,
+            "acc_at_5pct_range": 0.25,
+            "acc_at_10pct_range": 0.5625,
+            "acc_at_20pct_range": 0.75,
+            "skill_vs_baseline_mae": 0.0769621439251088
+          }
+        },
+        {
+          "candidate_name": "k=16,alpha=0.1",
+          "val_metrics": {
+            "mae": 0.02430030690530982,
+            "rmse": 0.028338222286074785,
+            "r2": -1.7085907725660232,
+            "spearman": 0.3740693223663591,
+            "acc_within_tolerance": 0.25,
+            "nmae_by_train_range": 0.1735736207522123,
+            "acc_at_5pct_range": 0.125,
+            "acc_at_10pct_range": 0.25,
+            "acc_at_20pct_range": 0.625,
+            "skill_vs_baseline_mae": -0.34884617687753816
+          },
+          "test_metrics": {
+            "mae": 0.018920784076200903,
+            "rmse": 0.02352112510899168,
+            "r2": -0.06090106034883647,
+            "spearman": 0.3050811431372721,
+            "acc_within_tolerance": 0.4375,
+            "nmae_by_train_range": 0.13514845768714875,
+            "acc_at_5pct_range": 0.25,
+            "acc_at_10pct_range": 0.4375,
+            "acc_at_20pct_range": 0.8125,
+            "skill_vs_baseline_mae": -0.018444222772816987
+          }
+        },
+        {
+          "candidate_name": "k=32,alpha=0.001",
+          "val_metrics": {
+            "mae": 0.01560078132814402,
+            "rmse": 0.01845836520285209,
+            "r2": -0.14917100087270652,
+            "spearman": 0.36494568035742353,
+            "acc_within_tolerance": 0.5,
+            "nmae_by_train_range": 0.1114341523438854,
+            "acc_at_5pct_range": 0.25,
+            "acc_at_10pct_range": 0.5,
+            "acc_at_20pct_range": 0.875,
+            "skill_vs_baseline_mae": 0.1340416261915005
+          },
+          "test_metrics": {
+            "mae": 0.017623065774140967,
+            "rmse": 0.02349146316880213,
+            "r2": -0.0582269925368295,
+            "spearman": 0.36907377316118767,
+            "acc_within_tolerance": 0.5625,
+            "nmae_by_train_range": 0.12587904124386354,
+            "acc_at_5pct_range": 0.3125,
+            "acc_at_10pct_range": 0.5625,
+            "acc_at_20pct_range": 0.75,
+            "skill_vs_baseline_mae": 0.0514077295668276
+          }
+        },
+        {
+          "candidate_name": "k=32,alpha=0.01",
+          "val_metrics": {
+            "mae": 0.016113258473121395,
+            "rmse": 0.019028623284469505,
+            "r2": -0.22127347892199567,
+            "spearman": 0.36494568035742353,
+            "acc_within_tolerance": 0.4375,
+            "nmae_by_train_range": 0.11509470337943807,
+            "acc_at_5pct_range": 0.25,
+            "acc_at_10pct_range": 0.4375,
+            "acc_at_20pct_range": 0.875,
+            "skill_vs_baseline_mae": 0.10559536662640823
+          },
+          "test_metrics": {
+            "mae": 0.017483898061426473,
+            "rmse": 0.023124468926305396,
+            "r2": -0.025421064866372634,
+            "spearman": 0.36907377316118767,
+            "acc_within_tolerance": 0.5625,
+            "nmae_by_train_range": 0.12488498615304573,
+            "acc_at_5pct_range": 0.3125,
+            "acc_at_10pct_range": 0.5625,
+            "acc_at_20pct_range": 0.75,
+            "skill_vs_baseline_mae": 0.058898674574167975
+          }
+        },
+        {
+          "candidate_name": "k=32,alpha=0.1",
+          "val_metrics": {
+            "mae": 0.02406864998531799,
+            "rmse": 0.027944786727078983,
+            "r2": -1.6339030689962937,
+            "spearman": 0.36494568035742353,
+            "acc_within_tolerance": 0.3125,
+            "nmae_by_train_range": 0.17191892846655638,
+            "acc_at_5pct_range": 0.125,
+            "acc_at_10pct_range": 0.3125,
+            "acc_at_20pct_range": 0.5625,
+            "skill_vs_baseline_mae": -0.3359875100263008
+          },
+          "test_metrics": {
+            "mae": 0.019961481696576522,
+            "rmse": 0.02385193182104003,
+            "r2": -0.09095244051282214,
+            "spearman": 0.36907377316118767,
+            "acc_within_tolerance": 0.375,
+            "nmae_by_train_range": 0.14258201211840316,
+            "acc_at_5pct_range": 0.25,
+            "acc_at_10pct_range": 0.375,
+            "acc_at_20pct_range": 0.75,
+            "skill_vs_baseline_mae": -0.07446158837756123
+          }
+        },
+        {
+          "candidate_name": "k=64,alpha=0.001",
+          "val_metrics": {
+            "mae": 0.022773865618555655,
+            "rmse": 0.026690238544280074,
+            "r2": -1.4027196493932959,
+            "spearman": -0.04105638904021015,
+            "acc_within_tolerance": 0.25,
+            "nmae_by_train_range": 0.1626704687039683,
+            "acc_at_5pct_range": 0.125,
+            "acc_at_10pct_range": 0.25,
+            "acc_at_20pct_range": 0.625,
+            "skill_vs_baseline_mae": -0.26411743242631114
+          },
+          "test_metrics": {
+            "mae": 0.017642576455682235,
+            "rmse": 0.020786934535879698,
+            "r2": 0.17141017427615735,
+            "spearman": 0.6473673037303092,
+            "acc_within_tolerance": 0.375,
+            "nmae_by_train_range": 0.1260184032548726,
+            "acc_at_5pct_range": 0.25,
+            "acc_at_10pct_range": 0.375,
+            "acc_at_20pct_range": 0.8125,
+            "skill_vs_baseline_mae": 0.05035753308352964
+          }
+        },
+        {
+          "candidate_name": "k=64,alpha=0.01",
+          "val_metrics": {
+            "mae": 0.022944030984527464,
+            "rmse": 0.026883798378545227,
+            "r2": -1.4376954612137247,
+            "spearman": -0.04105638904021015,
+            "acc_within_tolerance": 0.3125,
+            "nmae_by_train_range": 0.16388593560376694,
+            "acc_at_5pct_range": 0.125,
+            "acc_at_10pct_range": 0.3125,
+            "acc_at_20pct_range": 0.625,
+            "skill_vs_baseline_mae": -0.2735628647092214
+          },
+          "test_metrics": {
+            "mae": 0.017123575867712182,
+            "rmse": 0.020332243378149095,
+            "r2": 0.20726268972431594,
+            "spearman": 0.6473673037303092,
+            "acc_within_tolerance": 0.3125,
+            "nmae_by_train_range": 0.12231125619794365,
+            "acc_at_5pct_range": 0.25,
+            "acc_at_10pct_range": 0.3125,
+            "acc_at_20pct_range": 0.8125,
+            "skill_vs_baseline_mae": 0.07829364547216211
+          }
+        },
+        {
+          "candidate_name": "k=64,alpha=0.1",
+          "val_metrics": {
+            "mae": 0.026464389877694172,
+            "rmse": 0.03211887944859431,
+            "r2": -2.479516979717255,
+            "spearman": -0.04105638904021015,
+            "acc_within_tolerance": 0.25,
+            "nmae_by_train_range": 0.1890313562692433,
+            "acc_at_5pct_range": 0.125,
+            "acc_at_10pct_range": 0.25,
+            "acc_at_20pct_range": 0.5625,
+            "skill_vs_baseline_mae": -0.468968735622201
+          },
+          "test_metrics": {
+            "mae": 0.01631249116803457,
+            "rmse": 0.02077753389141562,
+            "r2": 0.17215944464504118,
+            "spearman": 0.6473673037303092,
+            "acc_within_tolerance": 0.5625,
+            "nmae_by_train_range": 0.11651779405738932,
+            "acc_at_5pct_range": 0.25,
+            "acc_at_10pct_range": 0.5625,
+            "acc_at_20pct_range": 0.75,
+            "skill_vs_baseline_mae": 0.12195169490813185
+          }
+        },
+        {
+          "candidate_name": "k=96,alpha=0.001",
+          "val_metrics": {
+            "mae": 0.020906310990045363,
+            "rmse": 0.02686126699605068,
+            "r2": -1.4336110954688204,
+            "spearman": 0.08059217107893103,
+            "acc_within_tolerance": 0.4375,
+            "nmae_by_train_range": 0.1493307927860377,
+            "acc_at_5pct_range": 0.125,
+            "acc_at_10pct_range": 0.4375,
+            "acc_at_20pct_range": 0.75,
+            "skill_vs_baseline_mae": -0.1604543827952125
+          },
+          "test_metrics": {
+            "mae": 0.02729919259754343,
+            "rmse": 0.03334816046562025,
+            "r2": -1.1325659209650918,
+            "spearman": 0.4613422164514847,
+            "acc_within_tolerance": 0.375,
+            "nmae_by_train_range": 0.19499423283959513,
+            "acc_at_5pct_range": 0.1875,
+            "acc_at_10pct_range": 0.375,
+            "acc_at_20pct_range": 0.5,
+            "skill_vs_baseline_mae": -0.46942668313104363
+          }
+        },
+        {
+          "candidate_name": "k=96,alpha=0.01",
+          "val_metrics": {
+            "mae": 0.020905592086232216,
+            "rmse": 0.02697884267642325,
+            "r2": -1.454962262882196,
+            "spearman": 0.08059217107893103,
+            "acc_within_tolerance": 0.4375,
+            "nmae_by_train_range": 0.14932565775880094,
+            "acc_at_5pct_range": 0.1875,
+            "acc_at_10pct_range": 0.4375,
+            "acc_at_20pct_range": 0.75,
+            "skill_vs_baseline_mae": -0.16041447833377154
+          },
+          "test_metrics": {
+            "mae": 0.026956487030808107,
+            "rmse": 0.03292233006181132,
+            "r2": -1.078451184081723,
+            "spearman": 0.4613422164514847,
+            "acc_within_tolerance": 0.4375,
+            "nmae_by_train_range": 0.19254633593434284,
+            "acc_at_5pct_range": 0.1875,
+            "acc_at_10pct_range": 0.4375,
+            "acc_at_20pct_range": 0.5,
+            "skill_vs_baseline_mae": -0.4509799579240956
+          }
+        },
+        {
+          "candidate_name": "k=96,alpha=0.1",
+          "val_metrics": {
+            "mae": 0.024298267753617653,
+            "rmse": 0.031565752840850864,
+            "r2": -2.3607057788785926,
+            "spearman": 0.08059217107893103,
+            "acc_within_tolerance": 0.4375,
+            "nmae_by_train_range": 0.17355905538298252,
+            "acc_at_5pct_range": 0.3125,
+            "acc_at_10pct_range": 0.4375,
+            "acc_at_20pct_range": 0.5625,
+            "skill_vs_baseline_mae": -0.34873298892584814
+          },
+          "test_metrics": {
+            "mae": 0.02616313040515572,
+            "rmse": 0.03173434242218707,
+            "r2": -0.931157551879944,
+            "spearman": 0.4613422164514847,
+            "acc_within_tolerance": 0.25,
+            "nmae_by_train_range": 0.18687950289396868,
+            "acc_at_5pct_range": 0.1875,
+            "acc_at_10pct_range": 0.25,
+            "acc_at_20pct_range": 0.625,
+            "skill_vs_baseline_mae": -0.40827615301093023
+          }
+        }
+      ]
+    },
+    "knn": {
+      "candidate_name": "k=9,weighted=False",
+      "val_metrics": {
+        "mae": 0.016597222222222374,
+        "rmse": 0.019098106040154626,
+        "r2": -0.23020868914592607,
+        "spearman": 0.13771623282673257,
+        "acc_within_tolerance": 0.4375,
+        "nmae_by_train_range": 0.11855158730158791,
+        "acc_at_5pct_range": 0.1875,
+        "acc_at_10pct_range": 0.4375,
+        "acc_at_20pct_range": 0.875,
+        "skill_vs_baseline_mae": 0.07873181073528746
+      },
+      "test_metrics": {
+        "mae": 0.019791666666667318,
+        "rmse": 0.02618635729997555,
+        "r2": -0.31494890645955986,
+        "spearman": -0.15351058902180129,
+        "acc_within_tolerance": 0.5625,
+        "nmae_by_train_range": 0.1413690476190517,
+        "acc_at_5pct_range": 0.3125,
+        "acc_at_10pct_range": 0.5625,
+        "acc_at_20pct_range": 0.6875,
+        "skill_vs_baseline_mae": -0.06532099803762059
+      },
+      "model_artifact_path": "/Users/yuhe/research/UIST 2026/clip_dinoiser/artifacts/surrogate_random_v1/global_miou_surrogate_v1_acc10/knn/best_model.json",
+      "candidates": [
+        {
+          "candidate_name": "k=3,weighted=True",
+          "val_metrics": {
+            "mae": 0.02094471919654528,
+            "rmse": 0.02433390489424554,
+            "r2": -0.9972011253618371,
+            "spearman": -0.12621038112360897,
+            "acc_within_tolerance": 0.25,
+            "nmae_by_train_range": 0.14960513711817996,
+            "acc_at_5pct_range": 0.1875,
+            "acc_at_10pct_range": 0.25,
+            "acc_at_20pct_range": 0.8125,
+            "skill_vs_baseline_mae": -0.16258632140405438
+          },
+          "test_metrics": {
+            "mae": 0.02279226198013462,
+            "rmse": 0.030063106746499153,
+            "r2": -0.7331111545795046,
+            "spearman": -0.0669690314203768,
+            "acc_within_tolerance": 0.5,
+            "nmae_by_train_range": 0.1628018712866752,
+            "acc_at_5pct_range": 0.25,
+            "acc_at_10pct_range": 0.5,
+            "acc_at_20pct_range": 0.75,
+            "skill_vs_baseline_mae": -0.22683327731593095
+          }
+        },
+        {
+          "candidate_name": "k=3,weighted=False",
+          "val_metrics": {
+            "mae": 0.020833333333333037,
+            "rmse": 0.024324199198876278,
+            "r2": -0.9956082564776887,
+            "spearman": -0.0803056513671948,
+            "acc_within_tolerance": 0.25,
+            "nmae_by_train_range": 0.1488095238095211,
+            "acc_at_5pct_range": 0.1875,
+            "acc_at_10pct_range": 0.25,
+            "acc_at_20pct_range": 0.8125,
+            "skill_vs_baseline_mae": -0.15640358485107653
+          },
+          "test_metrics": {
+            "mae": 0.02270833333333222,
+            "rmse": 0.029988423692410227,
+            "r2": -0.7245110278817646,
+            "spearman": -0.1013467966357523,
+            "acc_within_tolerance": 0.5,
+            "nmae_by_train_range": 0.16220238095237235,
+            "acc_at_5pct_range": 0.25,
+            "acc_at_10pct_range": 0.5,
+            "acc_at_20pct_range": 0.75,
+            "skill_vs_baseline_mae": -0.22231567143253828
+          }
+        },
+        {
+          "candidate_name": "k=5,weighted=True",
+          "val_metrics": {
+            "mae": 0.01749169891103275,
+            "rmse": 0.020702808865573567,
+            "r2": -0.4456286100219671,
+            "spearman": 0.10948370410722705,
+            "acc_within_tolerance": 0.375,
+            "nmae_by_train_range": 0.12494070650737628,
+            "acc_at_5pct_range": 0.1875,
+            "acc_at_10pct_range": 0.375,
+            "acc_at_20pct_range": 0.875,
+            "skill_vs_baseline_mae": 0.0290817603589969
+          },
+          "test_metrics": {
+            "mae": 0.019007240695490868,
+            "rmse": 0.026165970193066466,
+            "r2": -0.31290222481633667,
+            "spearman": -0.02083480977522834,
+            "acc_within_tolerance": 0.5625,
+            "nmae_by_train_range": 0.13576600496779137,
+            "acc_at_5pct_range": 0.375,
+            "acc_at_10pct_range": 0.5625,
+            "acc_at_20pct_range": 0.6875,
+            "skill_vs_baseline_mae": -0.02309790118707933
+          }
+        },
+        {
+          "candidate_name": "k=5,weighted=False",
+          "val_metrics": {
+            "mae": 0.017374999999999696,
+            "rmse": 0.020633710281962737,
+            "r2": -0.43599472990772203,
+            "spearman": 0.12353303546763401,
+            "acc_within_tolerance": 0.375,
+            "nmae_by_train_range": 0.12410714285714018,
+            "acc_at_5pct_range": 0.1875,
+            "acc_at_10pct_range": 0.375,
+            "acc_at_20pct_range": 0.875,
+            "skill_vs_baseline_mae": 0.03555941023420528
+          },
+          "test_metrics": {
+            "mae": 0.018875000000000197,
+            "rmse": 0.025985572920372364,
+            "r2": -0.2948614232209803,
+            "spearman": -0.02083480977522834,
+            "acc_within_tolerance": 0.5625,
+            "nmae_by_train_range": 0.13482142857142942,
+            "acc_at_5pct_range": 0.375,
+            "acc_at_10pct_range": 0.5625,
+            "acc_at_20pct_range": 0.6875,
+            "skill_vs_baseline_mae": -0.01597981497059231
+          }
+        },
+        {
+          "candidate_name": "k=9,weighted=True",
+          "val_metrics": {
+            "mae": 0.016699034741473495,
+            "rmse": 0.01915875522466033,
+            "r2": -0.2380345566556692,
+            "spearman": 0.09579824109382369,
+            "acc_within_tolerance": 0.4375,
+            "nmae_by_train_range": 0.11927881958195305,
+            "acc_at_5pct_range": 0.1875,
+            "acc_at_10pct_range": 0.4375,
+            "acc_at_20pct_range": 0.8125,
+            "skill_vs_baseline_mae": 0.07308046534754109
+          },
+          "test_metrics": {
+            "mae": 0.019842796050027145,
+            "rmse": 0.02624649260618212,
+            "r2": -0.32099523427981325,
+            "spearman": -0.09822124608321933,
+            "acc_within_tolerance": 0.5625,
+            "nmae_by_train_range": 0.1417342575001933,
+            "acc_at_5pct_range": 0.3125,
+            "acc_at_10pct_range": 0.5625,
+            "acc_at_20pct_range": 0.6875,
+            "skill_vs_baseline_mae": -0.06807312632612272
+          }
+        },
+        {
+          "candidate_name": "k=9,weighted=False",
+          "val_metrics": {
+            "mae": 0.016597222222222374,
+            "rmse": 0.019098106040154626,
+            "r2": -0.23020868914592607,
+            "spearman": 0.13771623282673257,
+            "acc_within_tolerance": 0.4375,
+            "nmae_by_train_range": 0.11855158730158791,
+            "acc_at_5pct_range": 0.1875,
+            "acc_at_10pct_range": 0.4375,
+            "acc_at_20pct_range": 0.875,
+            "skill_vs_baseline_mae": 0.07873181073528746
+          },
+          "test_metrics": {
+            "mae": 0.019791666666667318,
+            "rmse": 0.02618635729997555,
+            "r2": -0.31494890645955986,
+            "spearman": -0.15351058902180129,
+            "acc_within_tolerance": 0.5625,
+            "nmae_by_train_range": 0.1413690476190517,
+            "acc_at_5pct_range": 0.3125,
+            "acc_at_10pct_range": 0.5625,
+            "acc_at_20pct_range": 0.6875,
+            "skill_vs_baseline_mae": -0.06532099803762059
+          }
+        },
+        {
+          "candidate_name": "k=15,weighted=True",
+          "val_metrics": {
+            "mae": 0.017806790694870234,
+            "rmse": 0.019412194954309257,
+            "r2": -0.2710056404966319,
+            "spearman": 0.3086832213023208,
+            "acc_within_tolerance": 0.3125,
+            "nmae_by_train_range": 0.12719136210621543,
+            "acc_at_5pct_range": 0.0625,
+            "acc_at_10pct_range": 0.3125,
+            "acc_at_20pct_range": 0.9375,
+            "skill_vs_baseline_mae": 0.01159184347643094
+          },
+          "test_metrics": {
+            "mae": 0.019128974948408484,
+            "rmse": 0.024780324718972492,
+            "r2": -0.17753191201123086,
+            "spearman": -0.09375664398852752,
+            "acc_within_tolerance": 0.5,
+            "nmae_by_train_range": 0.13663553534577433,
+            "acc_at_5pct_range": 0.25,
+            "acc_at_10pct_range": 0.5,
+            "acc_at_20pct_range": 0.75,
+            "skill_vs_baseline_mae": -0.0296504597966063
+          }
+        },
+        {
+          "candidate_name": "k=15,weighted=False",
+          "val_metrics": {
+            "mae": 0.017833333333333812,
+            "rmse": 0.019399312702602263,
+            "r2": -0.26931927975413306,
+            "spearman": 0.32184511870556837,
+            "acc_within_tolerance": 0.375,
+            "nmae_by_train_range": 0.1273809523809553,
+            "acc_at_5pct_range": 0.0625,
+            "acc_at_10pct_range": 0.375,
+            "acc_at_20pct_range": 0.9375,
+            "skill_vs_baseline_mae": 0.0101185313674379
+          },
+          "test_metrics": {
+            "mae": 0.01908333333333223,
+            "rmse": 0.024712794706835333,
+            "r2": -0.17112276321261022,
+            "spearman": -0.04406422030324171,
+            "acc_within_tolerance": 0.5,
+            "nmae_by_train_range": 0.1363095238095154,
+            "acc_at_5pct_range": 0.25,
+            "acc_at_10pct_range": 0.5,
+            "acc_at_20pct_range": 0.75,
+            "skill_vs_baseline_mae": -0.027193720213023242
+          }
+        },
+        {
+          "candidate_name": "k=31,weighted=True",
+          "val_metrics": {
+            "mae": 0.017294551306079153,
+            "rmse": 0.01908328537908009,
+            "r2": -0.22830007773401362,
+            "spearman": 0.2721886532665784,
+            "acc_within_tolerance": 0.3125,
+            "nmae_by_train_range": 0.12353250932913631,
+            "acc_at_5pct_range": 0.25,
+            "acc_at_10pct_range": 0.3125,
+            "acc_at_20pct_range": 0.9375,
+            "skill_vs_baseline_mae": 0.04002490582042795
+          },
+          "test_metrics": {
+            "mae": 0.018296065993738342,
+            "rmse": 0.024327198111535966,
+            "r2": -0.1348615535373061,
+            "spearman": -0.026787612568150723,
+            "acc_within_tolerance": 0.5,
+            "nmae_by_train_range": 0.13068618566955906,
+            "acc_at_5pct_range": 0.375,
+            "acc_at_10pct_range": 0.5,
+            "acc_at_20pct_range": 0.75,
+            "skill_vs_baseline_mae": 0.015182318251240723
+          }
+        },
+        {
+          "candidate_name": "k=31,weighted=False",
+          "val_metrics": {
+            "mae": 0.017298387096776224,
+            "rmse": 0.019088898768435208,
+            "r2": -0.2290227982219155,
+            "spearman": 0.2721886532665784,
+            "acc_within_tolerance": 0.3125,
+            "nmae_by_train_range": 0.12355990783411538,
+            "acc_at_5pct_range": 0.25,
+            "acc_at_10pct_range": 0.3125,
+            "acc_at_20pct_range": 0.9375,
+            "skill_vs_baseline_mae": 0.03981199115901202
+          },
+          "test_metrics": {
+            "mae": 0.018225806451611426,
+            "rmse": 0.024294145695791504,
+            "r2": -0.13177986413947118,
+            "spearman": 0.0022339442577615203,
+            "acc_within_tolerance": 0.5625,
+            "nmae_by_train_range": 0.13018433179722394,
+            "acc_at_5pct_range": 0.375,
+            "acc_at_10pct_range": 0.5625,
+            "acc_at_20pct_range": 0.75,
+            "skill_vs_baseline_mae": 0.018964160720645773
+          }
+        }
+      ]
+    },
+    "rbf": {
+      "candidate_name": "alpha=0.01,gamma=0.00063",
+      "val_metrics": {
+        "mae": 0.4287021144195473,
+        "rmse": 0.4998065772705929,
+        "r2": -841.562494846317,
+        "spearman": 0.0,
+        "acc_within_tolerance": 0.0625,
+        "nmae_by_train_range": 3.0621579601396114,
+        "acc_at_5pct_range": 0.0625,
+        "acc_at_10pct_range": 0.0625,
+        "acc_at_20pct_range": 0.0625,
+        "skill_vs_baseline_mae": -22.79612777350438
+      },
+      "test_metrics": {
+        "mae": 0.5063191849937807,
+        "rmse": 0.6707969501815146,
+        "r2": -861.8610365801097,
+        "spearman": 0.049110623041609666,
+        "acc_within_tolerance": 0.0,
+        "nmae_by_train_range": 3.616565607098419,
+        "acc_at_5pct_range": 0.0,
+        "acc_at_10pct_range": 0.0,
+        "acc_at_20pct_range": 0.0,
+        "skill_vs_baseline_mae": -26.2535137423066
+      },
+      "model_artifact_path": "/Users/yuhe/research/UIST 2026/clip_dinoiser/artifacts/surrogate_random_v1/global_miou_surrogate_v1_acc10/rbf/best_model.json",
+      "candidates": [
+        {
+          "candidate_name": "alpha=0.001,gamma=0.00063",
+          "val_metrics": {
+            "mae": 0.42879536035149735,
+            "rmse": 0.5029704824367018,
+            "r2": -852.2635360720594,
+            "spearman": -0.06386549406254911,
+            "acc_within_tolerance": 0.0625,
+            "nmae_by_train_range": 3.0628240025106828,
+            "acc_at_5pct_range": 0.0,
+            "acc_at_10pct_range": 0.0625,
+            "acc_at_20pct_range": 0.0625,
+            "skill_vs_baseline_mae": -22.80130361014341
+          },
+          "test_metrics": {
+            "mae": 0.48662483716195326,
+            "rmse": 0.6511026793466469,
+            "r2": -811.938449119192,
+            "spearman": 0.069945432816838,
+            "acc_within_tolerance": 0.0,
+            "nmae_by_train_range": 3.4758916940139377,
+            "acc_at_5pct_range": 0.0,
+            "acc_at_10pct_range": 0.0,
+            "acc_at_20pct_range": 0.0,
+            "skill_vs_baseline_mae": -25.19343110039156
+          }
+        },
+        {
+          "candidate_name": "alpha=0.001,gamma=0.00251",
+          "val_metrics": {
+            "mae": 1.5091064323045824,
+            "rmse": 1.7619450998401471,
+            "r2": -10469.874004239782,
+            "spearman": -0.04865942404765647,
+            "acc_within_tolerance": 0.0,
+            "nmae_by_train_range": 10.779331659318402,
+            "acc_at_5pct_range": 0.0,
+            "acc_at_10pct_range": 0.0,
+            "acc_at_20pct_range": 0.0,
+            "skill_vs_baseline_mae": -82.76653223546539
+          },
+          "test_metrics": {
+            "mae": 1.6160144303716,
+            "rmse": 2.3532566209864823,
+            "r2": -10618.333943067479,
+            "spearman": 0.09375664398852752,
+            "acc_within_tolerance": 0.0,
+            "nmae_by_train_range": 11.542960216939953,
+            "acc_at_5pct_range": 0.0,
+            "acc_at_10pct_range": 0.0,
+            "acc_at_20pct_range": 0.0,
+            "skill_vs_baseline_mae": -85.98479692496572
+          }
+        },
+        {
+          "candidate_name": "alpha=0.001,gamma=0.01005",
+          "val_metrics": {
+            "mae": 6.840569470473465,
+            "rmse": 7.924844938048705,
+            "r2": -211825.22960187242,
+            "spearman": 0.00912364200893559,
+            "acc_within_tolerance": 0.0,
+            "nmae_by_train_range": 48.86121050338169,
+            "acc_at_5pct_range": 0.0,
+            "acc_at_10pct_range": 0.0,
+            "acc_at_20pct_range": 0.0,
+            "skill_vs_baseline_mae": -378.70203478776597
+          },
+          "test_metrics": {
+            "mae": 6.08982854862577,
+            "rmse": 8.070344527260882,
+            "r2": -124893.36675584197,
+            "spearman": 0.032740415361073104,
+            "acc_within_tolerance": 0.0,
+            "nmae_by_train_range": 43.498775347326756,
+            "acc_at_5pct_range": 0.0,
+            "acc_at_10pct_range": 0.0,
+            "acc_at_20pct_range": 0.0,
+            "skill_vs_baseline_mae": -326.79564937935766
+          }
+        },
+        {
+          "candidate_name": "alpha=0.01,gamma=0.00063",
+          "val_metrics": {
+            "mae": 0.4287021144195473,
+            "rmse": 0.4998065772705929,
+            "r2": -841.562494846317,
+            "spearman": 0.0,
+            "acc_within_tolerance": 0.0625,
+            "nmae_by_train_range": 3.0621579601396114,
+            "acc_at_5pct_range": 0.0625,
+            "acc_at_10pct_range": 0.0625,
+            "acc_at_20pct_range": 0.0625,
+            "skill_vs_baseline_mae": -22.79612777350438
+          },
+          "test_metrics": {
+            "mae": 0.5063191849937807,
+            "rmse": 0.6707969501815146,
+            "r2": -861.8610365801097,
+            "spearman": 0.049110623041609666,
+            "acc_within_tolerance": 0.0,
+            "nmae_by_train_range": 3.616565607098419,
+            "acc_at_5pct_range": 0.0,
+            "acc_at_10pct_range": 0.0,
+            "acc_at_20pct_range": 0.0,
+            "skill_vs_baseline_mae": -26.2535137423066
+          }
+        },
+        {
+          "candidate_name": "alpha=0.01,gamma=0.00251",
+          "val_metrics": {
+            "mae": 1.5034202592993815,
+            "rmse": 1.7580068974349454,
+            "r2": -10423.118476492786,
+            "spearman": -0.010644249010424853,
+            "acc_within_tolerance": 0.0,
+            "nmae_by_train_range": 10.73871613785268,
+            "acc_at_5pct_range": 0.0,
+            "acc_at_10pct_range": 0.0,
+            "acc_at_20pct_range": 0.0,
+            "skill_vs_baseline_mae": -82.4509077147951
+          },
+          "test_metrics": {
+            "mae": 1.6260821743304128,
+            "rmse": 2.3701742404784483,
+            "r2": -10771.568075942265,
+            "spearman": 0.05506342583453205,
+            "acc_within_tolerance": 0.0,
+            "nmae_by_train_range": 11.614872673788616,
+            "acc_at_5pct_range": 0.0,
+            "acc_at_10pct_range": 0.0,
+            "acc_at_20pct_range": 0.0,
+            "skill_vs_baseline_mae": -86.52671081341319
+          }
+        },
+        {
+          "candidate_name": "alpha=0.01,gamma=0.01005",
+          "val_metrics": {
+            "mae": 6.8642831501116675,
+            "rmse": 7.949579367597373,
+            "r2": -213149.5652590675,
+            "spearman": 0.00912364200893559,
+            "acc_within_tolerance": 0.0,
+            "nmae_by_train_range": 49.030593929368855,
+            "acc_at_5pct_range": 0.0,
+            "acc_at_10pct_range": 0.0,
+            "acc_at_20pct_range": 0.0,
+            "skill_vs_baseline_mae": -380.0183188266601
+          },
+          "test_metrics": {
+            "mae": 6.115485001409677,
+            "rmse": 8.091812562141694,
+            "r2": -125558.71699216389,
+            "spearman": 0.032740415361073104,
+            "acc_within_tolerance": 0.0,
+            "nmae_by_train_range": 43.68203572435466,
+            "acc_at_5pct_range": 0.0,
+            "acc_at_10pct_range": 0.0,
+            "acc_at_20pct_range": 0.0,
+            "skill_vs_baseline_mae": -328.17665272516933
+          }
+        },
+        {
+          "candidate_name": "alpha=0.1,gamma=0.00063",
+          "val_metrics": {
+            "mae": 0.4429860590676038,
+            "rmse": 0.5463076166970677,
+            "r2": -1005.6365624199833,
+            "spearman": 0.0942776340923344,
+            "acc_within_tolerance": 0.0,
+            "nmae_by_train_range": 3.164186136197157,
+            "acc_at_5pct_range": 0.0,
+            "acc_at_10pct_range": 0.0,
+            "acc_at_20pct_range": 0.0625,
+            "skill_vs_baseline_mae": -23.588992003752082
+          },
+          "test_metrics": {
+            "mae": 0.5384514721193943,
+            "rmse": 0.7852677340273972,
+            "r2": -1181.4810937135667,
+            "spearman": -0.0669690314203768,
+            "acc_within_tolerance": 0.0,
+            "nmae_by_train_range": 3.8460819437099434,
+            "acc_at_5pct_range": 0.0,
+            "acc_at_10pct_range": 0.0,
+            "acc_at_20pct_range": 0.0,
+            "skill_vs_baseline_mae": -27.983090172953617
+          }
+        },
+        {
+          "candidate_name": "alpha=0.1,gamma=0.00251",
+          "val_metrics": {
+            "mae": 1.481530357520545,
+            "rmse": 1.7679720209991703,
+            "r2": -10541.630002123937,
+            "spearman": -0.02280910502233897,
+            "acc_within_tolerance": 0.0,
+            "nmae_by_train_range": 10.582359696575278,
+            "acc_at_5pct_range": 0.0,
+            "acc_at_10pct_range": 0.0,
+            "acc_at_20pct_range": 0.0,
+            "skill_vs_baseline_mae": -81.23585679211902
+          },
+          "test_metrics": {
+            "mae": 1.6953135904908814,
+            "rmse": 2.5165737538255133,
+            "r2": -12143.454871622118,
+            "spearman": -0.03720501745576489,
+            "acc_within_tolerance": 0.0,
+            "nmae_by_train_range": 12.109382789220533,
+            "acc_at_5pct_range": 0.0,
+            "acc_at_10pct_range": 0.0,
+            "acc_at_20pct_range": 0.0625,
+            "skill_vs_baseline_mae": -90.25321260842586
+          }
+        },
+        {
+          "candidate_name": "alpha=0.1,gamma=0.01005",
+          "val_metrics": {
+            "mae": 7.0931517058318825,
+            "rmse": 8.18985900612041,
+            "r2": -226229.43976645698,
+            "spearman": -0.004561821004467795,
+            "acc_within_tolerance": 0.0,
+            "nmae_by_train_range": 50.665369327370385,
+            "acc_at_5pct_range": 0.0,
+            "acc_at_10pct_range": 0.0,
+            "acc_at_20pct_range": 0.0,
+            "skill_vs_baseline_mae": -392.72221090479843
+          },
+          "test_metrics": {
+            "mae": 6.364212977475605,
+            "rmse": 8.30121933796547,
+            "r2": -132141.48748490942,
+            "spearman": 0.026787612568150723,
+            "acc_within_tolerance": 0.0,
+            "nmae_by_train_range": 45.45866412482556,
+            "acc_at_5pct_range": 0.0,
+            "acc_at_10pct_range": 0.0,
+            "acc_at_20pct_range": 0.0,
+            "skill_vs_baseline_mae": -341.5648701080286
+          }
+        },
+        {
+          "candidate_name": "alpha=1,gamma=0.00063",
+          "val_metrics": {
+            "mae": 0.7721635332213461,
+            "rmse": 1.1193194177414356,
+            "r2": -4224.773985334154,
+            "spearman": -0.1155661321131841,
+            "acc_within_tolerance": 0.0,
+            "nmae_by_train_range": 5.515453808723879,
+            "acc_at_5pct_range": 0.0,
+            "acc_at_10pct_range": 0.0,
+            "acc_at_20pct_range": 0.0,
+            "skill_vs_baseline_mae": -41.86076853960563
+          },
+          "test_metrics": {
+            "mae": 0.8104285099868116,
+            "rmse": 1.5032403633109777,
+            "r2": -4332.26806749937,
+            "spearman": 0.18453688658059383,
+            "acc_within_tolerance": 0.0,
+            "nmae_by_train_range": 5.788775071334345,
+            "acc_at_5pct_range": 0.0,
+            "acc_at_10pct_range": 0.0,
+            "acc_at_20pct_range": 0.0,
+            "skill_vs_baseline_mae": -42.622728880703846
+          }
+        },
+        {
+          "candidate_name": "alpha=1,gamma=0.00251",
+          "val_metrics": {
+            "mae": 1.7887301078655597,
+            "rmse": 2.4406495738114944,
+            "r2": -20090.34660855692,
+            "spearman": 0.033453354032763824,
+            "acc_within_tolerance": 0.0,
+            "nmae_by_train_range": 12.776643627611088,
+            "acc_at_5pct_range": 0.0,
+            "acc_at_10pct_range": 0.0,
+            "acc_at_20pct_range": 0.0,
+            "skill_vs_baseline_mae": -98.28770763520714
+          },
+          "test_metrics": {
+            "mae": 1.9417202459555092,
+            "rmse": 3.2926556774238165,
+            "r2": -20788.84899609219,
+            "spearman": 0.0,
+            "acc_within_tolerance": 0.0,
+            "nmae_by_train_range": 13.86943032825358,
+            "acc_at_5pct_range": 0.0,
+            "acc_at_10pct_range": 0.0,
+            "acc_at_20pct_range": 0.0625,
+            "skill_vs_baseline_mae": -103.516480858835
+          }
+        },
+        {
+          "candidate_name": "alpha=1,gamma=0.01005",
+          "val_metrics": {
+            "mae": 9.074143147046673,
+            "rmse": 10.092007322603305,
+            "r2": -343520.0094949561,
+            "spearman": -0.013685463013403381,
+            "acc_within_tolerance": 0.0,
+            "nmae_by_train_range": 64.81530819319026,
+            "acc_at_5pct_range": 0.0,
+            "acc_at_10pct_range": 0.0,
+            "acc_at_20pct_range": 0.0,
+            "skill_vs_baseline_mae": -502.68183990544406
+          },
+          "test_metrics": {
+            "mae": 8.564964461057496,
+            "rmse": 10.027397378197085,
+            "r2": -192811.48490000464,
+            "spearman": 0.04166961955045668,
+            "acc_within_tolerance": 0.0,
+            "nmae_by_train_range": 61.17831757898187,
+            "acc_at_5pct_range": 0.0,
+            "acc_at_10pct_range": 0.0,
+            "acc_at_20pct_range": 0.0,
+            "skill_vs_baseline_mae": -460.02415938409547
+          }
+        }
+      ]
+    },
+    "mlp": {
+      "candidate_name": "hidden=256x128",
+      "val_metrics": {
+        "mae": 0.014037388464740008,
+        "rmse": 0.016724340810931895,
+        "r2": 0.05659927083776772,
+        "spearman": 0.44553785143635455,
+        "acc_within_tolerance": 0.625,
+        "nmae_by_train_range": 0.10026706046242823,
+        "acc_at_5pct_range": 0.1875,
+        "acc_at_10pct_range": 0.625,
+        "acc_at_20pct_range": 0.875,
+        "skill_vs_baseline_mae": 0.22082145555650912
+      },
+      "test_metrics": {
+        "mae": 0.020291621408806915,
+        "rmse": 0.02510308953359657,
+        "r2": -0.20840649181824178,
+        "spearman": 0.36758557246295714,
+        "acc_within_tolerance": 0.4375,
+        "nmae_by_train_range": 0.1449401529200488,
+        "acc_at_5pct_range": 0.25,
+        "acc_at_10pct_range": 0.4375,
+        "acc_at_20pct_range": 0.5625,
+        "skill_vs_baseline_mae": -0.0922319345363043
+      },
+      "model_artifact_path": "/Users/yuhe/research/UIST 2026/clip_dinoiser/artifacts/surrogate_random_v1/global_miou_surrogate_v1_acc10/mlp/best_model.pt",
+      "candidates": [
+        {
+          "candidate_name": "hidden=64x32",
+          "val_metrics": {
+            "mae": 0.01551722577282666,
+            "rmse": 0.017755664741616384,
+            "r2": -0.06333978111557004,
+            "spearman": 0.38471357137678397,
+            "acc_within_tolerance": 0.5,
+            "nmae_by_train_range": 0.1108373269487614,
+            "acc_at_5pct_range": 0.25,
+            "acc_at_10pct_range": 0.5,
+            "acc_at_20pct_range": 0.875,
+            "skill_vs_baseline_mae": 0.13867957548925502
+          },
+          "test_metrics": {
+            "mae": 0.018988849360544124,
+            "rmse": 0.023083055777569993,
+            "r2": -0.021751541511513706,
+            "spearman": 0.2738289284744296,
+            "acc_within_tolerance": 0.5,
+            "nmae_by_train_range": 0.13563463828960035,
+            "acc_at_5pct_range": 0.25,
+            "acc_at_10pct_range": 0.5,
+            "acc_at_20pct_range": 0.6875,
+            "skill_vs_baseline_mae": -0.02210795548767508
+          }
+        },
+        {
+          "candidate_name": "hidden=128x64",
+          "val_metrics": {
+            "mae": 0.01564533104835597,
+            "rmse": 0.018423791142725115,
+            "r2": -0.14487004608848042,
+            "spearman": 0.2630650112576428,
+            "acc_within_tolerance": 0.4375,
+            "nmae_by_train_range": 0.11175236463111363,
+            "acc_at_5pct_range": 0.3125,
+            "acc_at_10pct_range": 0.4375,
+            "acc_at_20pct_range": 0.875,
+            "skill_vs_baseline_mae": 0.1315687882959543
+          },
+          "test_metrics": {
+            "mae": 0.018012989107077937,
+            "rmse": 0.02312481925313791,
+            "r2": -0.025452134573176632,
+            "spearman": 0.2202537033381282,
+            "acc_within_tolerance": 0.5625,
+            "nmae_by_train_range": 0.12866420790769903,
+            "acc_at_5pct_range": 0.25,
+            "acc_at_10pct_range": 0.5625,
+            "acc_at_20pct_range": 0.75,
+            "skill_vs_baseline_mae": 0.03041942569133005
+          }
+        },
+        {
+          "candidate_name": "hidden=256x128",
+          "val_metrics": {
+            "mae": 0.014037388464740008,
+            "rmse": 0.016724340810931895,
+            "r2": 0.05659927083776772,
+            "spearman": 0.44553785143635455,
+            "acc_within_tolerance": 0.625,
+            "nmae_by_train_range": 0.10026706046242823,
+            "acc_at_5pct_range": 0.1875,
+            "acc_at_10pct_range": 0.625,
+            "acc_at_20pct_range": 0.875,
+            "skill_vs_baseline_mae": 0.22082145555650912
+          },
+          "test_metrics": {
+            "mae": 0.020291621408806915,
+            "rmse": 0.02510308953359657,
+            "r2": -0.20840649181824178,
+            "spearman": 0.36758557246295714,
+            "acc_within_tolerance": 0.4375,
+            "nmae_by_train_range": 0.1449401529200488,
+            "acc_at_5pct_range": 0.25,
+            "acc_at_10pct_range": 0.4375,
+            "acc_at_20pct_range": 0.5625,
+            "skill_vs_baseline_mae": -0.0922319345363043
+          }
+        }
+      ]
+    }
+  }
+}
