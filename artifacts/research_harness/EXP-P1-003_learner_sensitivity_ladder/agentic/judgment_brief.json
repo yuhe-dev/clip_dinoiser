@@ -1,0 +1,42 @@
+{
+  "generated_by": "agentic_judge_v1",
+  "generated_at_utc": "2026-04-24T14:00:24.888383+00:00",
+  "experiment_id": "EXP-P1-003",
+  "phase": "Phase 1",
+  "loop_kind": "learner_sensitivity_ladder",
+  "mechanical_decision": "promote",
+  "final_decision": "promote",
+  "contract_type": "learner_sensitivity_ladder",
+  "contract_alignment": {
+    "completed_regime_count": 3,
+    "regime_range": 3.8999999999999986,
+    "minimum_completed_regimes": 3,
+    "training_noise_reference": 0.0089442719,
+    "meaningful_sensitivity_multiplier": 1.5,
+    "meaningful_sensitivity_threshold": 0.01341640785
+  },
+  "alignment_passed": true,
+  "reasons": [
+    "Observed learner-regime range 3.9000 is above the meaningful sensitivity threshold 0.0134.",
+    "Best regime `fast_cached_1ep` outperformed baseline `fast_cached_1ep` by 0.0000.",
+    "Rubric contract `learner_sensitivity_ladder` alignment=True.",
+    "Context research_state=audit.",
+    "Rubric contract `learner_sensitivity_ladder` alignment=True.",
+    "Context research_state=judgment.",
+    "Prior runtime snapshot decision=promote."
+  ],
+  "recommended_actions": [
+    "Promote the strongest learner regime as the next anchor for feature intervention experiments.",
+    "Use this ladder result to decide whether protocol sensitivity or feature choice is the main bottleneck.",
+    "Carry this result forward as a context-aware promoted artifact for the current branch.",
+    "Carry this result forward as a context-aware promoted artifact for the current branch."
+  ],
+  "context_signals": {
+    "research_state": "judgment",
+    "next_action": "continue_regime_execution",
+    "runtime_status": "completed",
+    "depends_on": [
+      "EXP-P1-002"
+    ]
+  }
+}

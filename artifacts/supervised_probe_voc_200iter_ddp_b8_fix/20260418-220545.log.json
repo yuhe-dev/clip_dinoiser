@@ -1,0 +1,1 @@
+{"seed": 0, "dataset_key": "voc", "data_root": "/home/yuhe/slicetune/deeplab/research/deeplab/datasets/pascal_voc_seg/VOCdevkit/VOC2012", "subset_manifest": null, "subset_size": 10582, "model_key": "deeplabv3plus_r50_d8"}

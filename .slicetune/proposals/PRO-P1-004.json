@@ -1,0 +1,46 @@
+{
+  "proposal_id": "PRO-P1-004",
+  "proposal_class": "draft_only",
+  "status": "materialized",
+  "phase": "Phase 1",
+  "title": "Design feature intervention matrix after learner sensitivity ladder",
+  "rationale": "Phase 1 should only widen into feature interventions after the learner sensitivity branch has been explicitly audited.",
+  "source_experiment_ids": [
+    "EXP-P1-003"
+  ],
+  "target_experiment_id": "EXP-P1-004",
+  "target_card_path": "/home/yuhe/clip_dinoiser/.slicetune/experiments/EXP-P1-004.json",
+  "auto_materialized": true,
+  "created_at_utc": "2026-04-13T18:44:34.769138+00:00",
+  "metadata": {
+    "rule": {
+      "proposal_id": "PRO-P1-004",
+      "proposal_class": "draft_only",
+      "target_experiment_id": "EXP-P1-004",
+      "name": "Design feature intervention matrix after learner sensitivity ladder",
+      "phase": "Phase 1",
+      "owner": "Auto Proposer",
+      "loop_kind": "feature_intervention_matrix",
+      "target_status": "planned",
+      "priority": 40,
+      "budget_tier": "Tier B",
+      "requires_debate": true,
+      "depends_on": [
+        "EXP-P1-003"
+      ],
+      "trigger_on_completed": [
+        "EXP-P1-003"
+      ],
+      "required_decisions": [
+        "promote"
+      ],
+      "hypothesis": "Once learner sensitivity is better characterized, matched feature interventions can test whether quality, difficulty, or coverage dimensions have separable response signal.",
+      "rationale": "Phase 1 should only widen into feature interventions after the learner sensitivity branch has been explicitly audited.",
+      "metadata": {
+        "proposal_origin": "phase1_locked_follow_on",
+        "source_runtime_index_dependency": "EXP-P1-003"
+      }
+    },
+    "trigger_reason": "triggered"
+  }
+}

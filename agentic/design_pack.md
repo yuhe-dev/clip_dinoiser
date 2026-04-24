@@ -1,0 +1,47 @@
+# Design Pack
+
+- `experiment_id`: EXP-P1-003
+- `phase`: Phase 1
+- `loop_kind`: learner_sensitivity_ladder
+- `design_class`: executable_candidate
+- `objective`: Design a new research branch under the current phase contract.
+
+## generated_by
+
+agentic_planner_v1
+
+## generated_at_utc
+
+2026-04-13T18:00:58.910732+00:00
+
+## mutation_scope
+
+- `changed`: ['to be specified']
+- `frozen`: ['phase', 'benchmark contract', 'human review stop']
+
+## execution_recipe
+
+- refine hypothesis
+- define mutation scope
+- freeze evaluation rubric
+- decide whether the branch is design-only or executable
+
+## confound_guardrails
+
+- do not mix algorithm mutation with protocol mutation in one step
+
+## expected_signal
+
+- `primary`: Produce evidence strong enough to update keep/park/kill for the current branch.
+- `secondary`: Produce structured artifacts that can be judged and debated.
+
+## runtime_requirements
+
+- `input_path`: 
+- `output_dir`: 
+- `judge_policy_path`: 
+
+## source_paths
+
+- `hypothesis_brief`: 
+- `context_packet`: /home/yuhe/clip_dinoiser/agentic/context_snapshot.json

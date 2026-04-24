@@ -1,0 +1,8 @@
+{
+  "experiment_id": "EXP-P1-004",
+  "session_id": "session_2026-04-15T03-19-59.311860+00-00_3843949",
+  "error_kind": "TypeError",
+  "message": "judge_feature_intervention_matrix() got an unexpected keyword argument 'design_mode'",
+  "traceback": "Traceback (most recent call last):\n  File \"/home/yuhe/clip_dinoiser/run_research_queue.py\", line 471, in _run_single_card\n    exit_code, tick_exception, tick_traceback, tick_artifacts = _run_tick_with_watchdog(\n                                                                ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/yuhe/clip_dinoiser/run_research_queue.py\", line 156, in _run_tick_with_watchdog\n    return run_research_tick_main(tick_args), None, \"\", {}\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/yuhe/clip_dinoiser/run_research_tick.py\", line 673, in main\n    return _run_feature_intervention_matrix(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/yuhe/clip_dinoiser/run_research_tick.py\", line 582, in _run_feature_intervention_matrix\n    report = judge_feature_intervention_matrix(bundle, **judge_policy)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: judge_feature_intervention_matrix() got an unexpected keyword argument 'design_mode'\n",
+  "recorded_at_utc": "2026-04-15T03:20:07.822238+00:00"
+}

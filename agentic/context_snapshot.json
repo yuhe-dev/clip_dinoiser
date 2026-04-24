@@ -1,0 +1,126 @@
+{
+  "generated_at_utc": "2026-04-13T18:00:58.910360+00:00",
+  "experiment_id": "EXP-P1-003",
+  "card_path": "/home/yuhe/clip_dinoiser/.slicetune/experiments/EXP-P1-003.json",
+  "loop_kind": "learner_sensitivity_ladder",
+  "phase": "Phase 1",
+  "status": "planned",
+  "owner": "Auto Proposer",
+  "hypothesis": "If fixed-subset multi-seed noise remains comparable to the global floor, the next priority is to audit whether the learner itself is insufficiently sensitive to composition changes.",
+  "budget_tier": "Tier B",
+  "depends_on": [
+    "EXP-P1-002"
+  ],
+  "memory_index": [
+    {
+      "path": "/home/yuhe/clip_dinoiser/AGENTS.md",
+      "exists": true
+    },
+    {
+      "path": "/home/yuhe/clip_dinoiser/.slicetune/MEMORY.md",
+      "exists": true
+    },
+    {
+      "path": "/home/yuhe/clip_dinoiser/.slicetune/context/program.md",
+      "exists": true
+    },
+    {
+      "path": "/home/yuhe/clip_dinoiser/.slicetune/context/playbook.md",
+      "exists": true
+    },
+    {
+      "path": "/home/yuhe/clip_dinoiser/.slicetune/state/board.md",
+      "exists": true
+    },
+    {
+      "path": "/home/yuhe/clip_dinoiser/.slicetune/state/decision_log.md",
+      "exists": true
+    }
+  ],
+  "task_snapshot": {
+    "research_state": "",
+    "next_action": "",
+    "acceptance_status": "",
+    "recent_facts": [],
+    "blockers": []
+  },
+  "runtime_snapshot": {
+    "attempt_count": 0,
+    "judge_decision": "",
+    "runtime_status": "planned"
+  },
+  "artifact_snapshot": {
+    "output_dir": "",
+    "has_task_plan": false,
+    "has_result_bundle": false,
+    "has_judge_report": false,
+    "debate_bundle_path": ""
+  },
+  "repo_memory_tail": {
+    "board_md_tail": [
+      "- 主题：learner sensitivity ladder",
+      "- 当前状态：未 materialize",
+      "- 前提：等待 `EXP-P1-002` 人类审核通过",
+      "",
+      "#### EXP-P1-004",
+      "",
+      "- 主题：feature intervention matrix",
+      "- 当前状态：未 materialize",
+      "- 前提：等待 `EXP-P1-003` 完成并被 judge / 人类审核放行",
+      "",
+      "---",
+      "",
+      "## 3. 主分支状态",
+      "",
+      "### keep",
+      "",
+      "- Phase 1 noise floor / training noise 审计",
+      "- runtime preflight / queue / daemon / attempt / taskflow",
+      "- human review stop + release",
+      "",
+      "### park",
+      "",
+      "- surrogate 扩张",
+      "- candidate generation 搜索复杂化",
+      "- frontend polish",
+      "",
+      "### 当前停机原因",
+      "",
+      "- 系统已在 `EXP-P1-002` 的人类验收点自动停下",
+      "- 在你更新 `.slicetune/approvals/human_review.json` 之前，不会继续越权推进下一阶段"
+    ],
+    "decision_log_tail": [
+      "---",
+      "",
+      "## DEC-034",
+      "",
+      "- 决策：queue runner 增加可选 tick watchdog；开启 `tick_timeout_seconds` 后，tick 改为子进程执行并可在超时后强制失败收口",
+      "- 结论：`keep`",
+      "- 原因：",
+      "  - 这是长时 autonomous system 避免单次 hang 永久续租的关键保险",
+      "  - 默认保持关闭以兼容现有 loop，但执行层已具备 watchdog 能力",
+      "",
+      "---",
+      "",
+      "## DEC-035",
+      "",
+      "- 决策：dynamic literature radar 只对研究级 retry exhaustion 触发，不对纯 harness 故障触发",
+      "- 结论：`keep`",
+      "- 原因：",
+      "  - 基础设施 bug 不应被误判为算法瓶颈",
+      "  - 当前将触发条件收严为 `blocked_retry_limit`",
+      "",
+      "---",
+      "",
+      "## DEC-036",
+      "",
+      "- 决策：将 `EXP-P1-002` 的固定 subset 多 seed 结果正式记为 Phase 1 的第二条有效基线",
+      "- 结论：`keep`",
+      "- 原因：",
+      "  - 当前结果：`mean=24.2860`、`std=0.0089`、`range=0.0200`",
+      "  - 该 training noise 显著低于全局 random-subset floor `std=0.0260`",
+      "  - 说明当前数据组成效应仍值得继续审计，而不应把全部窄幅波动都归因于训练噪声"
+    ]
+  },
+  "source_path": "/home/yuhe/clip_dinoiser/agentic/context_snapshot.json"
+}

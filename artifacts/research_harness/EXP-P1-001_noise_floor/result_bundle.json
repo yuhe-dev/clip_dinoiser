@@ -1,0 +1,44 @@
+{
+  "experiment_id": "EXP-P1-001",
+  "loop_kind": "noise_floor",
+  "input_path": "/home/yuhe/clip_dinoiser/artifacts/surrogate_random_v1/random_subsets_labeled.jsonl",
+  "metric_name": "mIoU",
+  "summary": {
+    "count": 192,
+    "metric_name": "mIoU",
+    "min": 24.22,
+    "max": 24.36,
+    "range": 0.14000000000000057,
+    "mean": 24.293854166666666,
+    "median": 24.29,
+    "stdev": 0.02600321332002687,
+    "p10": 24.26,
+    "p90": 24.33,
+    "source_counts": {
+      "random_subset": 192
+    },
+    "budget_counts": {
+      "1000": 192
+    },
+    "subset_seed_count": 192,
+    "training_seed_count": 1,
+    "sample_experiment_ids": [
+      "rand_subset_s0000_t00",
+      "rand_subset_s0001_t00",
+      "rand_subset_s0002_t00",
+      "rand_subset_s0003_t00",
+      "rand_subset_s0004_t00"
+    ]
+  },
+  "sample_ids": [
+    "rand_subset_s0000_t00",
+    "rand_subset_s0001_t00",
+    "rand_subset_s0002_t00",
+    "rand_subset_s0003_t00",
+    "rand_subset_s0004_t00"
+  ],
+  "metadata": {
+    "source_label": "surrogate_random_v1",
+    "summary_kind": "noise_floor"
+  }
+}

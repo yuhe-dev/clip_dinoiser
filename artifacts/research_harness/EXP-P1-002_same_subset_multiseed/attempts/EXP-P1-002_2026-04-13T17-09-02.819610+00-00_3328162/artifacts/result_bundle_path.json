@@ -1,0 +1,48 @@
+{
+  "experiment_id": "EXP-P1-002",
+  "loop_kind": "same_subset_multi_seed",
+  "input_path": "/home/yuhe/clip_dinoiser/artifacts/surrogate_random_v1/manifests/rand_subset_s0145_t00.json",
+  "metric_name": "mIoU",
+  "summary": {
+    "base_candidate_id": "rand_subset_s0145_t00",
+    "metric_name": "mIoU",
+    "requested_seed_count": 5,
+    "completed_seed_count": 5,
+    "failure_count": 0,
+    "training_seed_values": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "per_seed_metrics": {
+      "0": 24.29,
+      "1": 24.29,
+      "2": 24.29,
+      "3": 24.29,
+      "4": 24.27
+    },
+    "count": 5,
+    "min": 24.27,
+    "max": 24.29,
+    "range": 0.019999999999999574,
+    "mean": 24.285999999999998,
+    "median": 24.29,
+    "stdev": 0.008944271909998969
+  },
+  "sample_ids": [
+    "rand_subset_s0145_t00"
+  ],
+  "metadata": {
+    "config_name": "feature_experiment_fast_cached_slide",
+    "progress_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-002_same_subset_multiseed/progress.json",
+    "task_plan_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-002_same_subset_multiseed/task_plan.json",
+    "progress_markdown_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-002_same_subset_multiseed/progress.md",
+    "handoff_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-002_same_subset_multiseed/handoff.md",
+    "runs_root": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-002_same_subset_multiseed/runs",
+    "worker_python_bin": "/home/yuhe/.conda/envs/clipdino2/bin/python3.9",
+    "runtime_profile_id": "clipdino2",
+    "completion_filename": "completion.json"
+  }
+}

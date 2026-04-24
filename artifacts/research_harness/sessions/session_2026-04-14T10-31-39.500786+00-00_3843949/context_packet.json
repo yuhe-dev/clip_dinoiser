@@ -1,0 +1,130 @@
+{
+  "generated_at_utc": "2026-04-14T10:31:39.501614+00:00",
+  "experiment_id": "EXP-P1-004",
+  "card_path": "/home/yuhe/clip_dinoiser/.slicetune/experiments/EXP-P1-004.json",
+  "loop_kind": "feature_intervention_matrix",
+  "phase": "Phase 1",
+  "status": "queued",
+  "owner": "Auto Proposer",
+  "hypothesis": "If the current head-only CLIP-DINOiser learner is too rigid, then at least one more adaptable learner variant will show stronger and more consistent response to matched real probe-axis interventions than to shuffled or matched-random controls.",
+  "budget_tier": "Tier B",
+  "depends_on": [
+    "EXP-P1-003"
+  ],
+  "memory_index": [
+    {
+      "path": "/home/yuhe/clip_dinoiser/AGENTS.md",
+      "exists": true
+    },
+    {
+      "path": "/home/yuhe/clip_dinoiser/.slicetune/MEMORY.md",
+      "exists": true
+    },
+    {
+      "path": "/home/yuhe/clip_dinoiser/.slicetune/context/program.md",
+      "exists": true
+    },
+    {
+      "path": "/home/yuhe/clip_dinoiser/.slicetune/context/playbook.md",
+      "exists": true
+    },
+    {
+      "path": "/home/yuhe/clip_dinoiser/.slicetune/state/board.md",
+      "exists": true
+    },
+    {
+      "path": "/home/yuhe/clip_dinoiser/.slicetune/state/decision_log.md",
+      "exists": true
+    }
+  ],
+  "task_snapshot": {
+    "research_state": "execution",
+    "next_action": "continue_feature_intervention_execution",
+    "acceptance_status": "not_required",
+    "recent_facts": [
+      "completed_run_count=0",
+      "failure_count=0",
+      "learner_variant_count=3",
+      "probe_axis_count=2"
+    ],
+    "blockers": []
+  },
+  "runtime_snapshot": {
+    "attempt_count": 2,
+    "judge_decision": "",
+    "runtime_status": "queued"
+  },
+  "artifact_snapshot": {
+    "output_dir": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix",
+    "has_task_plan": true,
+    "has_result_bundle": false,
+    "has_judge_report": false,
+    "debate_bundle_path": ".slicetune/debates/EXP-P1-004_bundle.json"
+  },
+  "repo_memory_tail": {
+    "board_md_tail": [
+      "  - 当前尚未产出 `cache / manifests / runs / progress.json`",
+      "  - 高概率正在做全训练池 class-presence 预处理",
+      "",
+      "---",
+      "",
+      "## 3. 主分支状态",
+      "",
+      "### keep",
+      "",
+      "- Phase 1 noise floor / training noise 审计",
+      "- learner sensitivity ladder 审计",
+      "- learner adaptability audit 设计",
+      "- runtime preflight / queue / daemon / attempt / taskflow",
+      "- human review stop + release",
+      "- agentic planning / analysis / judgment artifact",
+      "- executable literature radar loop",
+      "",
+      "### park",
+      "",
+      "- surrogate 扩张",
+      "- candidate generation 搜索复杂化",
+      "- frontend polish",
+      "",
+      "### 当前停机原因",
+      "",
+      "- `EXP-P1-003` 已完成并 `promote`",
+      "- 当前主线已自动推进到 `EXP-P1-004`",
+      "- 系统当前没有越权停机；真正的下一阻塞是：",
+      "  - `feature_intervention_matrix` 仍缺 runtime handler / executable recipe",
+      "  - 更关键的是：当前还需要插入 learner adaptability audit，先回答“当前 learner 是否太僵”"
+    ],
+    "decision_log_tail": [
+      "  - 这能让 Phase 1 尽快从“设计态”进入“真实运行态”",
+      "",
+      "---",
+      "",
+      "## DEC-047",
+      "",
+      "- 决策：为 learner adaptability 审计新增 selective-unfreeze 训练能力，并将其作为训练脚本的显式参数",
+      "- 结论：`keep`",
+      "- 原因：",
+      "  - 当前 learner sensitivity 的核心问题不再只是 config bundle，而是 learner 可训练范围",
+      "  - 因此新增：",
+      "    - `helpers/trainability.py`",
+      "    - `run_remix_training_experiment.py --trainable-modules`",
+      "    - `feature_experiment_pipeline.py` 中的 trainable-scope 配置",
+      "  - 这样 `L1/L2` 才能在不改 teacher 的前提下形成受控的 learner adaptability ladder",
+      "",
+      "---",
+      "",
+      "## DEC-048",
+      "",
+      "- 决策：修复 runtime preflight 对 `clipdino2` 的 false negative，并通过重启 daemon 让 `EXP-P1-004` 进入真实执行",
+      "- 结论：`keep`",
+      "- 原因：",
+      "  - 实机确认机器具备 4 张可见 GPU，`clipdino2` 在正常导入顺序下可正确识别 CUDA",
+      "  - preflight 失败来自 `MKL_THREADING_LAYER` / 导入顺序导致的探针误判，而不是机器真的无 GPU",
+      "  - 因此将 probe 调整为：",
+      "    - 先导入 `numpy`",
+      "    - 设置 `MKL_SERVICE_FORCE_INTEL=1`",
+      "    - 设置 `MKL_THREADING_LAYER=GNU`",
+      "  - 修复后，`EXP-P1-004` 已在新版 daemon 下进入 `running`"
+    ]
+  }
+}

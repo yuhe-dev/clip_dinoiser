@@ -1,0 +1,129 @@
+{
+  "model_key": "deeplabv3plus_r50_d8",
+  "dataset_key": "voc",
+  "data_root": "/home/yuhe/slicetune/deeplab/research/deeplab/datasets/pascal_voc_seg/VOCdevkit/VOC2012",
+  "candidate_id": "voc_train_aug_rare_class_coverage_high_2000_seed0",
+  "subset_manifest": "/home/yuhe/slicetune/clip_dinoiser/artifacts/voc_train_aug_feature_prep_strict_seed0/manifests/voc_train_aug_rare_class_coverage_high_2000_seed0.json",
+  "full_train_split_used": false,
+  "seed": 0,
+  "config": {
+    "max_iters": 1000,
+    "crop_size": 512,
+    "samples_per_gpu": 4,
+    "workers_per_gpu": 2,
+    "val_workers_per_gpu": 2,
+    "launcher": "pytorch",
+    "dist_backend": "nccl",
+    "gpu_collect": false
+  },
+  "subset_size": 2000,
+  "metrics": {
+    "validation_mode": "full",
+    "used_inference_mode": "whole",
+    "summary": {
+      "mIoU": 40.53,
+      "mAcc": 61.14000000000001,
+      "aAcc": 84.18
+    },
+    "proxy_summary": null,
+    "full_summary": {
+      "mIoU": 40.53,
+      "mAcc": 61.14000000000001,
+      "aAcc": 84.18
+    },
+    "per_class": {
+      "background": {
+        "IoU": 85.5,
+        "Acc": 90.20999908447266
+      },
+      "aeroplane": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "bicycle": {
+        "IoU": 31.149999618530273,
+        "Acc": 87.31999969482422
+      },
+      "bird": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "boat": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "bottle": {
+        "IoU": 1.6100000143051147,
+        "Acc": 1.6100000143051147
+      },
+      "bus": {
+        "IoU": 55.38999938964844,
+        "Acc": 97.23999786376953
+      },
+      "car": {
+        "IoU": 65.19000244140625,
+        "Acc": 75.66999816894531
+      },
+      "cat": {
+        "IoU": 66.51000213623047,
+        "Acc": 82.43000030517578
+      },
+      "chair": {
+        "IoU": 28.499999999999996,
+        "Acc": 39.40999984741211
+      },
+      "cow": {
+        "IoU": 65.79000091552734,
+        "Acc": 88.97000122070312
+      },
+      "dining table": {
+        "IoU": 40.09000015258789,
+        "Acc": 74.61000061035156
+      },
+      "dog": {
+        "IoU": 55.529998779296875,
+        "Acc": 71.33999633789062
+      },
+      "horse": {
+        "IoU": 58.599998474121094,
+        "Acc": 79.12000274658203
+      },
+      "motorbike": {
+        "IoU": 62.72999954223633,
+        "Acc": 90.05000305175781
+      },
+      "person": {
+        "IoU": 75.26000213623047,
+        "Acc": 85.26000213623047
+      },
+      "potted plant": {
+        "IoU": 32.619998931884766,
+        "Acc": 55.900001525878906
+      },
+      "sheep": {
+        "IoU": 42.810001373291016,
+        "Acc": 89.05999755859375
+      },
+      "sofa": {
+        "IoU": 23.959999084472656,
+        "Acc": 82.58999633789062
+      },
+      "train": {
+        "IoU": 6.75,
+        "Acc": 6.820000171661376
+      },
+      "tvmonitor": {
+        "IoU": 53.13999938964844,
+        "Acc": 86.23999786376953
+      }
+    }
+  },
+  "timing": {
+    "subset_size": 2000,
+    "started_at": "2026-04-19T03:31:02.908872+00:00",
+    "finished_at": "2026-04-19T03:36:17.912954+00:00",
+    "train_seconds": 290.172,
+    "eval_seconds": 22.138,
+    "total_seconds": 315.004
+  }
+}

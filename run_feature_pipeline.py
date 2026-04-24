@@ -3,6 +3,10 @@ import os
 
 import numpy as np
 
+from feature_utils.data_feature.dataset_specs import (
+    list_dataset_feature_specs,
+    merge_feature_meta_with_dataset_spec,
+)
 from feature_utils.data_feature.pipeline import DataFeaturePipelineRunner
 
 
@@ -17,6 +21,7 @@ def build_argparser():
     parser.add_argument("--stage", choices=["raw", "postprocess", "full"], default="full")
     parser.add_argument("--subset-root", default="./data/coco_stuff50k")
     parser.add_argument("--index-path", default=None)
+    parser.add_argument("--dataset-spec", choices=list_dataset_feature_specs(), default=None)
     parser.add_argument("--data-root", default="./data/data_feature")
     parser.add_argument("--schema-path", default="./docs/feature_schema/unified_processed_feature_schema.json")
     parser.add_argument("--embedding-root", default="./data/data_feature/coverage/visual_embedding")
@@ -35,10 +40,11 @@ def load_subset_records(index_path):
 
 
 def build_feature_meta(args, dimension_name):
+    base_feature_meta = {}
     if dimension_name == "quality":
-        return {"patch_size": args.patch_size, "stride": args.stride}
-    if dimension_name == "coverage":
-        return {
+        base_feature_meta = {"patch_size": args.patch_size, "stride": args.stride}
+    elif dimension_name == "coverage":
+        base_feature_meta = {
             "embedding_root": args.embedding_root,
             "knn_k": int(args.knn_k),
             "prototype_top_m": int(args.prototype_top_m),
@@ -48,7 +54,7 @@ def build_feature_meta(args, dimension_name):
             "knn_metric": "cosine",
             "normalize_for_cosine": True,
         }
-    return {}
+    return merge_feature_meta_with_dataset_spec(base_feature_meta, dataset_name=args.dataset_spec)
 
 
 def main():

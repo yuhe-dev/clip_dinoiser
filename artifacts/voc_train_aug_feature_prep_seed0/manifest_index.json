@@ -1,0 +1,9 @@
+{
+  "anchor": "/home/yuhe/slicetune/clip_dinoiser/artifacts/voc_train_aug_feature_prep_seed0/manifests/voc_train_aug_anchor_2000_seed0.json",
+  "rare_class_coverage.high": "/home/yuhe/slicetune/clip_dinoiser/artifacts/voc_train_aug_feature_prep_seed0/manifests/voc_train_aug_rare_class_coverage_high_2000_seed0.json",
+  "rare_class_coverage.low": "/home/yuhe/slicetune/clip_dinoiser/artifacts/voc_train_aug_feature_prep_seed0/manifests/voc_train_aug_rare_class_coverage_low_2000_seed0.json",
+  "rare_class_coverage.matched_random": "/home/yuhe/slicetune/clip_dinoiser/artifacts/voc_train_aug_feature_prep_seed0/manifests/voc_train_aug_rare_class_coverage_matched_random_2000_seed0.json",
+  "small_object_ratio.high": "/home/yuhe/slicetune/clip_dinoiser/artifacts/voc_train_aug_feature_prep_seed0/manifests/voc_train_aug_small_object_ratio_high_2000_seed0.json",
+  "small_object_ratio.low": "/home/yuhe/slicetune/clip_dinoiser/artifacts/voc_train_aug_feature_prep_seed0/manifests/voc_train_aug_small_object_ratio_low_2000_seed0.json",
+  "small_object_ratio.matched_random": "/home/yuhe/slicetune/clip_dinoiser/artifacts/voc_train_aug_feature_prep_seed0/manifests/voc_train_aug_small_object_ratio_matched_random_2000_seed0.json"
+}

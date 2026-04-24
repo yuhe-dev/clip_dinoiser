@@ -1,0 +1,130 @@
+{
+  "generated_at_utc": "2026-04-13T18:17:18.217589+00:00",
+  "experiment_id": "EXP-P1-003",
+  "card_path": "/home/yuhe/clip_dinoiser/.slicetune/experiments/EXP-P1-003.json",
+  "loop_kind": "learner_sensitivity_ladder",
+  "phase": "Phase 1",
+  "status": "queued",
+  "owner": "Auto Proposer",
+  "hypothesis": "If fixed-subset multi-seed noise remains comparable to the global floor, the next priority is to audit whether the learner itself is insufficiently sensitive to composition changes.",
+  "budget_tier": "Tier B",
+  "depends_on": [
+    "EXP-P1-002"
+  ],
+  "memory_index": [
+    {
+      "path": "/home/yuhe/clip_dinoiser/AGENTS.md",
+      "exists": true
+    },
+    {
+      "path": "/home/yuhe/clip_dinoiser/.slicetune/MEMORY.md",
+      "exists": true
+    },
+    {
+      "path": "/home/yuhe/clip_dinoiser/.slicetune/context/program.md",
+      "exists": true
+    },
+    {
+      "path": "/home/yuhe/clip_dinoiser/.slicetune/context/playbook.md",
+      "exists": true
+    },
+    {
+      "path": "/home/yuhe/clip_dinoiser/.slicetune/state/board.md",
+      "exists": true
+    },
+    {
+      "path": "/home/yuhe/clip_dinoiser/.slicetune/state/decision_log.md",
+      "exists": true
+    }
+  ],
+  "task_snapshot": {
+    "research_state": "audit",
+    "next_action": "satisfy_gates_then_queue",
+    "acceptance_status": "not_required",
+    "recent_facts": [
+      "card_status=queued",
+      "debate_bundle_exists=True",
+      "result_bundle_exists=False",
+      "judge_report_exists=False"
+    ],
+    "blockers": []
+  },
+  "runtime_snapshot": {
+    "attempt_count": 0,
+    "judge_decision": "",
+    "runtime_status": "queued"
+  },
+  "artifact_snapshot": {
+    "output_dir": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-003_learner_sensitivity_ladder",
+    "has_task_plan": true,
+    "has_result_bundle": false,
+    "has_judge_report": false,
+    "debate_bundle_path": ".slicetune/debates/EXP-P1-003_bundle.json"
+  },
+  "repo_memory_tail": {
+    "board_md_tail": [
+      "#### EXP-P1-004",
+      "",
+      "- 主题：feature intervention matrix",
+      "- 当前状态：未 materialize",
+      "- 前提：等待 `EXP-P1-003` 完成并被 judge / 人类审核放行",
+      "",
+      "---",
+      "",
+      "## 3. 主分支状态",
+      "",
+      "### keep",
+      "",
+      "- Phase 1 noise floor / training noise 审计",
+      "- runtime preflight / queue / daemon / attempt / taskflow",
+      "- human review stop + release",
+      "- agentic planning / analysis / judgment artifact",
+      "- executable literature radar loop",
+      "",
+      "### park",
+      "",
+      "- surrogate 扩张",
+      "- candidate generation 搜索复杂化",
+      "- frontend polish",
+      "",
+      "### 当前停机原因",
+      "",
+      "- `EXP-P1-002` 已被放行为 `completed`",
+      "- 当前主线已自动推进到 `EXP-P1-003`",
+      "- 系统当前没有越权停机；真正的下一阻塞是：",
+      "  - `learner_sensitivity_ladder` 仍缺 runtime handler / executable recipe"
+    ],
+    "decision_log_tail": [
+      "",
+      "---",
+      "",
+      "## DEC-040",
+      "",
+      "- 决策：completed card 的 task plan 应允许被 taskflow 回收重建，以消除 release 后的 stale acceptance 状态",
+      "- 结论：`keep`",
+      "- 原因：",
+      "  - 人类审核通过后，card 可能已从 `awaiting_human_review` 释放为 `completed`",
+      "  - 若仍保留旧 `task_plan.json`，会出现“card 已完成但 task 仍在等验收”的状态污染",
+      "",
+      "---",
+      "",
+      "## DEC-041",
+      "",
+      "- 决策：judge 升级为“两层制”，即 mechanical judge + agentic rubric/context overlay judge",
+      "- 结论：`keep`",
+      "- 原因：",
+      "  - 纯硬规则 judge 不足以承载不同 loop 的研究解释",
+      "  - 当前已让 planner 先冻结 `evaluation_rubric`，再由 `agentic_judge` 结合 rubric、context packet、result bundle 和机械 judge 生成最终 `judgment_brief`",
+      "",
+      "---",
+      "",
+      "## DEC-042",
+      "",
+      "- 决策：将 `EXP-P1-002` 的人工审核结论正式写入 `human_review.json`，并允许 daemon 自动释放为 `completed`",
+      "- 结论：`keep`",
+      "- 原因：",
+      "  - 用户已明确口头认可该结果",
+      "  - 释放后系统成功自动 materialize 了 `EXP-P1-003`，证明 human stop + release 闭环已真正跑通"
+    ]
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "minimum_completed_regimes": 3,
+  "training_noise_reference": 0.0089442719,
+  "meaningful_sensitivity_multiplier": 1.5
+}

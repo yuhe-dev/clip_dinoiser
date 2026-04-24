@@ -1,0 +1,47 @@
+{
+  "generated_by": "agentic_judge_v1",
+  "generated_at_utc": "2026-04-24T14:00:24.892583+00:00",
+  "experiment_id": "EXP-P1-004",
+  "phase": "Phase 1",
+  "loop_kind": "feature_intervention_matrix",
+  "mechanical_decision": "park",
+  "final_decision": "park",
+  "contract_type": "learner_adaptability_audit",
+  "contract_alignment": {
+    "real_axes_with_signal_count": 2,
+    "best_real_response_to_noise_ratio": Infinity,
+    "minimum_directional_consistency": 0.0,
+    "real_beats_shuffled": false,
+    "real_beats_random": false,
+    "full_validation": true,
+    "teacher_frozen": true,
+    "minimum_real_axes_with_signal": 1,
+    "threshold.minimum_response_to_noise_ratio": 2.0,
+    "threshold.minimum_directional_consistency": 0.67
+  },
+  "alignment_passed": false,
+  "reasons": [
+    "Tier A found 6 learner-axis cells above the screen threshold with best response_to_noise_ratio=inf.",
+    "Mean off-target drift ratio 0.0154 stays within the Tier A caution ceiling 1.0000.",
+    "Rubric contract `learner_adaptability_audit` alignment=False.",
+    "Context research_state=judgment.",
+    "Downgraded from mechanical promote because the frozen rubric contract is not yet satisfied.",
+    "Rubric contract `learner_adaptability_audit` alignment=False.",
+    "Context research_state=judgment.",
+    "Prior runtime snapshot decision=park."
+  ],
+  "recommended_actions": [
+    "Treat this as a successful Tier A screen and promote the strongest learner-axis cells to Tier B confirmation.",
+    "Keep teacher frozen and validation full while adding shuffled and matched-random controls.",
+    "Revisit the design pack or execution recipe before escalating this branch.",
+    "Revisit the design pack or execution recipe before escalating this branch."
+  ],
+  "context_signals": {
+    "research_state": "judgment",
+    "next_action": "continue_feature_intervention_execution",
+    "runtime_status": "completed",
+    "depends_on": [
+      "EXP-P1-003"
+    ]
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "design_mode": "minimal_learner_adaptability_audit",
+  "metric_definitions": {
+    "composition_response_amplitude": "abs(mIoU(high) - mIoU(low))",
+    "response_to_noise_ratio": "composition_response_amplitude / learner_specific_noise_std",
+    "directional_consistency": "fraction of seeds whose signed_response matches the majority sign",
+    "feature_validity_advantage": "real_feature_guided.response_to_noise_ratio - max(shuffled_feature_guided.response_to_noise_ratio, matched_random_control.response_to_noise_ratio)"
+  },
+  "minimum_completed_learner_variants": 3,
+  "minimum_probe_axes": 2,
+  "minimum_seed_count_per_cell": 3,
+  "minimum_control_families": 3,
+  "tier_a_requirements": {
+    "minimum_response_to_noise_ratio": 1.0,
+    "require_realized_target_delta_logged": true,
+    "maximum_mean_off_target_drift_ratio": 1.0
+  },
+  "screen_to_confirm_rule": {
+    "minimum_response_to_noise_ratio": 1.0
+  },
+  "promote_requirements": {
+    "minimum_real_axes_with_signal": 1,
+    "minimum_response_to_noise_ratio": 2.0,
+    "minimum_directional_consistency": 0.67,
+    "require_real_beats_shuffled": true,
+    "require_real_beats_random": true,
+    "require_full_validation": true,
+    "require_teacher_frozen": true
+  },
+  "caution_requirements": {
+    "maximum_mean_off_target_drift_ratio": 1.0
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "candidate_id": "rand_subset_s0145_t00",
+  "subset_manifest": "/home/yuhe/clip_dinoiser/artifacts/surrogate_random_v1/manifests/rand_subset_s0145_t00.json",
+  "result_path": "/home/yuhe/clip_dinoiser/artifacts/manual_runs/intermediate_grad_L2_anchor_seed1/result.json",
+  "seed": 1,
+  "trainable_modules": [
+    "obj_proj",
+    "bkg_decoder",
+    "clip_backbone.backbone.visual.transformer.resblocks.-3",
+    "clip_backbone.backbone.visual.transformer.resblocks.-4"
+  ],
+  "timing": {
+    "subset_size": 1000,
+    "started_at": "2026-04-15T07:38:04.045952+00:00",
+    "finished_at": "2026-04-15T08:07:35.016941+00:00",
+    "train_seconds": 20.458,
+    "eval_seconds": 1731.905,
+    "total_seconds": 1770.971
+  }
+}

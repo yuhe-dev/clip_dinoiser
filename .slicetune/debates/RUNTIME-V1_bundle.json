@@ -1,0 +1,11 @@
+{
+  "debate_id": "RUNTIME-V1",
+  "design_card_path": ".slicetune/debates/RUNTIME-V1_design.md",
+  "review_card_paths": [
+    ".slicetune/debates/RUNTIME-V1_review.md"
+  ],
+  "decision_card_path": ".slicetune/debates/RUNTIME-V1_decision.md",
+  "decision": "approve",
+  "round_count": 2,
+  "reviewer_count": 1
+}

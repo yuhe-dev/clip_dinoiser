@@ -1,0 +1,12 @@
+{
+  "experiment_id": "EXP-P1-003",
+  "regime_id": "standard_3ep",
+  "candidate_id": "rand_subset_s0145_t00_standard_3ep",
+  "config_name": "feature_experiment",
+  "training_seed": 0,
+  "metric_name": "mIoU",
+  "metric_value": 20.75,
+  "python_bin": "/home/yuhe/.conda/envs/clipdino2/bin/python3.9",
+  "runtime_profile_id": "clipdino2",
+  "completed_at_utc": "2026-04-13T18:44:34.683797+00:00"
+}

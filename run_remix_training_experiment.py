@@ -27,6 +27,12 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--result-name", required=True)
     parser.add_argument("--pool-image-root")
     parser.add_argument("--seed", type=int)
+    parser.add_argument(
+        "--trainable-modules",
+        action="append",
+        default=[],
+        help="Dotted module path to keep trainable. Can be passed multiple times.",
+    )
     return parser
 
 
@@ -66,6 +72,7 @@ def run(args: argparse.Namespace) -> int:
     import torchvision.transforms as T
     from hydra import compose, initialize
     from mmcv.runner import get_dist_info, init_dist
+    from omegaconf import open_dict
 
     from feature_experiment_pipeline import do_train, validate
     from helpers.logger import get_logger
@@ -84,6 +91,9 @@ def run(args: argparse.Namespace) -> int:
     if args.seed is not None:
         cfg.seed = int(args.seed)
     cfg.output = os.path.abspath(args.output_dir)
+    if args.trainable_modules:
+        with open_dict(cfg.train):
+            cfg.train.trainable_modules = [str(item) for item in args.trainable_modules]
 
     torch.manual_seed(int(cfg.seed))
     np.random.seed(int(cfg.seed))
@@ -175,6 +185,7 @@ def run(args: argparse.Namespace) -> int:
                     "subset_manifest": os.path.abspath(args.subset_manifest),
                     "result_path": result_path,
                     "seed": int(cfg.seed),
+                    "trainable_modules": [str(item) for item in args.trainable_modules],
                     "timing": timing,
                 },
                 f,

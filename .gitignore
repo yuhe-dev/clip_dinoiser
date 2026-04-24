@@ -182,3 +182,9 @@ cython_debug/
 
 /artifacts/surrogate_random_*/runs/
 /artifacts/surrogate_random_*/manifests/
+# Model checkpoints / weights
+*.pth
+*.pt
+*.ckpt
+*.safetensors
+*.onnx

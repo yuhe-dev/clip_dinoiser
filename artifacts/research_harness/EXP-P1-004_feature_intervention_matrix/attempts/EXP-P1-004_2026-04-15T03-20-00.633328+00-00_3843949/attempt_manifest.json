@@ -1,0 +1,25 @@
+{
+  "attempt_id": "EXP-P1-004_2026-04-15T03-20-00.633328+00-00_3843949",
+  "experiment_id": "EXP-P1-004",
+  "session_id": "session_2026-04-15T03-19-59.311860+00-00_3843949",
+  "card_path": "/home/yuhe/clip_dinoiser/.slicetune/experiments/EXP-P1-004.json",
+  "output_dir": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix",
+  "attempt_dir": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/attempts/EXP-P1-004_2026-04-15T03-20-00.633328+00-00_3843949",
+  "runtime_profile_id": "clipdino2",
+  "python_bin": "/home/yuhe/.conda/envs/clipdino2/bin/python",
+  "status": "failed_execution",
+  "started_at_utc": "2026-04-15T03:20:00.634527+00:00",
+  "finished_at_utc": "2026-04-15T03:20:07.822839+00:00",
+  "reason": "tick raised TypeError: judge_feature_intervention_matrix() got an unexpected keyword argument 'design_mode'",
+  "exit_code": 8,
+  "paths": {
+    "session_dir": "/home/yuhe/clip_dinoiser/artifacts/research_harness/sessions/session_2026-04-15T03-19-59.311860+00-00_3843949",
+    "session_checkpoint_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/sessions/session_2026-04-15T03-19-59.311860+00-00_3843949/session_checkpoint.json",
+    "session_error_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/sessions/session_2026-04-15T03-19-59.311860+00-00_3843949/session_error.json",
+    "preflight_report_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/sessions/session_2026-04-15T03-19-59.311860+00-00_3843949/preflight_report.json"
+  },
+  "metadata": {
+    "controller_policy_path": "/home/yuhe/clip_dinoiser/.slicetune/runtime/controller_policy.json",
+    "session_dir": "/home/yuhe/clip_dinoiser/artifacts/research_harness/sessions/session_2026-04-15T03-19-59.311860+00-00_3843949"
+  }
+}

@@ -1,6 +1,8 @@
 # ---------------------------------------------------------------------------------------------------
 # CLIP-DINOiser: Stratified Training
 # ---------------------------------------------------------------------------------------------------
+from __future__ import annotations
+
 from dataclasses import dataclass
 from typing import Any, Dict, List
 
@@ -28,6 +30,13 @@ from tqdm import tqdm
 
 from feature_utils.data_feature.registry import build_feature
 from helpers.logger import get_logger
+from helpers.trainability import (
+    build_optimizer_groups,
+    collect_module_grad_summaries,
+    configure_trainable_modules,
+    normalize_module_paths,
+    set_train_mode_for_modules,
+)
 from models import build_model
 from scheduler import MultiStepLR
 from segmentation.evaluation import build_seg_dataloader, build_seg_dataset, build_seg_inference
@@ -56,12 +65,15 @@ import pandas as pd
 from feature_utils.visualizer import plot_metric_distribution, plot_class_distribution_comparison
 
 
-def get_model_dict(model):
+def get_model_dict(model, parameter_names: list[str] | None = None):
+    state_dict = model.state_dict()
+    if parameter_names:
+        return {name: state_dict[name].cpu() for name in parameter_names if name in state_dict}
     new_check = {}
-    new_check['obj_proj.bias'] = model.state_dict()['obj_proj.bias'].cpu()
-    new_check['obj_proj.weight'] = model.state_dict()['obj_proj.weight'].cpu()
-    new_check['bkg_decoder.bias'] = model.state_dict()['bkg_decoder.bias'].cpu()
-    new_check['bkg_decoder.weight'] = model.state_dict()['bkg_decoder.weight'].cpu()
+    new_check['obj_proj.bias'] = state_dict['obj_proj.bias'].cpu()
+    new_check['obj_proj.weight'] = state_dict['obj_proj.weight'].cpu()
+    new_check['bkg_decoder.bias'] = state_dict['bkg_decoder.bias'].cpu()
+    new_check['bkg_decoder.weight'] = state_dict['bkg_decoder.weight'].cpu()
     return new_check
 
 
@@ -123,16 +135,29 @@ def do_train(model, train_cfg, loaders, out_path):
     model.to("cuda")
     epochs = train_cfg.get("epochs", 100)
     criterion = get_criterion(train_cfg)
-    optimizer = torch.optim.AdamW([{'params': model.obj_proj.parameters()},
-                                   {'params': model.bkg_decoder.parameters(), 'lr': train_cfg.get('found_lr')}],
-                                  lr=train_cfg.get('corr_lr'))
+    trainable_modules = normalize_module_paths(train_cfg.get("trainable_modules"))
+    active_modules = configure_trainable_modules(model, trainable_modules)
+    optimizer_groups, trainability_summary = build_optimizer_groups(
+        model,
+        corr_lr=float(train_cfg.get('corr_lr')),
+        found_lr=float(train_cfg.get('found_lr')),
+        backbone_lr=float(train_cfg.get("backbone_lr", float(train_cfg.get('corr_lr')) * 0.2)),
+    )
+    trainability_summary.trainable_modules = list(active_modules)
+    if rank == 0:
+        print(
+            "[Trainability] modules="
+            + ",".join(active_modules)
+            + f" trainable_params={len(trainability_summary.trainable_param_names)}",
+            flush=True,
+        )
+    optimizer = torch.optim.AdamW(optimizer_groups, lr=train_cfg.get('corr_lr'))
     scheduler = MultiStepLR(optimizer, train_cfg.get('milestones'), gamma=train_cfg.get("step_lr_gamma"), warmup=0)
 
     for epoch in range(epochs):
         tbar = tqdm(enumerate(loaders['train'], 0), disable=(get_dist_info()[0] != 0))
         for i, data in tbar:
-            model.bkg_decoder.train()
-            model.obj_proj.train()
+            set_train_mode_for_modules(model, active_modules)
             inputs = data[0].to("cuda")
             optimizer.zero_grad()
             preds_bkg, pred_corrs, clip_feats = model.forward_pass(inputs)
@@ -147,6 +172,13 @@ def do_train(model, train_cfg, loaders, out_path):
             found_loss = criterion(preds_bkg.float().flatten(-2, -1), found_pred.float().flatten(-2, -1))
             loss = dino_loss + found_loss
             loss.backward()
+            if rank == 0 and epoch == 0 and i == 0:
+                grad_summaries = collect_module_grad_summaries(model, active_modules)
+                grad_parts = [
+                    f"{item.module_path}:params_with_grad={item.params_with_grad}/{item.param_count},grad_norm={item.total_grad_norm:.6f}"
+                    for item in grad_summaries
+                ]
+                print("[TrainabilityGrad] " + " | ".join(grad_parts), flush=True)
             optimizer.step()
 
             if get_dist_info()[0] == 0:
@@ -159,7 +191,9 @@ def do_train(model, train_cfg, loaders, out_path):
         model.vit_encoder = None
         torch.save({
             'epoch': epoch, # type:ignore
-            'model_state_dict': get_model_dict(model),
+            'trainable_modules': list(active_modules),
+            'trainable_param_names': list(trainability_summary.trainable_param_names),
+            'model_state_dict': get_model_dict(model, list(trainability_summary.trainable_param_names)),
         }, os.path.join(ch_path, 'last.pt'))
 
 

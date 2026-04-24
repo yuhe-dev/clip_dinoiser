@@ -1,0 +1,18 @@
+{
+  "candidate_id": "rand_subset_s0145_t00",
+  "subset_manifest": "/home/yuhe/clip_dinoiser/artifacts/surrogate_random_v1/manifests/rand_subset_s0145_t00.json",
+  "result_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/runs/L0_head_only_noise_seed01/result.json",
+  "seed": 1,
+  "trainable_modules": [
+    "obj_proj",
+    "bkg_decoder"
+  ],
+  "timing": {
+    "subset_size": 1000,
+    "started_at": "2026-04-14T10:42:21.031948+00:00",
+    "finished_at": "2026-04-14T10:52:44.184768+00:00",
+    "train_seconds": 20.152,
+    "eval_seconds": 593.401,
+    "total_seconds": 623.153
+  }
+}

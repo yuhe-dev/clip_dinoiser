@@ -1,0 +1,47 @@
+{
+  "experiment_id": "EXP-P1-002",
+  "current_step": "reuse_existing_result",
+  "completed_runs": [
+    {
+      "candidate_id": "rand_subset_s0145_t00_trainseed00",
+      "training_seed": 0,
+      "result_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-002_same_subset_multiseed/runs/rand_subset_s0145_t00_trainseed00/result.json",
+      "metric_value": 24.29,
+      "status": "reused_existing_result",
+      "completion_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-002_same_subset_multiseed/runs/rand_subset_s0145_t00_trainseed00/completion.json"
+    },
+    {
+      "candidate_id": "rand_subset_s0145_t00_trainseed01",
+      "training_seed": 1,
+      "result_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-002_same_subset_multiseed/runs/rand_subset_s0145_t00_trainseed01/result.json",
+      "metric_value": 24.29,
+      "status": "reused_existing_result",
+      "completion_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-002_same_subset_multiseed/runs/rand_subset_s0145_t00_trainseed01/completion.json"
+    },
+    {
+      "candidate_id": "rand_subset_s0145_t00_trainseed02",
+      "training_seed": 2,
+      "result_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-002_same_subset_multiseed/runs/rand_subset_s0145_t00_trainseed02/result.json",
+      "metric_value": 24.29,
+      "status": "reused_existing_result",
+      "completion_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-002_same_subset_multiseed/runs/rand_subset_s0145_t00_trainseed02/completion.json"
+    },
+    {
+      "candidate_id": "rand_subset_s0145_t00_trainseed03",
+      "training_seed": 3,
+      "result_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-002_same_subset_multiseed/runs/rand_subset_s0145_t00_trainseed03/result.json",
+      "metric_value": 24.29,
+      "status": "reused_existing_result",
+      "completion_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-002_same_subset_multiseed/runs/rand_subset_s0145_t00_trainseed03/completion.json"
+    },
+    {
+      "candidate_id": "rand_subset_s0145_t00_trainseed04",
+      "training_seed": 4,
+      "result_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-002_same_subset_multiseed/runs/rand_subset_s0145_t00_trainseed04/result.json",
+      "metric_value": 24.27,
+      "status": "reused_existing_result",
+      "completion_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-002_same_subset_multiseed/runs/rand_subset_s0145_t00_trainseed04/completion.json"
+    }
+  ],
+  "failures": []
+}

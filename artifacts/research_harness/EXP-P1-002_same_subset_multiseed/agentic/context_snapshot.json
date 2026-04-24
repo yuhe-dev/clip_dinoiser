@@ -1,0 +1,129 @@
+{
+  "generated_at_utc": "2026-04-24T14:00:24.882099+00:00",
+  "experiment_id": "EXP-P1-002",
+  "card_path": "/home/yuhe/slicetune/clip_dinoiser/.slicetune/experiments/EXP-P1-002_same_subset_multiseed.json",
+  "loop_kind": "same_subset_multi_seed",
+  "phase": "Phase 1",
+  "status": "completed",
+  "owner": "Learner Sensitivity Auditor",
+  "hypothesis": "A meaningful part of the current global mIoU spread may come from training noise rather than subset composition alone.",
+  "budget_tier": "Tier B",
+  "depends_on": [],
+  "memory_index": [
+    {
+      "path": "/home/yuhe/slicetune/clip_dinoiser/AGENTS.md",
+      "exists": true
+    },
+    {
+      "path": "/home/yuhe/slicetune/clip_dinoiser/.slicetune/MEMORY.md",
+      "exists": true
+    },
+    {
+      "path": "/home/yuhe/slicetune/clip_dinoiser/.slicetune/context/program.md",
+      "exists": true
+    },
+    {
+      "path": "/home/yuhe/slicetune/clip_dinoiser/.slicetune/context/playbook.md",
+      "exists": true
+    },
+    {
+      "path": "/home/yuhe/slicetune/clip_dinoiser/.slicetune/state/board.md",
+      "exists": true
+    },
+    {
+      "path": "/home/yuhe/slicetune/clip_dinoiser/.slicetune/state/decision_log.md",
+      "exists": true
+    }
+  ],
+  "task_snapshot": {
+    "research_state": "judgment",
+    "next_action": "review_judge_report_and_choose_next_branch",
+    "acceptance_status": "not_required",
+    "recent_facts": [
+      "card_status=completed",
+      "debate_bundle_exists=True",
+      "result_bundle_exists=True",
+      "judge_report_exists=True"
+    ],
+    "blockers": []
+  },
+  "runtime_snapshot": {
+    "attempt_count": 3,
+    "judge_decision": "promote",
+    "runtime_status": "completed"
+  },
+  "artifact_snapshot": {
+    "output_dir": "/home/yuhe/slicetune/clip_dinoiser/artifacts/research_harness/EXP-P1-002_same_subset_multiseed",
+    "has_task_plan": true,
+    "has_result_bundle": true,
+    "has_judge_report": true,
+    "debate_bundle_path": ".slicetune/debates/EXP-P1-002_bundle.json"
+  },
+  "repo_memory_tail": {
+    "board_md_tail": [
+      "    - 数据契约与 dataclass",
+      "  - `slice_remix/voc_feature_prep/dataset.py`",
+      "    - VOC `train_aug` 数据契约与记录读取",
+      "  - `slice_remix/voc_feature_prep/scoring.py`",
+      "    - feature axis registry 与 feature table 计算",
+      "  - `slice_remix/voc_feature_prep/service.py`",
+      "    - subset materialization 与 artifact 写出",
+      "  - `slice_remix/voc_feature_prep/__init__.py`",
+      "    - 公共 API 出口",
+      "- 当前兼容策略：",
+      "  - `slice_remix/voc_feature_subsets.py` 已降级为 backward-compatible bridge",
+      "- 当前 CLI：",
+      "  - `tools/prepare_voc_train_aug_feature_experiment.py`",
+      "  - 现在支持：",
+      "    - `--feature-axis`",
+      "- 当前已接入的可选 VOC feature axes：",
+      "  - 默认 screening 轴：",
+      "    - `small_object_ratio`",
+      "    - `rare_class_coverage`",
+      "  - 新增 mask-native 轴：",
+      "    - `foreground_class_count`",
+      "    - `pixel_class_entropy`",
+      "    - `foreground_area_ratio`",
+      "    - `foreground_component_count`",
+      "    - `component_fragmentation`",
+      "- 当前验证：",
+      "  - `python -m unittest tests.test_voc_feature_subsets tests.test_supervised_probe_dataset_cfg`",
+      "    - `OK`",
+      "  - `python tools/prepare_voc_train_aug_feature_experiment.py --help`",
+      "    - 正常"
+    ],
+    "decision_log_tail": [
+      "    - `slice_remix/voc_feature_prep/scoring.py`",
+      "    - 而不是回到 bridge 或 CLI 中堆实现",
+      "",
+      "---",
+      "",
+      "## DEC-118",
+      "",
+      "- 决策：优先接入一批 mask-native segmentation feature axes，先扩充 screening 候选池，再考虑 image-quality 族的统一接入",
+      "- 结论：`keep`",
+      "- 当前原因：",
+      "  - 当前 segmentation 主线最容易直接对齐的数据是 mask 与 label 协议",
+      "  - mask-native 特征：",
+      "    - 更贴近当前监督分割任务",
+      "    - 不依赖额外图像预处理或新依赖",
+      "    - 更适合作为 feature screening 基础层",
+      "- 当前执行含义：",
+      "  - 当前已新增：",
+      "    - `foreground_class_count`",
+      "    - `pixel_class_entropy`",
+      "    - `foreground_area_ratio`",
+      "    - `foreground_component_count`",
+      "    - `component_fragmentation`",
+      "  - 当前默认 screening 轴仍保持：",
+      "    - `small_object_ratio`",
+      "    - `rare_class_coverage`",
+      "  - quality 族如：",
+      "    - `laplacian`",
+      "    - `bga`",
+      "    - `noise_pca`",
+      "    将作为下一批接入，而不是和本次包层重构混在同一修改面"
+    ]
+  },
+  "source_path": "/home/yuhe/slicetune/clip_dinoiser/artifacts/research_harness/EXP-P1-002_same_subset_multiseed/agentic/context_snapshot.json"
+}

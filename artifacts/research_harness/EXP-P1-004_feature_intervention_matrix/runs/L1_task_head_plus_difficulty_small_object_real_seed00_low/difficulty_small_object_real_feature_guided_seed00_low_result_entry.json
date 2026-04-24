@@ -1,0 +1,19 @@
+{
+  "candidate_id": "difficulty_small_object_real_feature_guided_seed00_low",
+  "subset_manifest": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/manifests/difficulty_small_object_real_feature_guided_seed00_low.json",
+  "result_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/runs/L1_task_head_plus_difficulty_small_object_real_seed00_low/result.json",
+  "seed": 0,
+  "trainable_modules": [
+    "obj_proj",
+    "bkg_decoder",
+    "clip_backbone.decode_head.proj"
+  ],
+  "timing": {
+    "subset_size": 1000,
+    "started_at": "2026-04-14T13:18:01.675905+00:00",
+    "finished_at": "2026-04-14T13:28:15.305523+00:00",
+    "train_seconds": 20.57,
+    "eval_seconds": 581.392,
+    "total_seconds": 613.63
+  }
+}

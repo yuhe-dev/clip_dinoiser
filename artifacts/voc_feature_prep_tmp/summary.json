@@ -1,0 +1,81 @@
+{
+  "data_root": "/home/yuhe/slicetune/deeplab/research/deeplab/datasets/pascal_voc_seg/VOCdevkit/VOC2012",
+  "split": "ImageSets/Segmentation/train_aug.txt",
+  "pool_size": 10582,
+  "subset_size": 2000,
+  "anchor_seed": 0,
+  "candidate_budget": 8582,
+  "small_object_tau_ratio": 0.02,
+  "feature_axes": [
+    "rare_class_coverage"
+  ],
+  "axis_summary": {
+    "rare_class_coverage": {
+      "global": {
+        "min": 0.13975699245929718,
+        "p25": 0.544772744178772,
+        "p50": 0.9727427959442139,
+        "p75": 1.3214765787124634,
+        "max": 4.307548999786377,
+        "mean": 1.0296214818954468
+      },
+      "anchor_mean": 1.0308306217193604,
+      "high_mean": 1.9240676164627075,
+      "low_mean": 0.3279842436313629,
+      "matched_random_mean": 0.9455966949462891,
+      "high_minus_low": 1.596083402633667,
+      "matched_random_minus_anchor": -0.08523392677307129,
+      "overlap_counts": {
+        "anchor": 0,
+        "high": 0,
+        "low": 0
+      }
+    }
+  },
+  "rare_class_stats": {
+    "class_presence_rate": {
+      "aeroplane": 0.0553770549595356,
+      "bicycle": 0.04592704772949219,
+      "bird": 0.06596106290817261,
+      "boat": 0.04356454312801361,
+      "bottle": 0.06180306151509285,
+      "bus": 0.036382537335157394,
+      "car": 0.10262710601091385,
+      "cat": 0.0945000946521759,
+      "chair": 0.10215460509061813,
+      "cow": 0.02494802512228489,
+      "dining table": 0.04989605024456978,
+      "dog": 0.11122661083936691,
+      "horse": 0.0419580414891243,
+      "motorbike": 0.045549046248197556,
+      "person": 0.36836135387420654,
+      "potted plant": 0.04602154716849327,
+      "sheep": 0.028255527839064598,
+      "sofa": 0.046399544924497604,
+      "train": 0.04725004732608795,
+      "tvmonitor": 0.05178605020046234
+    },
+    "class_rarity_weight": {
+      "aeroplane": 0.929646372795105,
+      "bicycle": 1.1209315061569214,
+      "bird": 0.7804767489433289,
+      "boat": 1.1817195415496826,
+      "bottle": 0.8329858183860779,
+      "bus": 1.4149941205978394,
+      "car": 0.5016323328018188,
+      "cat": 0.544772744178772,
+      "chair": 0.5039525628089905,
+      "cow": 2.063533067703247,
+      "dining table": 1.0317665338516235,
+      "dog": 0.4628485143184662,
+      "horse": 1.2269656658172607,
+      "motorbike": 1.130233883857727,
+      "person": 0.13975699245929718,
+      "potted plant": 1.118629813194275,
+      "sheep": 1.8219823837280273,
+      "sofa": 1.1095167398452759,
+      "train": 1.089545488357544,
+      "tvmonitor": 0.9941108226776123
+    }
+  }
+}

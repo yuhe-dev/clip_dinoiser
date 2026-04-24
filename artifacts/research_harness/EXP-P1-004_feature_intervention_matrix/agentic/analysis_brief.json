@@ -1,0 +1,58 @@
+{
+  "generated_by": "agentic_analyst_v1",
+  "generated_at_utc": "2026-04-24T14:00:24.892092+00:00",
+  "experiment_id": "EXP-P1-004",
+  "phase": "Phase 1",
+  "loop_kind": "feature_intervention_matrix",
+  "status": "completed",
+  "judge_decision": "park",
+  "evidence_level": "E2",
+  "key_findings": [
+    "Tier A found 6 learner-axis cells above the screen threshold with best response_to_noise_ratio=inf.",
+    "Mean off-target drift ratio 0.0154 stays within the Tier A caution ceiling 1.0000.",
+    "Rubric contract `learner_adaptability_audit` alignment=False.",
+    "Context research_state=judgment.",
+    "Downgraded from mechanical promote because the frozen rubric contract is not yet satisfied.",
+    "Learner-specific noise and feature-axis response are now summarized in a shared screening artifact."
+  ],
+  "result_summary": {
+    "tier_executed": "Tier A",
+    "completed_learner_variant_count": 3,
+    "completed_probe_axis_count": 2,
+    "completed_real_cell_count": 6,
+    "control_families_executed": 1,
+    "minimum_seed_count_per_cell": 1,
+    "best_real_response_to_noise_ratio": Infinity,
+    "mean_off_target_drift_ratio": 0.01543520046149529,
+    "max_off_target_drift_ratio": 0.015511944936392099,
+    "mean_realized_target_delta": 6.089897006750107,
+    "real_axes_with_signal_count": 2,
+    "real_cells_above_noise_floor_count": 6,
+    "realized_target_delta_logged_for_all_cells": true,
+    "teacher_frozen": true,
+    "full_validation": true,
+    "screen_passed": true,
+    "promote_ready": false
+  },
+  "verdict": "Result should not yet advance the branch without more evidence.",
+  "branch_recommendation": {
+    "current_card": "EXP-P1-004",
+    "suggested_next_hypotheses": [
+      "Promote the strongest learner-axis cells to Tier B with shuffled and matched-random controls.",
+      "Keep teacher frozen and validation full while measuring whether real features beat controls."
+    ],
+    "recommended_actions": [
+      "Treat this as a successful Tier A screen and promote the strongest learner-axis cells to Tier B confirmation.",
+      "Keep teacher frozen and validation full while adding shuffled and matched-random controls.",
+      "Revisit the design pack or execution recipe before escalating this branch."
+    ]
+  },
+  "rubric_alignment": {
+    "has_rubric": true,
+    "primary_metric": "mIoU",
+    "promote_rule": "Promote the current learner-feature coupling branch only when at least one learner-axis cell satisfies the Tier B success criteria under a valid protocol."
+  },
+  "source_paths": {
+    "context_packet": "/home/yuhe/slicetune/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/agentic/context_snapshot.json"
+  }
+}

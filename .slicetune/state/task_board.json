@@ -1,0 +1,76 @@
+{
+  "generated_at_utc": "2026-04-24T14:00:24.870495+00:00",
+  "entry_count": 5,
+  "entries": [
+    {
+      "experiment_id": "EXP-LIT-EXP-P1-004",
+      "status": "planned",
+      "phase": "Phase 1",
+      "loop_kind": "literature_radar",
+      "output_dir": "/home/yuhe/slicetune/clip_dinoiser/artifacts/research_harness/EXP-LIT-EXP-P1-004_literature_radar",
+      "task_plan_path": "/home/yuhe/slicetune/clip_dinoiser/artifacts/research_harness/EXP-LIT-EXP-P1-004_literature_radar/task_plan.json",
+      "current_step": "status::planned",
+      "next_action": "author_hypothesis_and_scope",
+      "research_state": "hypothesis",
+      "acceptance_status": "pending_review",
+      "task_plan_valid": true,
+      "task_plan_error": ""
+    },
+    {
+      "experiment_id": "EXP-P1-001",
+      "status": "completed",
+      "phase": "Phase 1",
+      "loop_kind": "noise_floor",
+      "output_dir": "/home/yuhe/slicetune/clip_dinoiser/artifacts/research_harness/EXP-P1-001_noise_floor",
+      "task_plan_path": "/home/yuhe/slicetune/clip_dinoiser/artifacts/research_harness/EXP-P1-001_noise_floor/task_plan.json",
+      "current_step": "status::completed",
+      "next_action": "review_judge_report_and_choose_next_branch",
+      "research_state": "judgment",
+      "acceptance_status": "not_required",
+      "task_plan_valid": true,
+      "task_plan_error": ""
+    },
+    {
+      "experiment_id": "EXP-P1-002",
+      "status": "completed",
+      "phase": "Phase 1",
+      "loop_kind": "same_subset_multi_seed",
+      "output_dir": "/home/yuhe/slicetune/clip_dinoiser/artifacts/research_harness/EXP-P1-002_same_subset_multiseed",
+      "task_plan_path": "/home/yuhe/slicetune/clip_dinoiser/artifacts/research_harness/EXP-P1-002_same_subset_multiseed/task_plan.json",
+      "current_step": "status::completed",
+      "next_action": "review_judge_report_and_choose_next_branch",
+      "research_state": "judgment",
+      "acceptance_status": "not_required",
+      "task_plan_valid": true,
+      "task_plan_error": ""
+    },
+    {
+      "experiment_id": "EXP-P1-003",
+      "status": "completed",
+      "phase": "Phase 1",
+      "loop_kind": "learner_sensitivity_ladder",
+      "output_dir": "/home/yuhe/slicetune/clip_dinoiser/artifacts/research_harness/EXP-P1-003_learner_sensitivity_ladder",
+      "task_plan_path": "/home/yuhe/slicetune/clip_dinoiser/artifacts/research_harness/EXP-P1-003_learner_sensitivity_ladder/task_plan.json",
+      "current_step": "judge_completed",
+      "next_action": "continue_regime_execution",
+      "research_state": "judgment",
+      "acceptance_status": "not_required",
+      "task_plan_valid": true,
+      "task_plan_error": ""
+    },
+    {
+      "experiment_id": "EXP-P1-004",
+      "status": "completed",
+      "phase": "Phase 1",
+      "loop_kind": "feature_intervention_matrix",
+      "output_dir": "/home/yuhe/slicetune/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix",
+      "task_plan_path": "/home/yuhe/slicetune/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/task_plan.json",
+      "current_step": "judge_completed",
+      "next_action": "continue_feature_intervention_execution",
+      "research_state": "judgment",
+      "acceptance_status": "not_required",
+      "task_plan_valid": true,
+      "task_plan_error": ""
+    }
+  ]
+}

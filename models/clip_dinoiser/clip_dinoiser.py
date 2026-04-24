@@ -161,15 +161,18 @@ class DinoCLIP(nn.Module):
 
         return feats, (h_featmap, w_featmap)
 
-    @torch.no_grad()
-    def get_clip_features(self, x: torch.Tensor):
+    def get_clip_features(self, x: torch.Tensor, *, track_grad: bool = False):
         """
         Extracts MaskCLIP features
         :param x: (torch.Tensor) - batch of input images
         :return: (torch.Tensor) - clip dense features, (torch.Tensor) - output probabilities
         """
         x = self.make_input_divisible(x)
-        maskclip_map, feat = self.clip_backbone(x, return_feat=True)
+        if track_grad:
+            maskclip_map, feat = self.clip_backbone(x, return_feat=True, track_grad=True)
+        else:
+            with torch.no_grad():
+                maskclip_map, feat = self.clip_backbone(x, return_feat=True, track_grad=False)
 
         return feat, maskclip_map
 
@@ -226,7 +229,8 @@ class CLIP_DINOiser(DinoCLIP):
     """
 
     def __init__(self, clip_backbone, class_names, vit_arch="vit_base", vit_patch_size=16, enc_type_feats="v",
-                 feats_idx=-3, gamma=0.2, delta=0.99, in_dim=256, conv_kernel=3):
+                 feats_idx=-3, gamma=0.2, delta=0.99, in_dim=256, conv_kernel=3,
+                 enable_clip_grad_for_training=False, detach_intermediate_train_feats=True):
         super(CLIP_DINOiser, self).__init__(clip_backbone, class_names, vit_arch, vit_patch_size, enc_type_feats, gamma)
 
         in_size = 768 if feats_idx != 'final' else 512
@@ -234,6 +238,8 @@ class CLIP_DINOiser(DinoCLIP):
         self.feats_idx = feats_idx
         self.delta = delta
         self.in_dim = in_dim
+        self.enable_clip_grad_for_training = bool(enable_clip_grad_for_training)
+        self.detach_intermediate_train_feats = bool(detach_intermediate_train_feats)
         self.bkg_decoder = nn.Conv2d(in_size, 1, (1, 1))
         self.obj_proj = nn.Conv2d(in_size, in_dim, (conv_kernel, conv_kernel), padding=conv_kernel // 2,
                                   padding_mode='replicate')
@@ -244,7 +250,8 @@ class CLIP_DINOiser(DinoCLIP):
 
             def get_activation(name):
                 def hook(model, input, output):
-                    train_feats[name] = output.detach().permute(1, 0, 2)  # change to batch first
+                    captured = output.detach() if self.detach_intermediate_train_feats else output
+                    train_feats[name] = captured.permute(1, 0, 2)  # change to batch first
 
                 return hook
 
@@ -254,7 +261,8 @@ class CLIP_DINOiser(DinoCLIP):
 
     def forward_pass(self, x: torch.Tensor):
         x = self.make_input_divisible(x)
-        clip_proj_feats = self.get_clip_features(x)[0]
+        track_clip_grad = bool(self.enable_clip_grad_for_training and torch.is_grad_enabled())
+        clip_proj_feats = self.get_clip_features(x, track_grad=track_clip_grad)[0]
         B, c_dim, h, w = clip_proj_feats.shape
         if self.feats_idx != 'final':
             clip_feats = self.train_feats['clip_inter']

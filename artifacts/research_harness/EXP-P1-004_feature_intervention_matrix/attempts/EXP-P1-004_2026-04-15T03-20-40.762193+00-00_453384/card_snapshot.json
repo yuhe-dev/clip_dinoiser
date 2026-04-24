@@ -1,0 +1,324 @@
+{
+  "experiment_id": "EXP-P1-004",
+  "name": "Run minimal learner adaptability audit with probe feature interventions",
+  "phase": "Phase 1",
+  "owner": "Auto Proposer",
+  "loop_kind": "feature_intervention_matrix",
+  "status": "queued",
+  "hypothesis": "If the current head-only CLIP-DINOiser learner is too rigid, then at least one more adaptable learner variant will show stronger and more consistent response to matched real probe-axis interventions than to shuffled or matched-random controls.",
+  "budget_tier": "Tier B",
+  "input_path": "artifacts/surrogate_random_v1/manifests/rand_subset_s0145_t00.json",
+  "metric_name": "mIoU",
+  "output_dir": "artifacts/research_harness/EXP-P1-004_feature_intervention_matrix",
+  "judge_policy_path": ".slicetune/judge_policies/feature_intervention_matrix_v1.json",
+  "requires_debate": true,
+  "debate_bundle_path": ".slicetune/debates/EXP-P1-004_bundle.json",
+  "human_review_required": false,
+  "phase_completion_candidate": false,
+  "priority": 40,
+  "depends_on": [
+    "EXP-P1-003"
+  ],
+  "next_eligible_at_utc": "",
+  "attempt_count": 5,
+  "max_attempts": 0,
+  "last_attempt_id": "EXP-P1-004_2026-04-15T03-20-40.762193+00-00_453384",
+  "status_history": [
+    {
+      "from": "queued",
+      "to": "blocked_debate_gate",
+      "reason": "debate decision is 'pending', not approve",
+      "session_id": "session_2026-04-14T09-19-08.107624+00-00_3376541",
+      "at_utc": "2026-04-14T09:19:08.108713+00:00"
+    },
+    {
+      "from": "blocked_debate_gate",
+      "to": "queued",
+      "reason": "debate bundle regenerated and runtime handler implemented",
+      "session_id": "manual_requeue",
+      "at_utc": "2026-04-14T09:20:33.581403+00:00"
+    },
+    {
+      "from": "queued",
+      "to": "blocked_preflight",
+      "reason": "loop_kind 'feature_intervention_matrix' does not have a runtime handler yet",
+      "session_id": "session_2026-04-14T09-20-38.285834+00-00_3376541",
+      "at_utc": "2026-04-14T09:20:38.286932+00:00"
+    },
+    {
+      "from": "blocked_preflight",
+      "to": "queued",
+      "reason": "requeue after daemon reload for new feature_intervention runtime",
+      "session_id": "manual_requeue_runtime_reload",
+      "at_utc": "2026-04-14T09:21:53.745261+00:00"
+    },
+    {
+      "from": "queued",
+      "to": "blocked_preflight",
+      "reason": "no runtime profile passed worker preflight",
+      "session_id": "session_2026-04-14T09-21-53.933252+00-00_3841308",
+      "at_utc": "2026-04-14T09:21:56.056024+00:00"
+    },
+    {
+      "from": "blocked_preflight",
+      "to": "queued",
+      "reason": "requeue after preflight probe fix",
+      "session_id": "manual_requeue_preflight_fix",
+      "at_utc": "2026-04-14T09:24:09.505913+00:00"
+    },
+    {
+      "from": "queued",
+      "to": "claimed",
+      "reason": "claimed new lease",
+      "session_id": "session_2026-04-14T09-24-09.700921+00-00_3843949",
+      "at_utc": "2026-04-14T09:24:10.971245+00:00"
+    },
+    {
+      "from": "claimed",
+      "to": "running",
+      "reason": "controller gates passed",
+      "session_id": "session_2026-04-14T09-24-09.700921+00-00_3843949",
+      "at_utc": "2026-04-14T09:24:10.971530+00:00"
+    },
+    {
+      "from": "running",
+      "to": "failed_execution",
+      "reason": "tick raised RuntimeError: run L0_head_only_noise_seed00 failed with exit code 1",
+      "session_id": "session_2026-04-14T09-24-09.700921+00-00_3843949",
+      "at_utc": "2026-04-14T09:47:20.907486+00:00"
+    },
+    {
+      "from": "failed_execution",
+      "to": "queued",
+      "reason": "retry after Python 3.9 annotation compatibility fix",
+      "session_id": "manual_retry_2026-04-14",
+      "at_utc": "2026-04-14T10:29:38.578066+00:00"
+    },
+    {
+      "from": "queued",
+      "to": "claimed",
+      "reason": "claimed new lease",
+      "session_id": "session_2026-04-14T10-29-55.195075+00-00_3843949",
+      "at_utc": "2026-04-14T10:29:56.463705+00:00"
+    },
+    {
+      "from": "claimed",
+      "to": "running",
+      "reason": "controller gates passed",
+      "session_id": "session_2026-04-14T10-29-55.195075+00-00_3843949",
+      "at_utc": "2026-04-14T10:29:56.464025+00:00"
+    },
+    {
+      "from": "running",
+      "to": "failed_execution",
+      "reason": "tick raised RuntimeError: run L0_head_only_noise_seed00 failed with exit code 1",
+      "session_id": "session_2026-04-14T10-29-55.195075+00-00_3843949",
+      "at_utc": "2026-04-14T10:30:08.940411+00:00"
+    },
+    {
+      "from": "failed_execution",
+      "to": "queued",
+      "reason": "retry after Hydra struct fix for trainable_modules",
+      "session_id": "manual_retry_2026-04-14_b",
+      "at_utc": "2026-04-14T10:31:14.745721+00:00"
+    },
+    {
+      "from": "queued",
+      "to": "claimed",
+      "reason": "claimed new lease",
+      "session_id": "session_2026-04-14T10-31-39.500786+00-00_3843949",
+      "at_utc": "2026-04-14T10:31:40.746552+00:00"
+    },
+    {
+      "from": "claimed",
+      "to": "running",
+      "reason": "controller gates passed",
+      "session_id": "session_2026-04-14T10-31-39.500786+00-00_3843949",
+      "at_utc": "2026-04-14T10:31:40.746896+00:00"
+    },
+    {
+      "from": "running",
+      "to": "failed_execution",
+      "reason": "tick raised TypeError: judge_feature_intervention_matrix() got an unexpected keyword argument 'design_mode'",
+      "session_id": "session_2026-04-14T10-31-39.500786+00-00_3843949",
+      "at_utc": "2026-04-14T14:09:21.111317+00:00"
+    },
+    {
+      "from": "failed_execution",
+      "to": "queued",
+      "reason": "retry after judge signature compatibility fix",
+      "session_id": "manual_retry_2026-04-15_judge_fix",
+      "at_utc": "2026-04-15T03:19:38.117281+00:00"
+    },
+    {
+      "from": "queued",
+      "to": "claimed",
+      "reason": "claimed new lease",
+      "session_id": "session_2026-04-15T03-19-59.311860+00-00_3843949",
+      "at_utc": "2026-04-15T03:20:00.635272+00:00"
+    },
+    {
+      "from": "claimed",
+      "to": "running",
+      "reason": "controller gates passed",
+      "session_id": "session_2026-04-15T03-19-59.311860+00-00_3843949",
+      "at_utc": "2026-04-15T03:20:00.635878+00:00"
+    },
+    {
+      "from": "running",
+      "to": "failed_execution",
+      "reason": "tick raised TypeError: judge_feature_intervention_matrix() got an unexpected keyword argument 'design_mode'",
+      "session_id": "session_2026-04-15T03-19-59.311860+00-00_3843949",
+      "at_utc": "2026-04-15T03:20:07.821451+00:00"
+    },
+    {
+      "from": "failed_execution",
+      "to": "queued",
+      "reason": "manual foreground finalize after daemon cached old judge module",
+      "session_id": "manual_finalize_2026-04-15",
+      "at_utc": "2026-04-15T03:20:39.260805+00:00"
+    }
+  ],
+  "metadata": {
+    "proposal_origin": "phase1_locked_follow_on",
+    "source_runtime_index_dependency": "EXP-P1-003",
+    "design_mode": "minimal_learner_adaptability_audit",
+    "design_spec_path": ".slicetune/experiments/EXP-P1-004_design_spec.md",
+    "processed_data_root": "data/data_feature",
+    "schema_path": "docs/feature_schema/unified_processed_feature_schema.json",
+    "config_name": "feature_experiment_fast_cached_slide",
+    "worker_script": "run_remix_training_experiment.py",
+    "num_classes": 171,
+    "validation_mode": "full",
+    "teacher_policy": "freeze_found_and_dino",
+    "subset_budget": 1000,
+    "anchor_subset_manifest": "artifacts/surrogate_random_v1/manifests/rand_subset_s0145_t00.json",
+    "current_implementation_priority": "tier_a_only",
+    "learner_variants": [
+      {
+        "variant_id": "L0_head_only",
+        "description": "Train obj_proj and bkg_decoder only.",
+        "trainable_modules": [
+          "obj_proj",
+          "bkg_decoder"
+        ]
+      },
+      {
+        "variant_id": "L1_task_head_plus",
+        "description": "L0 plus unfreeze clip_backbone.decode_head.proj.",
+        "trainable_modules": [
+          "obj_proj",
+          "bkg_decoder",
+          "clip_backbone.decode_head.proj"
+        ]
+      },
+      {
+        "variant_id": "L2_last_block_partial",
+        "description": "L1 plus unfreeze the final CLIP visual transformer block and ln_post.",
+        "trainable_modules": [
+          "obj_proj",
+          "bkg_decoder",
+          "clip_backbone.decode_head.proj",
+          "clip_backbone.backbone.visual.transformer.resblocks.-1",
+          "clip_backbone.backbone.visual.ln_post"
+        ]
+      }
+    ],
+    "probe_feature_axes": [
+      {
+        "axis_id": "quality_sharpness",
+        "dimension": "quality",
+        "primary_field": "features.laplacian.summary.q50",
+        "secondary_fields": [
+          "features.laplacian.summary.low_sharpness_mass",
+          "features.laplacian.summary.q90"
+        ],
+        "score_formula": "z(laplacian.summary.q50) - z(laplacian.summary.low_sharpness_mass)",
+        "high_label": "sharper",
+        "low_label": "blurrier"
+      },
+      {
+        "axis_id": "difficulty_small_object",
+        "dimension": "difficulty",
+        "primary_field": "features.small_ratio.summary.mass_small_extreme",
+        "secondary_fields": [
+          "features.small_ratio.summary.mass_small_mid"
+        ],
+        "score_formula": "z(small_ratio.summary.mass_small_extreme)",
+        "high_label": "more extreme small-object concentration",
+        "low_label": "less extreme small-object concentration"
+      }
+    ],
+    "optional_probe_axes": [
+      {
+        "axis_id": "coverage_density",
+        "dimension": "coverage",
+        "primary_field": "features.knn_local_density.summary.density_score",
+        "secondary_fields": [
+          "features.knn_local_density.summary.nearest_distance"
+        ],
+        "score_formula": "z(knn_local_density.summary.density_score)",
+        "use_only_after": "Tier B promote"
+      }
+    ],
+    "control_families": [
+      "real_feature_guided",
+      "shuffled_feature_guided",
+      "matched_random_control"
+    ],
+    "materialization_constraints": {
+      "class_histogram_matching": "required",
+      "non_target_axis_matching": "required",
+      "realized_axis_delta_logging": "required",
+      "off_target_drift_logging": "required",
+      "subset_budget_fixed": true
+    },
+    "reporting_metrics": [
+      "composition_response_amplitude",
+      "response_to_noise_ratio",
+      "directional_consistency",
+      "feature_validity_advantage"
+    ],
+    "tier_plan": {
+      "tier_a_screen": {
+        "noise_floor_seeds": [
+          0,
+          1,
+          2
+        ],
+        "feature_pair_seeds": [
+          0
+        ],
+        "controls": [
+          "real_feature_guided"
+        ],
+        "advance_rule": "promote cell to Tier B only if real composition_response_amplitude exceeds that learner's noise floor."
+      },
+      "tier_b_confirm": {
+        "feature_pair_seeds": [
+          0,
+          1,
+          2
+        ],
+        "controls": [
+          "real_feature_guided",
+          "shuffled_feature_guided",
+          "matched_random_control"
+        ],
+        "advance_rule": "promote learner-axis cell only if real response_to_noise_ratio >= 2.0 and real_feature_guided beats both controls."
+      },
+      "tier_c_finalize": {
+        "feature_pair_seeds": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "max_promoted_cells": 2,
+        "optional_axis_unlock": "coverage_density"
+      }
+    }
+  },
+  "judge_config": {}
+}

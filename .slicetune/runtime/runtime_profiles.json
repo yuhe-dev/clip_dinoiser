@@ -1,0 +1,57 @@
+{
+  "default_profile_candidates": [
+    "clipdino2",
+    "clipdino",
+    "current_python"
+  ],
+  "profiles": {
+    "current_python": {
+      "python_bin": "/opt/anaconda3/bin/python",
+      "conda_env_name": "base",
+      "enabled": true,
+      "tags": [
+        "controller",
+        "fallback"
+      ],
+      "required_modules": [],
+      "gpu_policy": "optional",
+      "priority": 100
+    },
+    "clipdino": {
+      "python_bin": "/home/yuhe/.conda/envs/clipdino/bin/python",
+      "conda_env_name": "clipdino",
+      "enabled": true,
+      "tags": [
+        "training",
+        "legacy"
+      ],
+      "required_modules": [
+        "torch",
+        "torchvision",
+        "mmcv",
+        "hydra",
+        "omegaconf"
+      ],
+      "gpu_policy": "required",
+      "priority": 20
+    },
+    "clipdino2": {
+      "python_bin": "/home/yuhe/.conda/envs/clipdino2/bin/python",
+      "conda_env_name": "clipdino2",
+      "enabled": true,
+      "tags": [
+        "training",
+        "preferred"
+      ],
+      "required_modules": [
+        "torch",
+        "torchvision",
+        "mmcv",
+        "hydra",
+        "omegaconf"
+      ],
+      "gpu_policy": "required",
+      "priority": 10
+    }
+  }
+}

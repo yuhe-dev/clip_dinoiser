@@ -1,0 +1,56 @@
+{
+  "generated_at_utc": "2026-04-24T14:00:24.867358+00:00",
+  "total_cards": 5,
+  "ready_count": 0,
+  "waiting_count": 0,
+  "terminal_count": 5,
+  "ready": [],
+  "waiting": [],
+  "terminal": [
+    {
+      "experiment_id": "EXP-LIT-EXP-P1-004",
+      "status": "planned",
+      "priority": 20,
+      "budget_tier": "Tier A",
+      "attempt_count": 0,
+      "card_path": "/home/yuhe/slicetune/clip_dinoiser/.slicetune/experiments/EXP-LIT-EXP-P1-004.json",
+      "wait_reason": "status=planned"
+    },
+    {
+      "experiment_id": "EXP-P1-001",
+      "status": "completed",
+      "priority": 100,
+      "budget_tier": "Tier A",
+      "attempt_count": 0,
+      "card_path": "/home/yuhe/slicetune/clip_dinoiser/.slicetune/experiments/EXP-P1-001_noise_floor.json",
+      "wait_reason": "status=completed"
+    },
+    {
+      "experiment_id": "EXP-P1-002",
+      "status": "completed",
+      "priority": 100,
+      "budget_tier": "Tier B",
+      "attempt_count": 3,
+      "card_path": "/home/yuhe/slicetune/clip_dinoiser/.slicetune/experiments/EXP-P1-002_same_subset_multiseed.json",
+      "wait_reason": "status=completed"
+    },
+    {
+      "experiment_id": "EXP-P1-003",
+      "status": "completed",
+      "priority": 30,
+      "budget_tier": "Tier B",
+      "attempt_count": 1,
+      "card_path": "/home/yuhe/slicetune/clip_dinoiser/.slicetune/experiments/EXP-P1-003.json",
+      "wait_reason": "status=completed"
+    },
+    {
+      "experiment_id": "EXP-P1-004",
+      "status": "completed",
+      "priority": 40,
+      "budget_tier": "Tier B",
+      "attempt_count": 5,
+      "card_path": "/home/yuhe/slicetune/clip_dinoiser/.slicetune/experiments/EXP-P1-004.json",
+      "wait_reason": "status=completed"
+    }
+  ]
+}

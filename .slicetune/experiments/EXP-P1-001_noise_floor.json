@@ -1,0 +1,23 @@
+{
+  "experiment_id": "EXP-P1-001",
+  "name": "Summarize the current 1000-image random-subset noise floor",
+  "phase": "Phase 1",
+  "owner": "State Keeper / Benchmark Steward",
+  "loop_kind": "noise_floor",
+  "status": "completed",
+  "hypothesis": "Current global mIoU deltas are small enough that the project first needs a stable noise-floor summary before downstream claims.",
+  "budget_tier": "Tier A",
+  "input_path": "artifacts/surrogate_random_v1/random_subsets_labeled.jsonl",
+  "metric_name": "mIoU",
+  "output_dir": "artifacts/research_harness/EXP-P1-001_noise_floor",
+  "judge_policy_path": ".slicetune/judge_policies/noise_floor_v1.json",
+  "requires_debate": false,
+  "debate_bundle_path": "",
+  "human_review_required": false,
+  "phase_completion_candidate": false,
+  "metadata": {
+    "source_label": "surrogate_random_v1",
+    "summary_kind": "noise_floor"
+  },
+  "judge_config": {}
+}

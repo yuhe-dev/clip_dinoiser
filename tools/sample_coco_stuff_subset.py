@@ -120,6 +120,7 @@ def write_metadata_files(
     sample_size: int,
     split: str,
     link_mode: str,
+    dataset_name: str = "coco_stuff164k_subset",
     verbose: bool = True,
 ) -> Tuple[Path, Path]:
     subset_root = Path(subset_root)
@@ -132,7 +133,7 @@ def write_metadata_files(
     np.save(index_path, records_array, allow_pickle=True)
 
     config = {
-        "dataset_name": "coco_stuff164k_subset",
+        "dataset_name": str(dataset_name),
         "source_root": str(Path(source_root)),
         "subset_root": str(subset_root),
         "split": split,

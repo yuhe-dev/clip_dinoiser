@@ -1,0 +1,21 @@
+{
+  "status": "awaiting_human_review",
+  "experiment_id": "EXP-P1-002",
+  "card_path": "/home/yuhe/clip_dinoiser/.slicetune/experiments/EXP-P1-002_same_subset_multiseed.json",
+  "reason": "controller stop after successful run; waiting for human acceptance",
+  "controller_policy_path": "/home/yuhe/clip_dinoiser/.slicetune/runtime/controller_policy.json",
+  "memory_paths": [
+    "/home/yuhe/clip_dinoiser/AGENTS.md",
+    "/home/yuhe/clip_dinoiser/.slicetune/MEMORY.md",
+    "/home/yuhe/clip_dinoiser/.slicetune/context/program.md",
+    "/home/yuhe/clip_dinoiser/.slicetune/context/playbook.md",
+    "/home/yuhe/clip_dinoiser/.slicetune/state/board.md",
+    "/home/yuhe/clip_dinoiser/.slicetune/state/decision_log.md"
+  ],
+  "session_id": "session_2026-04-13T17-09-01.540947+00-00_3328162",
+  "current_step": "human_review_gate",
+  "last_heartbeat_at_utc": "2026-04-13T17:09:02.819394+00:00",
+  "lease_expires_at_utc": "2026-04-13T17:11:02.819394+00:00",
+  "recovery_hint": "resume only after human approval file is updated",
+  "updated_at_utc": "2026-04-13T17:09:04.165651+00:00"
+}

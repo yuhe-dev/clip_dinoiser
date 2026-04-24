@@ -1,0 +1,46 @@
+{
+  "proposal_id": "PRO-P1-003",
+  "proposal_class": "draft_only",
+  "status": "materialized",
+  "phase": "Phase 1",
+  "title": "Design learner sensitivity ladder after fixed-subset training-noise audit",
+  "rationale": "Phase 1 requires learner sensitivity audit before widening downstream search or feature intervention branches.",
+  "source_experiment_ids": [
+    "EXP-P1-002"
+  ],
+  "target_experiment_id": "EXP-P1-003",
+  "target_card_path": "/home/yuhe/clip_dinoiser/.slicetune/experiments/EXP-P1-003.json",
+  "auto_materialized": true,
+  "created_at_utc": "2026-04-13T18:00:58.901182+00:00",
+  "metadata": {
+    "rule": {
+      "proposal_id": "PRO-P1-003",
+      "proposal_class": "draft_only",
+      "target_experiment_id": "EXP-P1-003",
+      "name": "Design learner sensitivity ladder after fixed-subset training-noise audit",
+      "phase": "Phase 1",
+      "owner": "Auto Proposer",
+      "loop_kind": "learner_sensitivity_ladder",
+      "target_status": "planned",
+      "priority": 30,
+      "budget_tier": "Tier B",
+      "requires_debate": true,
+      "depends_on": [
+        "EXP-P1-002"
+      ],
+      "trigger_on_completed": [
+        "EXP-P1-002"
+      ],
+      "required_decisions": [
+        "promote"
+      ],
+      "hypothesis": "If fixed-subset multi-seed noise remains comparable to the global floor, the next priority is to audit whether the learner itself is insufficiently sensitive to composition changes.",
+      "rationale": "Phase 1 requires learner sensitivity audit before widening downstream search or feature intervention branches.",
+      "metadata": {
+        "proposal_origin": "phase1_locked_follow_on",
+        "source_runtime_index_dependency": "EXP-P1-002"
+      }
+    },
+    "trigger_reason": "triggered"
+  }
+}

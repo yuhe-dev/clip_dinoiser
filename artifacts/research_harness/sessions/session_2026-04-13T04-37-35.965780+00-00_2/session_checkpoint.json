@@ -1,0 +1,16 @@
+{
+  "status": "completed",
+  "experiment_id": "EXP-P1-001",
+  "card_path": "/home/yuhe/clip_dinoiser/.slicetune/experiments/EXP-P1-001_noise_floor.json",
+  "reason": "controller completed run without additional stop gates",
+  "controller_policy_path": "/home/yuhe/clip_dinoiser/.slicetune/runtime/controller_policy.json",
+  "memory_paths": [
+    "/home/yuhe/clip_dinoiser/AGENTS.md",
+    "/home/yuhe/clip_dinoiser/.slicetune/MEMORY.md",
+    "/home/yuhe/clip_dinoiser/.slicetune/context/program.md",
+    "/home/yuhe/clip_dinoiser/.slicetune/context/playbook.md",
+    "/home/yuhe/clip_dinoiser/.slicetune/state/board.md",
+    "/home/yuhe/clip_dinoiser/.slicetune/state/decision_log.md"
+  ],
+  "updated_at_utc": "2026-04-13T04:37:36.225799+00:00"
+}

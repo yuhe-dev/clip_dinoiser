@@ -1,0 +1,45 @@
+{
+  "generated_by": "agentic_planner_v1",
+  "generated_at_utc": "2026-04-24T14:00:24.886652+00:00",
+  "experiment_id": "EXP-P1-003",
+  "phase": "Phase 1",
+  "loop_kind": "learner_sensitivity_ladder",
+  "primary_metric": "mIoU",
+  "comparison_contract": {
+    "phase": "Phase 1",
+    "depends_on": [
+      "EXP-P1-002"
+    ],
+    "design_class": "executable_candidate"
+  },
+  "judge_contract": {
+    "contract_type": "learner_sensitivity_ladder",
+    "thresholds": {
+      "minimum_completed_regimes": 3,
+      "training_noise_reference": 0.0089442719,
+      "meaningful_sensitivity_multiplier": 1.5
+    }
+  },
+  "judge_policy_snapshot": {
+    "minimum_completed_regimes": 3,
+    "training_noise_reference": 0.0089442719,
+    "meaningful_sensitivity_multiplier": 1.5
+  },
+  "success_criteria": [
+    "Completed regimes meet the minimum ladder size.",
+    "Regime-to-regime range exceeds the known training-noise baseline by a meaningful margin."
+  ],
+  "caution_criteria": [
+    "If range stays near the training-noise floor, current learner/protocol may be too insensitive."
+  ],
+  "failure_criteria": [
+    "Regime executions are incomplete or corrupted."
+  ],
+  "promote_rule": "Promote only when success criteria are met and no major protocol contamination is detected.",
+  "park_rule": "Park when interesting signal exists but the current phase or evidence depth is insufficient.",
+  "kill_rule": "Kill when repeated execution still fails to produce interpretable signal under a valid protocol.",
+  "source_paths": {
+    "context_packet": "/home/yuhe/slicetune/clip_dinoiser/artifacts/research_harness/EXP-P1-003_learner_sensitivity_ladder/agentic/context_snapshot.json",
+    "judge_policy_path": ".slicetune/judge_policies/learner_sensitivity_ladder_v1.json"
+  }
+}

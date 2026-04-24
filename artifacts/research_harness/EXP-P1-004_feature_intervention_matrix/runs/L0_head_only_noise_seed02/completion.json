@@ -1,0 +1,17 @@
+{
+  "experiment_id": "EXP-P1-004",
+  "run_id": "L0_head_only_noise_seed02",
+  "run_role": "noise_floor",
+  "config_name": "feature_experiment_fast_cached_slide",
+  "training_seed": 2,
+  "subset_manifest_path": "/home/yuhe/clip_dinoiser/artifacts/surrogate_random_v1/manifests/rand_subset_s0145_t00.json",
+  "trainable_modules": [
+    "obj_proj",
+    "bkg_decoder"
+  ],
+  "metric_name": "mIoU",
+  "metric_value": 24.29,
+  "python_bin": "/home/yuhe/.conda/envs/clipdino2/bin/python3.9",
+  "runtime_profile_id": "clipdino2",
+  "completed_at_utc": "2026-04-14T11:03:16.029195+00:00"
+}

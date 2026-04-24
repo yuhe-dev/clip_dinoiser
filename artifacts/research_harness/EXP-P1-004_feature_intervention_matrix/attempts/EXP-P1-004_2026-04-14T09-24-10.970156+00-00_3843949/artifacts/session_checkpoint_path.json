@@ -1,0 +1,21 @@
+{
+  "status": "failed_execution",
+  "experiment_id": "EXP-P1-004",
+  "card_path": "/home/yuhe/clip_dinoiser/.slicetune/experiments/EXP-P1-004.json",
+  "reason": "tick raised RuntimeError: run L0_head_only_noise_seed00 failed with exit code 1",
+  "controller_policy_path": "/home/yuhe/clip_dinoiser/.slicetune/runtime/controller_policy.json",
+  "memory_paths": [
+    "/home/yuhe/clip_dinoiser/AGENTS.md",
+    "/home/yuhe/clip_dinoiser/.slicetune/MEMORY.md",
+    "/home/yuhe/clip_dinoiser/.slicetune/context/program.md",
+    "/home/yuhe/clip_dinoiser/.slicetune/context/playbook.md",
+    "/home/yuhe/clip_dinoiser/.slicetune/state/board.md",
+    "/home/yuhe/clip_dinoiser/.slicetune/state/decision_log.md"
+  ],
+  "session_id": "session_2026-04-14T09-24-09.700921+00-00_3843949",
+  "current_step": "run_research_tick",
+  "last_heartbeat_at_utc": "2026-04-14T09:47:11.200280+00:00",
+  "lease_expires_at_utc": "2026-04-14T09:49:11.200280+00:00",
+  "recovery_hint": "fix failure and requeue card",
+  "updated_at_utc": "2026-04-14T09:47:20.908392+00:00"
+}

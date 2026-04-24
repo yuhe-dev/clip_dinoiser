@@ -1,0 +1,27 @@
+{
+  "debate_id": "EXP-P1-003",
+  "decision": "approve",
+  "round_count": 3,
+  "reviewer_count": 4,
+  "artifact_paths": {
+    "design_card": ".slicetune/debates/EXP-P1-003_design.md",
+    "review_cards": [
+      ".slicetune/debates/EXP-P1-003_review_skeptic.md",
+      ".slicetune/debates/EXP-P1-003_review_benchmark.md",
+      ".slicetune/debates/EXP-P1-003_review_literature.md",
+      ".slicetune/debates/EXP-P1-003_review_harness.md"
+    ],
+    "arbiter_decision": ".slicetune/debates/EXP-P1-003_decision.md"
+  },
+  "updated_at_utc": "2026-04-13T18:02:01.951201+00:00",
+  "created_by": "auto_debate",
+  "created_at_utc": "2026-04-13T18:02:01.951195+00:00",
+  "design_card_path": ".slicetune/debates/EXP-P1-003_design.md",
+  "review_card_paths": [
+    ".slicetune/debates/EXP-P1-003_review_skeptic.md",
+    ".slicetune/debates/EXP-P1-003_review_benchmark.md",
+    ".slicetune/debates/EXP-P1-003_review_literature.md",
+    ".slicetune/debates/EXP-P1-003_review_harness.md"
+  ],
+  "decision_card_path": ".slicetune/debates/EXP-P1-003_decision.md"
+}

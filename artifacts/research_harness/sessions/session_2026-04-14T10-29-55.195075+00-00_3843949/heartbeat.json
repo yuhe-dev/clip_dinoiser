@@ -1,0 +1,8 @@
+{
+  "session_id": "session_2026-04-14T10-29-55.195075+00-00_3843949",
+  "experiment_id": "EXP-P1-004",
+  "status": "running",
+  "current_step": "run_research_tick",
+  "last_heartbeat_at_utc": "2026-04-14T10:29:56.464632+00:00",
+  "lease_expires_at_utc": "2026-04-14T10:31:56.461696+00:00"
+}

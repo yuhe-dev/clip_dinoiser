@@ -1,0 +1,18 @@
+{
+  "anchor": "/home/yuhe/slicetune/clip_dinoiser/artifacts/voc_feature_prep_mask_native_seed0/manifests/voc_train_aug_anchor_2000_seed0.json",
+  "foreground_class_count.high": "/home/yuhe/slicetune/clip_dinoiser/artifacts/voc_feature_prep_mask_native_seed0/manifests/voc_train_aug_foreground_class_count_high_2000_seed0.json",
+  "foreground_class_count.low": "/home/yuhe/slicetune/clip_dinoiser/artifacts/voc_feature_prep_mask_native_seed0/manifests/voc_train_aug_foreground_class_count_low_2000_seed0.json",
+  "foreground_class_count.matched_random": "/home/yuhe/slicetune/clip_dinoiser/artifacts/voc_feature_prep_mask_native_seed0/manifests/voc_train_aug_foreground_class_count_matched_random_2000_seed0.json",
+  "pixel_class_entropy.high": "/home/yuhe/slicetune/clip_dinoiser/artifacts/voc_feature_prep_mask_native_seed0/manifests/voc_train_aug_pixel_class_entropy_high_2000_seed0.json",
+  "pixel_class_entropy.low": "/home/yuhe/slicetune/clip_dinoiser/artifacts/voc_feature_prep_mask_native_seed0/manifests/voc_train_aug_pixel_class_entropy_low_2000_seed0.json",
+  "pixel_class_entropy.matched_random": "/home/yuhe/slicetune/clip_dinoiser/artifacts/voc_feature_prep_mask_native_seed0/manifests/voc_train_aug_pixel_class_entropy_matched_random_2000_seed0.json",
+  "foreground_area_ratio.high": "/home/yuhe/slicetune/clip_dinoiser/artifacts/voc_feature_prep_mask_native_seed0/manifests/voc_train_aug_foreground_area_ratio_high_2000_seed0.json",
+  "foreground_area_ratio.low": "/home/yuhe/slicetune/clip_dinoiser/artifacts/voc_feature_prep_mask_native_seed0/manifests/voc_train_aug_foreground_area_ratio_low_2000_seed0.json",
+  "foreground_area_ratio.matched_random": "/home/yuhe/slicetune/clip_dinoiser/artifacts/voc_feature_prep_mask_native_seed0/manifests/voc_train_aug_foreground_area_ratio_matched_random_2000_seed0.json",
+  "foreground_component_count.high": "/home/yuhe/slicetune/clip_dinoiser/artifacts/voc_feature_prep_mask_native_seed0/manifests/voc_train_aug_foreground_component_count_high_2000_seed0.json",
+  "foreground_component_count.low": "/home/yuhe/slicetune/clip_dinoiser/artifacts/voc_feature_prep_mask_native_seed0/manifests/voc_train_aug_foreground_component_count_low_2000_seed0.json",
+  "foreground_component_count.matched_random": "/home/yuhe/slicetune/clip_dinoiser/artifacts/voc_feature_prep_mask_native_seed0/manifests/voc_train_aug_foreground_component_count_matched_random_2000_seed0.json",
+  "component_fragmentation.high": "/home/yuhe/slicetune/clip_dinoiser/artifacts/voc_feature_prep_mask_native_seed0/manifests/voc_train_aug_component_fragmentation_high_2000_seed0.json",
+  "component_fragmentation.low": "/home/yuhe/slicetune/clip_dinoiser/artifacts/voc_feature_prep_mask_native_seed0/manifests/voc_train_aug_component_fragmentation_low_2000_seed0.json",
+  "component_fragmentation.matched_random": "/home/yuhe/slicetune/clip_dinoiser/artifacts/voc_feature_prep_mask_native_seed0/manifests/voc_train_aug_component_fragmentation_matched_random_2000_seed0.json"
+}

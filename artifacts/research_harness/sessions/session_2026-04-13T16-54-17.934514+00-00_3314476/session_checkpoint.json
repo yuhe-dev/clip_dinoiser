@@ -1,0 +1,21 @@
+{
+  "status": "failed_execution",
+  "experiment_id": "EXP-P1-002",
+  "card_path": "/home/yuhe/clip_dinoiser/.slicetune/experiments/EXP-P1-002_same_subset_multiseed.json",
+  "reason": "tick raised NameError: name 'load_json' is not defined",
+  "controller_policy_path": "/home/yuhe/clip_dinoiser/.slicetune/runtime/controller_policy.json",
+  "memory_paths": [
+    "/home/yuhe/clip_dinoiser/AGENTS.md",
+    "/home/yuhe/clip_dinoiser/.slicetune/MEMORY.md",
+    "/home/yuhe/clip_dinoiser/.slicetune/context/program.md",
+    "/home/yuhe/clip_dinoiser/.slicetune/context/playbook.md",
+    "/home/yuhe/clip_dinoiser/.slicetune/state/board.md",
+    "/home/yuhe/clip_dinoiser/.slicetune/state/decision_log.md"
+  ],
+  "session_id": "session_2026-04-13T16-54-17.934514+00-00_3314476",
+  "current_step": "run_research_tick",
+  "last_heartbeat_at_utc": "2026-04-13T17:04:34.196295+00:00",
+  "lease_expires_at_utc": "2026-04-13T17:06:34.196295+00:00",
+  "recovery_hint": "fix failure and requeue card",
+  "updated_at_utc": "2026-04-13T17:04:46.805160+00:00"
+}

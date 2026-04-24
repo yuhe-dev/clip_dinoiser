@@ -1,0 +1,32 @@
+{
+  "experiment_id": "EXP-P1-002",
+  "candidate_id": "rand_subset_s0145_t00_trainseed04",
+  "training_seed": 4,
+  "result_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-002_same_subset_multiseed/runs/rand_subset_s0145_t00_trainseed04/result.json",
+  "metric_name": "mIoU",
+  "metric_value": 24.27,
+  "command": [
+    "/home/yuhe/.conda/envs/clipdino2/bin/python",
+    "-m",
+    "torch.distributed.run",
+    "--nproc_per_node=1",
+    "--master_port",
+    "29724",
+    "run_remix_training_experiment.py",
+    "--config",
+    "feature_experiment_fast_cached_slide",
+    "--subset-manifest",
+    "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-002_same_subset_multiseed/manifests/rand_subset_s0145_t00_trainseed04.json",
+    "--output-dir",
+    "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-002_same_subset_multiseed/runs/rand_subset_s0145_t00_trainseed04",
+    "--result-name",
+    "result.json",
+    "--seed",
+    "4"
+  ],
+  "python_bin": "/home/yuhe/.conda/envs/clipdino2/bin/python3.9",
+  "runtime_profile_id": "clipdino2",
+  "config_name": "feature_experiment_fast_cached_slide",
+  "subset_manifest_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-002_same_subset_multiseed/manifests/rand_subset_s0145_t00_trainseed04.json",
+  "completed_at_utc": "2026-04-13T17:04:46.796184+00:00"
+}

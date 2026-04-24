@@ -1,0 +1,29 @@
+{
+  "pid": 3843949,
+  "command": [
+    "/opt/anaconda3/bin/python",
+    "/home/yuhe/clip_dinoiser/run_research_daemon.py",
+    "--scan-dir",
+    "/home/yuhe/clip_dinoiser/.slicetune/experiments",
+    "--controller-policy",
+    "/home/yuhe/clip_dinoiser/.slicetune/runtime/controller_policy.json",
+    "--human-approval",
+    "/home/yuhe/clip_dinoiser/.slicetune/approvals/human_review.json",
+    "--poll-interval-seconds",
+    "30.0",
+    "--proposal-policy",
+    "/home/yuhe/clip_dinoiser/.slicetune/runtime/proposal_policy.json",
+    "--proposal-index-path",
+    "/home/yuhe/clip_dinoiser/.slicetune/state/proposal_index.json",
+    "--runtime-index-path",
+    "/home/yuhe/clip_dinoiser/.slicetune/state/runtime_index.json",
+    "--continue-after-failure",
+    "--auto-propose",
+    "--auto-debate",
+    "--auto-agentic"
+  ],
+  "repo_root": "/home/yuhe/clip_dinoiser",
+  "stdout_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/daemon/daemon.stdout.log",
+  "stderr_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/daemon/daemon.stderr.log",
+  "started_at_utc": "2026-04-14T09:24:09.515869+00:00"
+}

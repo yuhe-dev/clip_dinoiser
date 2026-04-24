@@ -1,0 +1,169 @@
+{
+  "generated_by": "agentic_planner_v1",
+  "generated_at_utc": "2026-04-24T14:00:24.890660+00:00",
+  "experiment_id": "EXP-P1-004",
+  "phase": "Phase 1",
+  "loop_kind": "feature_intervention_matrix",
+  "design_class": "executable_candidate",
+  "objective": "Run a minimal learner adaptability audit that compares whether more adaptable learner variants convert matched probe-axis feature interventions into stronger training response than the current head-only learner.",
+  "mutation_scope": {
+    "changed": [
+      "learner trainable scope",
+      "feature-guided subset composition along probe axes"
+    ],
+    "frozen": [
+      "phase",
+      "benchmark contract",
+      "validation_mode=full",
+      "teacher_policy=freeze_found_and_dino",
+      "subset_budget=1000",
+      "human review stop"
+    ]
+  },
+  "execution_recipe": [
+    "estimate learner-specific noise floor for each learner variant",
+    "materialize high/low subset pairs for each probe axis",
+    "run Tier A with real_feature_guided only and feature_pair_seed=[0]",
+    "advance learner-axis cells to Tier B only if real response exceeds that learner's noise floor",
+    "run Tier B with real, shuffled, and matched-random controls across feature_pair_seeds=[0,1,2]",
+    "run Tier C only for at most two promoted learner-axis cells across feature_pair_seeds=[0,1,2,3,4]"
+  ],
+  "confound_guardrails": [
+    "do not mix algorithm mutation with protocol mutation in one step",
+    "do not change teacher targets in this audit",
+    "do not compare learners using a shared noise floor",
+    "do not interpret intended feature shift without logging realized_target_delta and off_target_drift"
+  ],
+  "expected_signal": {
+    "primary": "At least one learner variant exceeds its own noise floor on at least one real probe axis, and in confirm stage the real intervention achieves response_to_noise_ratio >= 2.0 while beating shuffled and matched-random controls.",
+    "secondary": "Produce structured artifacts that can be judged and debated."
+  },
+  "runtime_requirements": {
+    "input_path": "artifacts/surrogate_random_v1/manifests/rand_subset_s0145_t00.json",
+    "output_dir": "artifacts/research_harness/EXP-P1-004_feature_intervention_matrix",
+    "judge_policy_path": ".slicetune/judge_policies/feature_intervention_matrix_v1.json"
+  },
+  "source_paths": {
+    "hypothesis_brief": "",
+    "context_packet": "/home/yuhe/slicetune/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/agentic/context_snapshot.json",
+    "design_spec_path": ".slicetune/experiments/EXP-P1-004_design_spec.md"
+  },
+  "learner_variants": [
+    {
+      "variant_id": "L0_head_only",
+      "description": "Train obj_proj and bkg_decoder only.",
+      "trainable_modules": [
+        "obj_proj",
+        "bkg_decoder"
+      ]
+    },
+    {
+      "variant_id": "L1_task_head_plus",
+      "description": "L0 plus unfreeze clip_backbone.decode_head.proj.",
+      "trainable_modules": [
+        "obj_proj",
+        "bkg_decoder",
+        "clip_backbone.decode_head.proj"
+      ]
+    },
+    {
+      "variant_id": "L2_last_block_partial",
+      "description": "L1 plus unfreeze the final CLIP visual transformer block and ln_post.",
+      "trainable_modules": [
+        "obj_proj",
+        "bkg_decoder",
+        "clip_backbone.decode_head.proj",
+        "clip_backbone.backbone.visual.transformer.resblocks.-1",
+        "clip_backbone.backbone.visual.ln_post"
+      ]
+    }
+  ],
+  "probe_axes": [
+    {
+      "axis_id": "quality_sharpness",
+      "dimension": "quality",
+      "primary_field": "features.laplacian.summary.q50",
+      "secondary_fields": [
+        "features.laplacian.summary.low_sharpness_mass",
+        "features.laplacian.summary.q90"
+      ],
+      "score_formula": "z(laplacian.summary.q50) - z(laplacian.summary.low_sharpness_mass)",
+      "high_label": "sharper",
+      "low_label": "blurrier"
+    },
+    {
+      "axis_id": "difficulty_small_object",
+      "dimension": "difficulty",
+      "primary_field": "features.small_ratio.summary.mass_small_extreme",
+      "secondary_fields": [
+        "features.small_ratio.summary.mass_small_mid"
+      ],
+      "score_formula": "z(small_ratio.summary.mass_small_extreme)",
+      "high_label": "more extreme small-object concentration",
+      "low_label": "less extreme small-object concentration"
+    }
+  ],
+  "optional_probe_axes": [
+    {
+      "axis_id": "coverage_density",
+      "dimension": "coverage",
+      "primary_field": "features.knn_local_density.summary.density_score",
+      "secondary_fields": [
+        "features.knn_local_density.summary.nearest_distance"
+      ],
+      "score_formula": "z(knn_local_density.summary.density_score)",
+      "use_only_after": "Tier B promote"
+    }
+  ],
+  "control_families": [
+    "real_feature_guided",
+    "shuffled_feature_guided",
+    "matched_random_control"
+  ],
+  "reporting_metrics": [
+    "composition_response_amplitude",
+    "response_to_noise_ratio",
+    "directional_consistency",
+    "feature_validity_advantage"
+  ],
+  "tier_plan": {
+    "tier_a_screen": {
+      "noise_floor_seeds": [
+        0,
+        1,
+        2
+      ],
+      "feature_pair_seeds": [
+        0
+      ],
+      "controls": [
+        "real_feature_guided"
+      ],
+      "advance_rule": "promote cell to Tier B only if real composition_response_amplitude exceeds that learner's noise floor."
+    },
+    "tier_b_confirm": {
+      "feature_pair_seeds": [
+        0,
+        1,
+        2
+      ],
+      "controls": [
+        "real_feature_guided",
+        "shuffled_feature_guided",
+        "matched_random_control"
+      ],
+      "advance_rule": "promote learner-axis cell only if real response_to_noise_ratio >= 2.0 and real_feature_guided beats both controls."
+    },
+    "tier_c_finalize": {
+      "feature_pair_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "max_promoted_cells": 2,
+      "optional_axis_unlock": "coverage_density"
+    }
+  }
+}

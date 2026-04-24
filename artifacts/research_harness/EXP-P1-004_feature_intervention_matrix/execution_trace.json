@@ -1,0 +1,176 @@
+{
+  "completed_runs": [
+    {
+      "run_id": "L0_head_only_noise_seed00",
+      "stage": "noise_floor",
+      "learner_variant_id": "L0_head_only",
+      "metric_value": 24.29,
+      "status": "reused_existing_result"
+    },
+    {
+      "run_id": "L0_head_only_noise_seed01",
+      "stage": "noise_floor",
+      "learner_variant_id": "L0_head_only",
+      "metric_value": 24.29,
+      "status": "reused_existing_result"
+    },
+    {
+      "run_id": "L0_head_only_noise_seed02",
+      "stage": "noise_floor",
+      "learner_variant_id": "L0_head_only",
+      "metric_value": 24.29,
+      "status": "reused_existing_result"
+    },
+    {
+      "run_id": "L1_task_head_plus_noise_seed00",
+      "stage": "noise_floor",
+      "learner_variant_id": "L1_task_head_plus",
+      "metric_value": 24.29,
+      "status": "reused_existing_result"
+    },
+    {
+      "run_id": "L1_task_head_plus_noise_seed01",
+      "stage": "noise_floor",
+      "learner_variant_id": "L1_task_head_plus",
+      "metric_value": 24.29,
+      "status": "reused_existing_result"
+    },
+    {
+      "run_id": "L1_task_head_plus_noise_seed02",
+      "stage": "noise_floor",
+      "learner_variant_id": "L1_task_head_plus",
+      "metric_value": 24.29,
+      "status": "reused_existing_result"
+    },
+    {
+      "run_id": "L2_last_block_partial_noise_seed00",
+      "stage": "noise_floor",
+      "learner_variant_id": "L2_last_block_partial",
+      "metric_value": 24.29,
+      "status": "reused_existing_result"
+    },
+    {
+      "run_id": "L2_last_block_partial_noise_seed01",
+      "stage": "noise_floor",
+      "learner_variant_id": "L2_last_block_partial",
+      "metric_value": 24.29,
+      "status": "reused_existing_result"
+    },
+    {
+      "run_id": "L2_last_block_partial_noise_seed02",
+      "stage": "noise_floor",
+      "learner_variant_id": "L2_last_block_partial",
+      "metric_value": 24.29,
+      "status": "reused_existing_result"
+    },
+    {
+      "run_id": "L0_head_only_quality_sharpness_real_seed00_high",
+      "stage": "feature_pair",
+      "learner_variant_id": "L0_head_only",
+      "axis_id": "quality_sharpness",
+      "direction": "high",
+      "metric_value": 23.73,
+      "status": "reused_existing_result"
+    },
+    {
+      "run_id": "L0_head_only_quality_sharpness_real_seed00_low",
+      "stage": "feature_pair",
+      "learner_variant_id": "L0_head_only",
+      "axis_id": "quality_sharpness",
+      "direction": "low",
+      "metric_value": 23.88,
+      "status": "reused_existing_result"
+    },
+    {
+      "run_id": "L0_head_only_difficulty_small_object_real_seed00_high",
+      "stage": "feature_pair",
+      "learner_variant_id": "L0_head_only",
+      "axis_id": "difficulty_small_object",
+      "direction": "high",
+      "metric_value": 24.15,
+      "status": "reused_existing_result"
+    },
+    {
+      "run_id": "L0_head_only_difficulty_small_object_real_seed00_low",
+      "stage": "feature_pair",
+      "learner_variant_id": "L0_head_only",
+      "axis_id": "difficulty_small_object",
+      "direction": "low",
+      "metric_value": 24.28,
+      "status": "reused_existing_result"
+    },
+    {
+      "run_id": "L1_task_head_plus_quality_sharpness_real_seed00_high",
+      "stage": "feature_pair",
+      "learner_variant_id": "L1_task_head_plus",
+      "axis_id": "quality_sharpness",
+      "direction": "high",
+      "metric_value": 23.73,
+      "status": "reused_existing_result"
+    },
+    {
+      "run_id": "L1_task_head_plus_quality_sharpness_real_seed00_low",
+      "stage": "feature_pair",
+      "learner_variant_id": "L1_task_head_plus",
+      "axis_id": "quality_sharpness",
+      "direction": "low",
+      "metric_value": 23.88,
+      "status": "reused_existing_result"
+    },
+    {
+      "run_id": "L1_task_head_plus_difficulty_small_object_real_seed00_high",
+      "stage": "feature_pair",
+      "learner_variant_id": "L1_task_head_plus",
+      "axis_id": "difficulty_small_object",
+      "direction": "high",
+      "metric_value": 24.15,
+      "status": "reused_existing_result"
+    },
+    {
+      "run_id": "L1_task_head_plus_difficulty_small_object_real_seed00_low",
+      "stage": "feature_pair",
+      "learner_variant_id": "L1_task_head_plus",
+      "axis_id": "difficulty_small_object",
+      "direction": "low",
+      "metric_value": 24.28,
+      "status": "reused_existing_result"
+    },
+    {
+      "run_id": "L2_last_block_partial_quality_sharpness_real_seed00_high",
+      "stage": "feature_pair",
+      "learner_variant_id": "L2_last_block_partial",
+      "axis_id": "quality_sharpness",
+      "direction": "high",
+      "metric_value": 23.73,
+      "status": "reused_existing_result"
+    },
+    {
+      "run_id": "L2_last_block_partial_quality_sharpness_real_seed00_low",
+      "stage": "feature_pair",
+      "learner_variant_id": "L2_last_block_partial",
+      "axis_id": "quality_sharpness",
+      "direction": "low",
+      "metric_value": 23.88,
+      "status": "reused_existing_result"
+    },
+    {
+      "run_id": "L2_last_block_partial_difficulty_small_object_real_seed00_high",
+      "stage": "feature_pair",
+      "learner_variant_id": "L2_last_block_partial",
+      "axis_id": "difficulty_small_object",
+      "direction": "high",
+      "metric_value": 24.15,
+      "status": "reused_existing_result"
+    },
+    {
+      "run_id": "L2_last_block_partial_difficulty_small_object_real_seed00_low",
+      "stage": "feature_pair",
+      "learner_variant_id": "L2_last_block_partial",
+      "axis_id": "difficulty_small_object",
+      "direction": "low",
+      "metric_value": 24.28,
+      "status": "reused_existing_result"
+    }
+  ],
+  "failures": []
+}

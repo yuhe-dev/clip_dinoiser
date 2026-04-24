@@ -1,0 +1,26 @@
+{
+  "allowed_phases": [
+    "Phase 1",
+    "基础设施 / harness"
+  ],
+  "always_load_paths": [
+    "AGENTS.md",
+    ".slicetune/MEMORY.md",
+    ".slicetune/context/program.md",
+    ".slicetune/context/playbook.md",
+    ".slicetune/state/board.md",
+    ".slicetune/state/decision_log.md"
+  ],
+  "min_debate_rounds": 2,
+  "human_review_required_for_phase_completion": true,
+  "session_output_dir": "artifacts/research_harness/sessions",
+  "runtime_profiles_path": ".slicetune/runtime/runtime_profiles.json",
+  "default_runtime_profile_candidates": [
+    "clipdino2",
+    "clipdino",
+    "current_python"
+  ],
+  "preflight": {
+    "fail_closed": true
+  }
+}

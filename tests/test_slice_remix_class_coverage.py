@@ -63,6 +63,29 @@ class SliceRemixClassCoverageTests(unittest.TestCase):
                 ),
             )
 
+    def test_load_class_presence_matrix_supports_annotation_rels_and_reduce_zero_label(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            voc_root = os.path.join(tmpdir, "VOC2012")
+            ann_dir = os.path.join(voc_root, "SegmentationClass")
+            os.makedirs(ann_dir, exist_ok=True)
+
+            mask = np.asarray([[0, 1], [20, 255]], dtype=np.uint8)
+            Image.fromarray(mask).save(os.path.join(ann_dir, "2007_000001.png"))
+
+            matrix = load_class_presence_matrix(
+                sample_ids=["JPEGImages/2007_000001.jpg"],
+                annotation_root=voc_root,
+                annotation_rels=["SegmentationClass/2007_000001.png"],
+                annotation_suffix=".png",
+                num_classes=20,
+                reduce_zero_label=True,
+            )
+
+            expected = np.zeros((1, 20), dtype=np.uint8)
+            expected[0, 0] = 1
+            expected[0, 19] = 1
+            np.testing.assert_array_equal(matrix, expected)
+
     def test_select_focus_class_spec_returns_top_gap_classes_in_dataset_order(self):
         baseline = {
             "coco_stuff": {

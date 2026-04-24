@@ -1,0 +1,25 @@
+{
+  "generated_by": "agentic_planner_v1",
+  "generated_at_utc": "2026-04-24T14:00:24.886561+00:00",
+  "experiment_id": "EXP-P1-003",
+  "phase": "Phase 1",
+  "loop_kind": "learner_sensitivity_ladder",
+  "status": "completed",
+  "problem_statement": "Under Phase 1, determine whether learner_sensitivity_ladder can reduce uncertainty in the current research object.",
+  "hypothesis": "If fixed-subset multi-seed noise remains comparable to the global floor, the next priority is to audit whether the learner itself is insufficiently sensitive to composition changes.",
+  "trigger_context": [
+    "completed_regime_count=3",
+    "failure_count=0"
+  ],
+  "success_signal": "Produce evidence strong enough to update keep/park/kill for the current branch.",
+  "failure_signal": "Results remain below noise floor or fail to distinguish scientific signal from infrastructure noise.",
+  "open_questions": [
+    "What variable is being changed in this loop?",
+    "What comparison is frozen?",
+    "What evidence would justify promoting the branch?"
+  ],
+  "source_paths": {
+    "context_packet": "/home/yuhe/slicetune/clip_dinoiser/artifacts/research_harness/EXP-P1-003_learner_sensitivity_ladder/agentic/context_snapshot.json",
+    "card_path": "/home/yuhe/slicetune/clip_dinoiser/.slicetune/experiments/EXP-P1-003.json"
+  }
+}

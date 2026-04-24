@@ -1,0 +1,27 @@
+{
+  "experiment_id": "EXP-P1-004",
+  "loop_kind": "feature_intervention_matrix",
+  "card_path": "/home/yuhe/clip_dinoiser/.slicetune/experiments/EXP-P1-004.json",
+  "output_dir": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix",
+  "judge_policy_path": "/home/yuhe/clip_dinoiser/.slicetune/judge_policies/feature_intervention_matrix_v1.json",
+  "invoked_command": "run_research_queue.py --experiment-card .slicetune/experiments/EXP-P1-004.json --controller-policy .slicetune/runtime/controller_policy.json --human-approval .slicetune/approvals/human_review.json",
+  "repo_root": "/home/yuhe/clip_dinoiser",
+  "git_sha": "6c6107a4f71632e789da7e41624cb1dff4a4b39a",
+  "git_branch": "main-clean",
+  "git_is_dirty": true,
+  "python_version": "3.12.4",
+  "platform": "Linux-6.8.0-106-generic-x86_64-with-glibc2.35",
+  "hostname": "test-G7466-M6",
+  "started_at_utc": "2026-04-15T03:20:40.765613+00:00",
+  "finished_at_utc": "2026-04-15T03:20:47.599881+00:00",
+  "duration_seconds": 6.834272767184302,
+  "metadata": {
+    "budget_tier": "Tier B",
+    "phase": "Phase 1",
+    "owner": "Auto Proposer",
+    "metric_name": "mIoU",
+    "worker_runtime_profile_id": "clipdino2",
+    "worker_python_bin": "/home/yuhe/.conda/envs/clipdino2/bin/python",
+    "worker_preflight_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/preflight_report.json"
+  }
+}

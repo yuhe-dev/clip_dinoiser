@@ -1,0 +1,129 @@
+{
+  "model_key": "deeplabv3plus_r50_d8",
+  "dataset_key": "voc",
+  "data_root": "/home/yuhe/slicetune/deeplab/research/deeplab/datasets/pascal_voc_seg/VOCdevkit/VOC2012",
+  "candidate_id": null,
+  "subset_manifest": null,
+  "full_train_split_used": true,
+  "seed": 0,
+  "config": {
+    "max_iters": 1000,
+    "crop_size": 512,
+    "samples_per_gpu": 4,
+    "workers_per_gpu": 2,
+    "val_workers_per_gpu": 2,
+    "launcher": "pytorch",
+    "dist_backend": "nccl",
+    "gpu_collect": false
+  },
+  "subset_size": 10582,
+  "metrics": {
+    "validation_mode": "full",
+    "used_inference_mode": "whole",
+    "summary": {
+      "mIoU": 52.1,
+      "mAcc": 67.58,
+      "aAcc": 88.65
+    },
+    "proxy_summary": null,
+    "full_summary": {
+      "mIoU": 52.1,
+      "mAcc": 67.58,
+      "aAcc": 88.65
+    },
+    "per_class": {
+      "background": {
+        "IoU": 89.2300033569336,
+        "Acc": 94.36000061035156
+      },
+      "aeroplane": {
+        "IoU": 72.02999877929688,
+        "Acc": 92.27999877929688
+      },
+      "bicycle": {
+        "IoU": 27.180000305175785,
+        "Acc": 81.9800033569336
+      },
+      "bird": {
+        "IoU": 75.80999755859375,
+        "Acc": 86.43000030517578
+      },
+      "boat": {
+        "IoU": 46.63999938964844,
+        "Acc": 55.439998626708984
+      },
+      "bottle": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "bus": {
+        "IoU": 76.27999877929688,
+        "Acc": 97.22000122070312
+      },
+      "car": {
+        "IoU": 73.11000061035156,
+        "Acc": 82.23999786376953
+      },
+      "cat": {
+        "IoU": 80.72000122070312,
+        "Acc": 85.3499984741211
+      },
+      "chair": {
+        "IoU": 17.139999389648438,
+        "Acc": 21.489999771118164
+      },
+      "cow": {
+        "IoU": 14.310000419616701,
+        "Acc": 15.220000267028807
+      },
+      "dining table": {
+        "IoU": 36.349998474121094,
+        "Acc": 73.30999755859375
+      },
+      "dog": {
+        "IoU": 75.41000366210938,
+        "Acc": 90.72000122070312
+      },
+      "horse": {
+        "IoU": 41.02000045776367,
+        "Acc": 86.83000183105469
+      },
+      "motorbike": {
+        "IoU": 64.86000061035156,
+        "Acc": 91.38999938964844
+      },
+      "person": {
+        "IoU": 73.31999969482422,
+        "Acc": 82.72000122070312
+      },
+      "potted plant": {
+        "IoU": 8.5,
+        "Acc": 8.630000114440918
+      },
+      "sheep": {
+        "IoU": 56.72000122070312,
+        "Acc": 70.83000183105469
+      },
+      "sofa": {
+        "IoU": 39.11000061035156,
+        "Acc": 48.040000915527344
+      },
+      "train": {
+        "IoU": 68.76000213623047,
+        "Acc": 78.94999694824219
+      },
+      "tvmonitor": {
+        "IoU": 57.56999969482421,
+        "Acc": 75.81999969482422
+      }
+    }
+  },
+  "timing": {
+    "subset_size": 10582,
+    "started_at": "2026-04-18T15:44:04.607456+00:00",
+    "finished_at": "2026-04-18T15:49:13.462393+00:00",
+    "train_seconds": 283.651,
+    "eval_seconds": 22.606,
+    "total_seconds": 308.855
+  }
+}

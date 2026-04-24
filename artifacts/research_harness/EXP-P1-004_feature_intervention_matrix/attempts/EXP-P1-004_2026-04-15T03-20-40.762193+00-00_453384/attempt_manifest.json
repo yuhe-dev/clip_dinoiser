@@ -1,0 +1,27 @@
+{
+  "attempt_id": "EXP-P1-004_2026-04-15T03-20-40.762193+00-00_453384",
+  "experiment_id": "EXP-P1-004",
+  "session_id": "session_2026-04-15T03-20-39.456930+00-00_453384",
+  "card_path": "/home/yuhe/clip_dinoiser/.slicetune/experiments/EXP-P1-004.json",
+  "output_dir": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix",
+  "attempt_dir": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/attempts/EXP-P1-004_2026-04-15T03-20-40.762193+00-00_453384",
+  "runtime_profile_id": "clipdino2",
+  "python_bin": "/home/yuhe/.conda/envs/clipdino2/bin/python",
+  "status": "completed",
+  "started_at_utc": "2026-04-15T03:20:40.762983+00:00",
+  "finished_at_utc": "2026-04-15T03:20:47.625577+00:00",
+  "reason": "controller completed run without additional stop gates",
+  "exit_code": 0,
+  "paths": {
+    "session_dir": "/home/yuhe/clip_dinoiser/artifacts/research_harness/sessions/session_2026-04-15T03-20-39.456930+00-00_453384",
+    "session_checkpoint_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/sessions/session_2026-04-15T03-20-39.456930+00-00_453384/session_checkpoint.json",
+    "preflight_report_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/sessions/session_2026-04-15T03-20-39.456930+00-00_453384/preflight_report.json",
+    "judge_report_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/judge_report.json",
+    "result_bundle_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/result_bundle.json",
+    "run_manifest_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/run_manifest.json"
+  },
+  "metadata": {
+    "controller_policy_path": "/home/yuhe/clip_dinoiser/.slicetune/runtime/controller_policy.json",
+    "session_dir": "/home/yuhe/clip_dinoiser/artifacts/research_harness/sessions/session_2026-04-15T03-20-39.456930+00-00_453384"
+  }
+}

@@ -1,0 +1,194 @@
+{
+  "variants": {
+    "L0_head_only": {
+      "variant_id": "L0_head_only",
+      "trainable_modules": [
+        "obj_proj",
+        "bkg_decoder"
+      ],
+      "seed_count": 3,
+      "summary": {
+        "count": 3,
+        "min": 24.29,
+        "max": 24.29,
+        "range": 0.0,
+        "mean": 24.290000000000003,
+        "median": 24.29,
+        "stdev": 4.351167857633658e-15
+      },
+      "runs": [
+        {
+          "run_id": "L0_head_only_noise_seed00",
+          "run_role": "noise_floor",
+          "status": "reused_existing_result",
+          "result_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/runs/L0_head_only_noise_seed00/result.json",
+          "completion_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/runs/L0_head_only_noise_seed00/completion.json",
+          "metric_value": 24.29,
+          "training_seed": 0,
+          "trainable_modules": [
+            "obj_proj",
+            "bkg_decoder"
+          ]
+        },
+        {
+          "run_id": "L0_head_only_noise_seed01",
+          "run_role": "noise_floor",
+          "status": "reused_existing_result",
+          "result_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/runs/L0_head_only_noise_seed01/result.json",
+          "completion_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/runs/L0_head_only_noise_seed01/completion.json",
+          "metric_value": 24.29,
+          "training_seed": 1,
+          "trainable_modules": [
+            "obj_proj",
+            "bkg_decoder"
+          ]
+        },
+        {
+          "run_id": "L0_head_only_noise_seed02",
+          "run_role": "noise_floor",
+          "status": "reused_existing_result",
+          "result_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/runs/L0_head_only_noise_seed02/result.json",
+          "completion_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/runs/L0_head_only_noise_seed02/completion.json",
+          "metric_value": 24.29,
+          "training_seed": 2,
+          "trainable_modules": [
+            "obj_proj",
+            "bkg_decoder"
+          ]
+        }
+      ]
+    },
+    "L1_task_head_plus": {
+      "variant_id": "L1_task_head_plus",
+      "trainable_modules": [
+        "obj_proj",
+        "bkg_decoder",
+        "clip_backbone.decode_head.proj"
+      ],
+      "seed_count": 3,
+      "summary": {
+        "count": 3,
+        "min": 24.29,
+        "max": 24.29,
+        "range": 0.0,
+        "mean": 24.290000000000003,
+        "median": 24.29,
+        "stdev": 4.351167857633658e-15
+      },
+      "runs": [
+        {
+          "run_id": "L1_task_head_plus_noise_seed00",
+          "run_role": "noise_floor",
+          "status": "reused_existing_result",
+          "result_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/runs/L1_task_head_plus_noise_seed00/result.json",
+          "completion_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/runs/L1_task_head_plus_noise_seed00/completion.json",
+          "metric_value": 24.29,
+          "training_seed": 0,
+          "trainable_modules": [
+            "obj_proj",
+            "bkg_decoder",
+            "clip_backbone.decode_head.proj"
+          ]
+        },
+        {
+          "run_id": "L1_task_head_plus_noise_seed01",
+          "run_role": "noise_floor",
+          "status": "reused_existing_result",
+          "result_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/runs/L1_task_head_plus_noise_seed01/result.json",
+          "completion_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/runs/L1_task_head_plus_noise_seed01/completion.json",
+          "metric_value": 24.29,
+          "training_seed": 1,
+          "trainable_modules": [
+            "obj_proj",
+            "bkg_decoder",
+            "clip_backbone.decode_head.proj"
+          ]
+        },
+        {
+          "run_id": "L1_task_head_plus_noise_seed02",
+          "run_role": "noise_floor",
+          "status": "reused_existing_result",
+          "result_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/runs/L1_task_head_plus_noise_seed02/result.json",
+          "completion_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/runs/L1_task_head_plus_noise_seed02/completion.json",
+          "metric_value": 24.29,
+          "training_seed": 2,
+          "trainable_modules": [
+            "obj_proj",
+            "bkg_decoder",
+            "clip_backbone.decode_head.proj"
+          ]
+        }
+      ]
+    },
+    "L2_last_block_partial": {
+      "variant_id": "L2_last_block_partial",
+      "trainable_modules": [
+        "obj_proj",
+        "bkg_decoder",
+        "clip_backbone.decode_head.proj",
+        "clip_backbone.backbone.visual.transformer.resblocks.-1",
+        "clip_backbone.backbone.visual.ln_post"
+      ],
+      "seed_count": 3,
+      "summary": {
+        "count": 3,
+        "min": 24.29,
+        "max": 24.29,
+        "range": 0.0,
+        "mean": 24.290000000000003,
+        "median": 24.29,
+        "stdev": 4.351167857633658e-15
+      },
+      "runs": [
+        {
+          "run_id": "L2_last_block_partial_noise_seed00",
+          "run_role": "noise_floor",
+          "status": "reused_existing_result",
+          "result_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/runs/L2_last_block_partial_noise_seed00/result.json",
+          "completion_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/runs/L2_last_block_partial_noise_seed00/completion.json",
+          "metric_value": 24.29,
+          "training_seed": 0,
+          "trainable_modules": [
+            "obj_proj",
+            "bkg_decoder",
+            "clip_backbone.decode_head.proj",
+            "clip_backbone.backbone.visual.transformer.resblocks.-1",
+            "clip_backbone.backbone.visual.ln_post"
+          ]
+        },
+        {
+          "run_id": "L2_last_block_partial_noise_seed01",
+          "run_role": "noise_floor",
+          "status": "reused_existing_result",
+          "result_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/runs/L2_last_block_partial_noise_seed01/result.json",
+          "completion_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/runs/L2_last_block_partial_noise_seed01/completion.json",
+          "metric_value": 24.29,
+          "training_seed": 1,
+          "trainable_modules": [
+            "obj_proj",
+            "bkg_decoder",
+            "clip_backbone.decode_head.proj",
+            "clip_backbone.backbone.visual.transformer.resblocks.-1",
+            "clip_backbone.backbone.visual.ln_post"
+          ]
+        },
+        {
+          "run_id": "L2_last_block_partial_noise_seed02",
+          "run_role": "noise_floor",
+          "status": "reused_existing_result",
+          "result_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/runs/L2_last_block_partial_noise_seed02/result.json",
+          "completion_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/runs/L2_last_block_partial_noise_seed02/completion.json",
+          "metric_value": 24.29,
+          "training_seed": 2,
+          "trainable_modules": [
+            "obj_proj",
+            "bkg_decoder",
+            "clip_backbone.decode_head.proj",
+            "clip_backbone.backbone.visual.transformer.resblocks.-1",
+            "clip_backbone.backbone.visual.ln_post"
+          ]
+        }
+      ]
+    }
+  }
+}

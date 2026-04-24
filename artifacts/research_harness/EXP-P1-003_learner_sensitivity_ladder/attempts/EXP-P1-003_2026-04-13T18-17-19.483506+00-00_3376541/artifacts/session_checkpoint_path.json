@@ -1,0 +1,21 @@
+{
+  "status": "completed",
+  "experiment_id": "EXP-P1-003",
+  "card_path": "/home/yuhe/clip_dinoiser/.slicetune/experiments/EXP-P1-003.json",
+  "reason": "controller completed run without additional stop gates",
+  "controller_policy_path": "/home/yuhe/clip_dinoiser/.slicetune/runtime/controller_policy.json",
+  "memory_paths": [
+    "/home/yuhe/clip_dinoiser/AGENTS.md",
+    "/home/yuhe/clip_dinoiser/.slicetune/MEMORY.md",
+    "/home/yuhe/clip_dinoiser/.slicetune/context/program.md",
+    "/home/yuhe/clip_dinoiser/.slicetune/context/playbook.md",
+    "/home/yuhe/clip_dinoiser/.slicetune/state/board.md",
+    "/home/yuhe/clip_dinoiser/.slicetune/state/decision_log.md"
+  ],
+  "session_id": "session_2026-04-13T18-17-18.216868+00-00_3376541",
+  "current_step": "done",
+  "last_heartbeat_at_utc": "2026-04-13T18:44:34.696574+00:00",
+  "lease_expires_at_utc": "2026-04-13T18:46:34.696574+00:00",
+  "recovery_hint": "none",
+  "updated_at_utc": "2026-04-13T18:44:34.723565+00:00"
+}

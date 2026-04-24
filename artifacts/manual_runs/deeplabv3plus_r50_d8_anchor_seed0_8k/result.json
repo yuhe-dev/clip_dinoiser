@@ -1,0 +1,722 @@
+{
+  "model_key": "deeplabv3plus_r50_d8",
+  "candidate_id": "rand_subset_s0145_t00",
+  "subset_manifest": "/home/yuhe/clip_dinoiser/artifacts/surrogate_random_v1/manifests/rand_subset_s0145_t00.json",
+  "seed": 0,
+  "config": {
+    "max_iters": 8000,
+    "crop_size": 512,
+    "samples_per_gpu": 2,
+    "workers_per_gpu": 2,
+    "val_workers_per_gpu": 2
+  },
+  "coco_stuff": {
+    "validation_mode": "full",
+    "used_inference_mode": "whole",
+    "summary": {
+      "mIoU": 0.08,
+      "mAcc": 0.8,
+      "aAcc": 0.75
+    },
+    "proxy_summary": null,
+    "full_summary": {
+      "mIoU": 0.08,
+      "mAcc": 0.8,
+      "aAcc": 0.75
+    },
+    "per_class": {
+      "person": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "bicycle": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "car": {
+        "IoU": 2.5799999237060547,
+        "Acc": 10.649999618530273
+      },
+      "motorcycle": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "airplane": {
+        "IoU": 0.03999999910593033,
+        "Acc": 0.07000000029802322
+      },
+      "bus": {
+        "IoU": 0.03999999910593033,
+        "Acc": 0.03999999910593033
+      },
+      "train": {
+        "IoU": 0.3700000047683716,
+        "Acc": 0.38999998569488525
+      },
+      "truck": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "boat": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "traffic light": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "fire hydrant": {
+        "IoU": 0.059999998658895486,
+        "Acc": 0.059999998658895486
+      },
+      "stop sign": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "parking meter": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "bench": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "bird": {
+        "IoU": 0.03999999910593033,
+        "Acc": 0.05000000074505807
+      },
+      "cat": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "dog": {
+        "IoU": 0.15000000596046448,
+        "Acc": 0.20000000298023227
+      },
+      "horse": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "sheep": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "cow": {
+        "IoU": 0.029999999329447743,
+        "Acc": 0.029999999329447743
+      },
+      "elephant": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "bear": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "zebra": {
+        "IoU": 0.0,
+        "Acc": 0.009999999776482582
+      },
+      "giraffe": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "backpack": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "umbrella": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "handbag": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "tie": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "suitcase": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "frisbee": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "skis": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "snowboard": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "sports ball": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "kite": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "baseball bat": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "baseball glove": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "skateboard": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "surfboard": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "tennis racket": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "bottle": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "wine glass": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "cup": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "fork": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "knife": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "spoon": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "bowl": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "banana": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "apple": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "sandwich": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "orange": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "broccoli": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "carrot": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "hot dog": {
+        "IoU": 0.4300000071525574,
+        "Acc": 1.399999976158142
+      },
+      "pizza": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "donut": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "cake": {
+        "IoU": 0.28999999165534973,
+        "Acc": 0.4300000071525574
+      },
+      "chair": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "couch": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "potted plant": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "bed": {
+        "IoU": 1.7400000095367432,
+        "Acc": 31.52000045776367
+      },
+      "dining table": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "toilet": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "tv": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "laptop": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "mouse": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "remote": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "keyboard": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "cell phone": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "microwave": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "oven": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "toaster": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "sink": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "refrigerator": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "book": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "clock": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "vase": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "scissors": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "teddy bear": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "hair drier": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "toothbrush": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "banner": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "blanket": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "branch": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "bridge": {
+        "IoU": 0.23000000417232516,
+        "Acc": 6.630000114440918
+      },
+      "building-other": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "bush": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "cabinet": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "cage": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "cardboard": {
+        "IoU": 0.07000000029802322,
+        "Acc": 0.07999999821186066
+      },
+      "carpet": {
+        "IoU": 0.0,
+        "Acc": 0.009999999776482582
+      },
+      "ceiling-other": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "ceiling-tile": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "cloth": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "clothes": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "clouds": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "counter": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "cupboard": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "curtain": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "desk-stuff": {
+        "IoU": 0.019999999552965164,
+        "Acc": 0.019999999552965164
+      },
+      "dirt": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "door-stuff": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "fence": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "floor-marble": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "floor-other": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "floor-stone": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "floor-tile": {
+        "IoU": 1.4600000381469727,
+        "Acc": 2.0
+      },
+      "floor-wood": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "flower": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "fog": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "food-other": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "fruit": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "furniture-other": {
+        "IoU": 0.4199999868869781,
+        "Acc": 2.7899999618530273
+      },
+      "grass": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "gravel": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "ground-other": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "hill": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "house": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "leaves": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "light": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "mat": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "metal": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "mirror-stuff": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "moss": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "mountain": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "mud": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "napkin": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "net": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "paper": {
+        "IoU": 0.550000011920929,
+        "Acc": 1.399999976158142
+      },
+      "pavement": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "pillow": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "plant-other": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "plastic": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "platform": {
+        "IoU": 0.019999999552965164,
+        "Acc": 0.029999999329447743
+      },
+      "playingfield": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "railing": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "railroad": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "river": {
+        "IoU": 1.8300000429153442,
+        "Acc": 24.670000076293945
+      },
+      "road": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "rock": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "roof": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "rug": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "salad": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "sand": {
+        "IoU": 1.2899999618530273,
+        "Acc": 4.480000019073486
+      },
+      "sea": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "shelf": {
+        "IoU": 0.029999999329447743,
+        "Acc": 0.8000000119209291
+      },
+      "sky-other": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "skyscraper": {
+        "IoU": 0.2199999988079071,
+        "Acc": 2.6500000953674316
+      },
+      "snow": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "solid-other": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "stairs": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "stone": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "straw": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "structural-other": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "table": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "tent": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "textile-other": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "towel": {
+        "IoU": 0.059999998658895486,
+        "Acc": 23.6299991607666
+      },
+      "tree": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "vegetable": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "wall-brick": {
+        "IoU": 0.699999988079071,
+        "Acc": 22.760000228881836
+      },
+      "wall-concrete": {
+        "IoU": 0.11999999731779097,
+        "Acc": 0.12999999523162842
+      },
+      "wall-other": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "wall-panel": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "wall-stone": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "wall-tile": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "wall-wood": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "water-other": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "waterdrops": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "window-blind": {
+        "IoU": 0.07000000029802322,
+        "Acc": 0.10000000149011613
+      },
+      "window-other": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      },
+      "wood": {
+        "IoU": 0.0,
+        "Acc": 0.0
+      }
+    }
+  },
+  "timing": {
+    "subset_size": 1000,
+    "started_at": "2026-04-15T09:37:28.760890+00:00",
+    "finished_at": "2026-04-15T09:57:29.223186+00:00",
+    "train_seconds": 1078.063,
+    "eval_seconds": 120.04,
+    "total_seconds": 1200.462
+  }
+}

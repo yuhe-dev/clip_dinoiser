@@ -1,0 +1,40 @@
+{
+  "experiment_id": "EXP-P1-004",
+  "loop_kind": "feature_intervention_matrix",
+  "input_path": "/home/yuhe/clip_dinoiser/artifacts/surrogate_random_v1/manifests/rand_subset_s0145_t00.json",
+  "metric_name": "mIoU",
+  "summary": {
+    "tier_executed": "Tier A",
+    "completed_learner_variant_count": 3,
+    "completed_probe_axis_count": 2,
+    "completed_real_cell_count": 6,
+    "control_families_executed": 1,
+    "minimum_seed_count_per_cell": 1,
+    "best_real_response_to_noise_ratio": Infinity,
+    "mean_off_target_drift_ratio": 0.01543520046149529,
+    "max_off_target_drift_ratio": 0.015511944936392099,
+    "mean_realized_target_delta": 6.089897006750107,
+    "real_axes_with_signal_count": 2,
+    "real_cells_above_noise_floor_count": 6,
+    "realized_target_delta_logged_for_all_cells": true,
+    "teacher_frozen": true,
+    "full_validation": true,
+    "screen_passed": true,
+    "promote_ready": false
+  },
+  "sample_ids": [],
+  "metadata": {
+    "config_name": "feature_experiment_fast_cached_slide",
+    "runtime_profile_id": "clipdino2",
+    "python_bin": "/home/yuhe/.conda/envs/clipdino2/bin/python3.9",
+    "worker_script": "run_remix_training_experiment.py",
+    "axis_scores_summary_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/axis_scores_summary.json",
+    "materialization_index_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/materialization_index.json",
+    "cell_results_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/cell_results.json",
+    "noise_floor_summary_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/noise_floor_summary.json",
+    "execution_trace_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/execution_trace.json",
+    "task_plan_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/task_plan.json",
+    "progress_markdown_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/progress.md",
+    "handoff_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/handoff.md"
+  }
+}

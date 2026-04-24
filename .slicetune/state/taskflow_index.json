@@ -1,0 +1,31 @@
+{
+  "generated_at_utc": "2026-04-24T14:00:24.873393+00:00",
+  "plan_count": 5,
+  "plans": {
+    "EXP-LIT-EXP-P1-004": {
+      "research_state": "hypothesis",
+      "next_action": "author_hypothesis_and_scope",
+      "current_step": "status::planned"
+    },
+    "EXP-P1-001": {
+      "research_state": "judgment",
+      "next_action": "review_judge_report_and_choose_next_branch",
+      "current_step": "status::completed"
+    },
+    "EXP-P1-002": {
+      "research_state": "judgment",
+      "next_action": "review_judge_report_and_choose_next_branch",
+      "current_step": "status::completed"
+    },
+    "EXP-P1-003": {
+      "research_state": "judgment",
+      "next_action": "continue_regime_execution",
+      "current_step": "judge_completed"
+    },
+    "EXP-P1-004": {
+      "research_state": "judgment",
+      "next_action": "continue_feature_intervention_execution",
+      "current_step": "judge_completed"
+    }
+  }
+}

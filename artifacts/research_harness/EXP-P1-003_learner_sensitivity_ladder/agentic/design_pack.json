@@ -1,0 +1,45 @@
+{
+  "generated_by": "agentic_planner_v1",
+  "generated_at_utc": "2026-04-24T14:00:24.886570+00:00",
+  "experiment_id": "EXP-P1-003",
+  "phase": "Phase 1",
+  "loop_kind": "learner_sensitivity_ladder",
+  "design_class": "executable_candidate",
+  "objective": "Estimate whether learner/protocol choices alter response sensitivity more than known training noise.",
+  "mutation_scope": {
+    "changed": [
+      "training regime",
+      "config_name",
+      "effective training budget"
+    ],
+    "frozen": [
+      "subset manifest",
+      "metric",
+      "validation split",
+      "runtime family"
+    ]
+  },
+  "execution_recipe": [
+    "reuse one fixed subset manifest as the anchor",
+    "run the same subset under several learner/protocol regimes",
+    "compare regime range against the known training-noise baseline",
+    "promote only if the ladder shows meaningful sensitivity"
+  ],
+  "confound_guardrails": [
+    "do not change subset composition while auditing learner sensitivity",
+    "keep runtime family and metric constant across regimes"
+  ],
+  "expected_signal": {
+    "primary": "Produce evidence strong enough to update keep/park/kill for the current branch.",
+    "secondary": "Produce structured artifacts that can be judged and debated."
+  },
+  "runtime_requirements": {
+    "input_path": "artifacts/surrogate_random_v1/manifests/rand_subset_s0145_t00.json",
+    "output_dir": "artifacts/research_harness/EXP-P1-003_learner_sensitivity_ladder",
+    "judge_policy_path": ".slicetune/judge_policies/learner_sensitivity_ladder_v1.json"
+  },
+  "source_paths": {
+    "hypothesis_brief": "",
+    "context_packet": "/home/yuhe/slicetune/clip_dinoiser/artifacts/research_harness/EXP-P1-003_learner_sensitivity_ladder/agentic/context_snapshot.json"
+  }
+}

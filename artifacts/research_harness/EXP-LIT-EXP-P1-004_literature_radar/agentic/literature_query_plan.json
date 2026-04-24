@@ -1,0 +1,42 @@
+{
+  "generated_by": "literature_radar_v1",
+  "generated_at_utc": "2026-04-24T14:00:24.876603+00:00",
+  "experiment_id": "EXP-LIT-EXP-P1-004",
+  "phase": "Phase 1",
+  "loop_kind": "literature_radar",
+  "source_experiment_id": "EXP-P1-004",
+  "failure_mode": [
+    "status=blocked_debate_gate"
+  ],
+  "queries": [
+    "data selection slice discovery image segmentation",
+    "data selection slice discovery distribution optimization",
+    "semantic segmentation data selection reweighting",
+    "subpopulation slice discovery vision model validation"
+  ],
+  "venue_priority": [
+    "NeurIPS",
+    "ICML",
+    "ICLR",
+    "CVPR",
+    "ICCV",
+    "ECCV",
+    "TPAMI",
+    "CHI",
+    "UIST",
+    "VIS",
+    "ACL",
+    "EMNLP",
+    "NAACL"
+  ],
+  "ranking_axes": [
+    "stage relevance",
+    "modality match",
+    "venue quality",
+    "recency",
+    "reproduction feasibility"
+  ],
+  "source_paths": {
+    "context_packet": "/home/yuhe/slicetune/clip_dinoiser/artifacts/research_harness/EXP-LIT-EXP-P1-004_literature_radar/agentic/context_snapshot.json"
+  }
+}

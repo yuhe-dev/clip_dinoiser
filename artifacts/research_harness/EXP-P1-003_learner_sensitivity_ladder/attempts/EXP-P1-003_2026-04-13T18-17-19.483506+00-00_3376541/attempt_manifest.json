@@ -1,0 +1,27 @@
+{
+  "attempt_id": "EXP-P1-003_2026-04-13T18-17-19.483506+00-00_3376541",
+  "experiment_id": "EXP-P1-003",
+  "session_id": "session_2026-04-13T18-17-18.216868+00-00_3376541",
+  "card_path": "/home/yuhe/clip_dinoiser/.slicetune/experiments/EXP-P1-003.json",
+  "output_dir": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-003_learner_sensitivity_ladder",
+  "attempt_dir": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-003_learner_sensitivity_ladder/attempts/EXP-P1-003_2026-04-13T18-17-19.483506+00-00_3376541",
+  "runtime_profile_id": "clipdino2",
+  "python_bin": "/home/yuhe/.conda/envs/clipdino2/bin/python",
+  "status": "completed",
+  "started_at_utc": "2026-04-13T18:17:19.484106+00:00",
+  "finished_at_utc": "2026-04-13T18:44:34.724614+00:00",
+  "reason": "controller completed run without additional stop gates",
+  "exit_code": 0,
+  "paths": {
+    "session_dir": "/home/yuhe/clip_dinoiser/artifacts/research_harness/sessions/session_2026-04-13T18-17-18.216868+00-00_3376541",
+    "session_checkpoint_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/sessions/session_2026-04-13T18-17-18.216868+00-00_3376541/session_checkpoint.json",
+    "preflight_report_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/sessions/session_2026-04-13T18-17-18.216868+00-00_3376541/preflight_report.json",
+    "judge_report_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-003_learner_sensitivity_ladder/judge_report.json",
+    "result_bundle_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-003_learner_sensitivity_ladder/result_bundle.json",
+    "run_manifest_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-003_learner_sensitivity_ladder/run_manifest.json"
+  },
+  "metadata": {
+    "controller_policy_path": "/home/yuhe/clip_dinoiser/.slicetune/runtime/controller_policy.json",
+    "session_dir": "/home/yuhe/clip_dinoiser/artifacts/research_harness/sessions/session_2026-04-13T18-17-18.216868+00-00_3376541"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "experiment_id": "EXP-P1-001",
+  "decision": "promote",
+  "evidence_level": "E3",
+  "result_summary": {
+    "count": 192,
+    "metric_name": "mIoU",
+    "min": 24.22,
+    "max": 24.36,
+    "range": 0.14000000000000057,
+    "mean": 24.293854166666666,
+    "median": 24.29,
+    "stdev": 0.02600321332002687,
+    "p10": 24.26,
+    "p90": 24.33,
+    "source_counts": {
+      "random_subset": 192
+    },
+    "budget_counts": {
+      "1000": 192
+    },
+    "subset_seed_count": 192,
+    "training_seed_count": 1,
+    "sample_experiment_ids": [
+      "rand_subset_s0000_t00",
+      "rand_subset_s0001_t00",
+      "rand_subset_s0002_t00",
+      "rand_subset_s0003_t00",
+      "rand_subset_s0004_t00"
+    ]
+  },
+  "reasons": [
+    "Observed std 0.0260 and range 0.1400 are both below narrow-floor thresholds.",
+    "The current metric spread is tight enough to justify moving to same-subset multi-seed and learner-sensitivity audits."
+  ],
+  "recommended_actions": [
+    "Promote EXP-P1-001 as completed and archive this summary as the current global-mIoU floor.",
+    "Run same-subset multi-training-seed experiments to separate subset effect from training noise.",
+    "Run learner sensitivity ladder before expanding downstream search or surrogate work."
+  ],
+  "requires_literature_radar": false,
+  "protocol_contamination": false
+}

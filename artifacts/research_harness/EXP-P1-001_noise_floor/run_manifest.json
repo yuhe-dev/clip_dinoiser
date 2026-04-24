@@ -1,0 +1,24 @@
+{
+  "experiment_id": "EXP-P1-001",
+  "loop_kind": "noise_floor",
+  "card_path": "/home/yuhe/clip_dinoiser/.slicetune/experiments/EXP-P1-001_noise_floor.json",
+  "output_dir": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-001_noise_floor",
+  "judge_policy_path": "/home/yuhe/clip_dinoiser/.slicetune/judge_policies/noise_floor_v1.json",
+  "invoked_command": "run_research_queue.py --experiment-card .slicetune/experiments/EXP-P1-001_noise_floor.json --controller-policy .slicetune/runtime/controller_policy.json --human-approval .slicetune/approvals/human_review.json",
+  "repo_root": "/home/yuhe/clip_dinoiser",
+  "git_sha": "6c6107a4f71632e789da7e41624cb1dff4a4b39a",
+  "git_branch": "main-clean",
+  "git_is_dirty": true,
+  "python_version": "3.12.4",
+  "platform": "Linux-6.8.0-106-generic-x86_64-with-glibc2.35",
+  "hostname": "test-G7466-M6",
+  "started_at_utc": "2026-04-13T04:38:43.777794+00:00",
+  "finished_at_utc": "2026-04-13T04:38:43.859127+00:00",
+  "duration_seconds": 0.08134562498889863,
+  "metadata": {
+    "budget_tier": "Tier A",
+    "phase": "Phase 1",
+    "owner": "State Keeper / Benchmark Steward",
+    "metric_name": "mIoU"
+  }
+}

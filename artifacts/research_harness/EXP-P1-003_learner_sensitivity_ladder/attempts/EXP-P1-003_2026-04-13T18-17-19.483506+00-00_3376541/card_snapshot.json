@@ -1,0 +1,68 @@
+{
+  "experiment_id": "EXP-P1-003",
+  "name": "Design learner sensitivity ladder after fixed-subset training-noise audit",
+  "phase": "Phase 1",
+  "owner": "Auto Proposer",
+  "loop_kind": "learner_sensitivity_ladder",
+  "status": "queued",
+  "hypothesis": "If fixed-subset multi-seed noise remains comparable to the global floor, the next priority is to audit whether the learner itself is insufficiently sensitive to composition changes.",
+  "budget_tier": "Tier B",
+  "input_path": "artifacts/surrogate_random_v1/manifests/rand_subset_s0145_t00.json",
+  "metric_name": "mIoU",
+  "output_dir": "artifacts/research_harness/EXP-P1-003_learner_sensitivity_ladder",
+  "judge_policy_path": ".slicetune/judge_policies/learner_sensitivity_ladder_v1.json",
+  "requires_debate": true,
+  "debate_bundle_path": ".slicetune/debates/EXP-P1-003_bundle.json",
+  "human_review_required": false,
+  "phase_completion_candidate": false,
+  "priority": 30,
+  "depends_on": [
+    "EXP-P1-002"
+  ],
+  "next_eligible_at_utc": "",
+  "attempt_count": 1,
+  "max_attempts": 0,
+  "last_attempt_id": "EXP-P1-003_2026-04-13T18-17-19.483506+00-00_3376541",
+  "status_history": [
+    {
+      "from": "planned",
+      "to": "queued",
+      "reason": "taskflow auto-advance after hypothesis/design gates satisfied",
+      "session_id": "taskflow-auto-advance",
+      "at_utc": "2026-04-13T18:17:18.198030+00:00"
+    }
+  ],
+  "metadata": {
+    "proposal_origin": "phase1_locked_follow_on",
+    "source_runtime_index_dependency": "EXP-P1-002",
+    "python_bin": "/home/yuhe/.conda/envs/clipdino2/bin/python",
+    "runtime_profile_candidates": [
+      "clipdino2",
+      "clipdino",
+      "current_python"
+    ],
+    "worker_script": "run_remix_training_experiment.py",
+    "gpu_id": "0",
+    "master_port_base": 29740,
+    "result_name": "result.json",
+    "continue_on_failure": false,
+    "regimes": [
+      {
+        "regime_id": "fast_cached_1ep",
+        "config_name": "feature_experiment_fast_cached_slide",
+        "training_seed": 0
+      },
+      {
+        "regime_id": "fast_1ep",
+        "config_name": "feature_experiment_fast",
+        "training_seed": 0
+      },
+      {
+        "regime_id": "standard_3ep",
+        "config_name": "feature_experiment",
+        "training_seed": 0
+      }
+    ]
+  },
+  "judge_config": {}
+}

@@ -1,0 +1,60 @@
+{
+  "experiment_id": "EXP-P1-003",
+  "loop_kind": "learner_sensitivity_ladder",
+  "current_step": "judge_completed",
+  "next_action": "continue_regime_execution",
+  "acceptance_status": "not_required",
+  "research_state": "judgment",
+  "next_state": "",
+  "tasks": [
+    {
+      "task_id": "regime_fast_cached_1ep",
+      "title": "Run learner regime fast_cached_1ep",
+      "status": "completed",
+      "stage": "execution",
+      "detail": "config=feature_experiment_fast_cached_slide mIoU=24.2900"
+    },
+    {
+      "task_id": "regime_fast_1ep",
+      "title": "Run learner regime fast_1ep",
+      "status": "completed",
+      "stage": "execution",
+      "detail": "config=feature_experiment_fast mIoU=20.3900"
+    },
+    {
+      "task_id": "regime_standard_3ep",
+      "title": "Run learner regime standard_3ep",
+      "status": "completed",
+      "stage": "execution",
+      "detail": "config=feature_experiment mIoU=20.7500"
+    },
+    {
+      "task_id": "summarize_results",
+      "title": "Summarize learner-sensitivity ladder",
+      "status": "completed",
+      "stage": "verification",
+      "detail": "completed=3 failed=0"
+    },
+    {
+      "task_id": "judge_results",
+      "title": "Judge learner-sensitivity signal",
+      "status": "completed",
+      "stage": "judgment",
+      "detail": "decision=promote"
+    },
+    {
+      "task_id": "human_acceptance",
+      "title": "Human review stop",
+      "status": "completed",
+      "stage": "acceptance",
+      "detail": "not required"
+    }
+  ],
+  "recent_facts": [
+    "completed_regime_count=3",
+    "failure_count=0"
+  ],
+  "blockers": [],
+  "updated_at_utc": "2026-04-13T18:44:34.687598+00:00",
+  "state_history": []
+}

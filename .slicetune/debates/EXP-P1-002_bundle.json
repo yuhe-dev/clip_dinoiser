@@ -1,0 +1,11 @@
+{
+  "debate_id": "EXP-P1-002",
+  "design_card_path": ".slicetune/debates/EXP-P1-002_design.md",
+  "review_card_paths": [
+    ".slicetune/debates/EXP-P1-002_review.md"
+  ],
+  "decision_card_path": ".slicetune/debates/EXP-P1-002_decision.md",
+  "decision": "approve",
+  "round_count": 2,
+  "reviewer_count": 1
+}

@@ -1,0 +1,34 @@
+{
+  "experiment_id": "EXP-P1-003",
+  "current_step": "regime_completed_standard_3ep",
+  "completed_runs": [
+    {
+      "regime_id": "fast_cached_1ep",
+      "candidate_id": "rand_subset_s0145_t00_fast_cached_1ep",
+      "config_name": "feature_experiment_fast_cached_slide",
+      "training_seed": 0,
+      "result_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-003_learner_sensitivity_ladder/runs/rand_subset_s0145_t00_fast_cached_1ep/result.json",
+      "metric_value": 24.29,
+      "status": "completed"
+    },
+    {
+      "regime_id": "fast_1ep",
+      "candidate_id": "rand_subset_s0145_t00_fast_1ep",
+      "config_name": "feature_experiment_fast",
+      "training_seed": 0,
+      "result_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-003_learner_sensitivity_ladder/runs/rand_subset_s0145_t00_fast_1ep/result.json",
+      "metric_value": 20.39,
+      "status": "completed"
+    },
+    {
+      "regime_id": "standard_3ep",
+      "candidate_id": "rand_subset_s0145_t00_standard_3ep",
+      "config_name": "feature_experiment",
+      "training_seed": 0,
+      "result_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-003_learner_sensitivity_ladder/runs/rand_subset_s0145_t00_standard_3ep/result.json",
+      "metric_value": 20.75,
+      "status": "completed"
+    }
+  ],
+  "failures": []
+}

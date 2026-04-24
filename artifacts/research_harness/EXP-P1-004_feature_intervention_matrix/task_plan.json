@@ -1,0 +1,146 @@
+{
+  "experiment_id": "EXP-P1-004",
+  "loop_kind": "feature_intervention_matrix",
+  "current_step": "judge_completed",
+  "next_action": "continue_feature_intervention_execution",
+  "acceptance_status": "not_required",
+  "research_state": "judgment",
+  "next_state": "",
+  "tasks": [
+    {
+      "task_id": "noise_L0_head_only",
+      "title": "Estimate learner noise for L0_head_only",
+      "status": "completed",
+      "stage": "execution",
+      "detail": "mIoU=24.2900"
+    },
+    {
+      "task_id": "noise_L1_task_head_plus",
+      "title": "Estimate learner noise for L1_task_head_plus",
+      "status": "completed",
+      "stage": "execution",
+      "detail": "mIoU=24.2900"
+    },
+    {
+      "task_id": "noise_L2_last_block_partial",
+      "title": "Estimate learner noise for L2_last_block_partial",
+      "status": "completed",
+      "stage": "execution",
+      "detail": "mIoU=24.2900"
+    },
+    {
+      "task_id": "pair_L0_head_only_quality_sharpness_high",
+      "title": "Run L0_head_only on quality_sharpness (high)",
+      "status": "completed",
+      "stage": "execution",
+      "detail": "mIoU=23.7300"
+    },
+    {
+      "task_id": "pair_L0_head_only_quality_sharpness_low",
+      "title": "Run L0_head_only on quality_sharpness (low)",
+      "status": "completed",
+      "stage": "execution",
+      "detail": "mIoU=23.8800"
+    },
+    {
+      "task_id": "pair_L0_head_only_difficulty_small_object_high",
+      "title": "Run L0_head_only on difficulty_small_object (high)",
+      "status": "completed",
+      "stage": "execution",
+      "detail": "mIoU=24.1500"
+    },
+    {
+      "task_id": "pair_L0_head_only_difficulty_small_object_low",
+      "title": "Run L0_head_only on difficulty_small_object (low)",
+      "status": "completed",
+      "stage": "execution",
+      "detail": "mIoU=24.2800"
+    },
+    {
+      "task_id": "pair_L1_task_head_plus_quality_sharpness_high",
+      "title": "Run L1_task_head_plus on quality_sharpness (high)",
+      "status": "completed",
+      "stage": "execution",
+      "detail": "mIoU=23.7300"
+    },
+    {
+      "task_id": "pair_L1_task_head_plus_quality_sharpness_low",
+      "title": "Run L1_task_head_plus on quality_sharpness (low)",
+      "status": "completed",
+      "stage": "execution",
+      "detail": "mIoU=23.8800"
+    },
+    {
+      "task_id": "pair_L1_task_head_plus_difficulty_small_object_high",
+      "title": "Run L1_task_head_plus on difficulty_small_object (high)",
+      "status": "completed",
+      "stage": "execution",
+      "detail": "mIoU=24.1500"
+    },
+    {
+      "task_id": "pair_L1_task_head_plus_difficulty_small_object_low",
+      "title": "Run L1_task_head_plus on difficulty_small_object (low)",
+      "status": "completed",
+      "stage": "execution",
+      "detail": "mIoU=24.2800"
+    },
+    {
+      "task_id": "pair_L2_last_block_partial_quality_sharpness_high",
+      "title": "Run L2_last_block_partial on quality_sharpness (high)",
+      "status": "completed",
+      "stage": "execution",
+      "detail": "mIoU=23.7300"
+    },
+    {
+      "task_id": "pair_L2_last_block_partial_quality_sharpness_low",
+      "title": "Run L2_last_block_partial on quality_sharpness (low)",
+      "status": "completed",
+      "stage": "execution",
+      "detail": "mIoU=23.8800"
+    },
+    {
+      "task_id": "pair_L2_last_block_partial_difficulty_small_object_high",
+      "title": "Run L2_last_block_partial on difficulty_small_object (high)",
+      "status": "completed",
+      "stage": "execution",
+      "detail": "mIoU=24.1500"
+    },
+    {
+      "task_id": "pair_L2_last_block_partial_difficulty_small_object_low",
+      "title": "Run L2_last_block_partial on difficulty_small_object (low)",
+      "status": "completed",
+      "stage": "execution",
+      "detail": "mIoU=24.2800"
+    },
+    {
+      "task_id": "summarize_results",
+      "title": "Summarize learner adaptability screen",
+      "status": "completed",
+      "stage": "verification",
+      "detail": "completed_runs=21 failures=0"
+    },
+    {
+      "task_id": "judge_results",
+      "title": "Judge Tier A feature intervention signal",
+      "status": "completed",
+      "stage": "judgment",
+      "detail": "decision=park"
+    },
+    {
+      "task_id": "human_acceptance",
+      "title": "Human review stop",
+      "status": "completed",
+      "stage": "acceptance",
+      "detail": "not required"
+    }
+  ],
+  "recent_facts": [
+    "completed_run_count=21",
+    "failure_count=0",
+    "learner_variant_count=3",
+    "probe_axis_count=2"
+  ],
+  "blockers": [],
+  "updated_at_utc": "2026-04-15T03:20:47.598560+00:00",
+  "state_history": []
+}

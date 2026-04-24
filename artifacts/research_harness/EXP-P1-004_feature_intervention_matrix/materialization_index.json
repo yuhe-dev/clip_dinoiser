@@ -1,0 +1,40 @@
+{
+  "pairs": [
+    {
+      "axis_id": "quality_sharpness",
+      "control_family": "real_feature_guided",
+      "pair_seed": 0,
+      "high_manifest_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/manifests/quality_sharpness_real_feature_guided_seed00_high.json",
+      "low_manifest_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/manifests/quality_sharpness_real_feature_guided_seed00_low.json",
+      "realized_target_delta": 9.081079483032227,
+      "anchor_target_mean": -0.07135450839996338,
+      "high_target_mean": 2.4501919746398926,
+      "low_target_mean": -6.630887508392334,
+      "off_target_deltas": {
+        "difficulty_small_object": -0.13155102729797363,
+        "coverage_density": -0.1473916918039322
+      },
+      "off_target_drift_ratio": 0.015358455986598478,
+      "class_histogram_drift": 0.03261988237500191,
+      "coverage_drift": 0.1473916918039322
+    },
+    {
+      "axis_id": "difficulty_small_object",
+      "control_family": "real_feature_guided",
+      "pair_seed": 0,
+      "high_manifest_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/manifests/difficulty_small_object_real_feature_guided_seed00_high.json",
+      "low_manifest_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/manifests/difficulty_small_object_real_feature_guided_seed00_low.json",
+      "realized_target_delta": 3.098714530467987,
+      "anchor_target_mean": -0.02115863561630249,
+      "high_target_mean": 2.157705068588257,
+      "low_target_mean": -0.9410094618797302,
+      "off_target_deltas": {
+        "quality_sharpness": 0.06508680433034897,
+        "coverage_density": -0.03104737401008606
+      },
+      "off_target_drift_ratio": 0.015511944936392099,
+      "class_histogram_drift": 0.033222224563360214,
+      "coverage_drift": 0.03104737401008606
+    }
+  ]
+}

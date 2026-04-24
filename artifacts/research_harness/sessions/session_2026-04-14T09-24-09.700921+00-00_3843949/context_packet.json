@@ -1,0 +1,130 @@
+{
+  "generated_at_utc": "2026-04-14T09:24:09.701736+00:00",
+  "experiment_id": "EXP-P1-004",
+  "card_path": "/home/yuhe/clip_dinoiser/.slicetune/experiments/EXP-P1-004.json",
+  "loop_kind": "feature_intervention_matrix",
+  "phase": "Phase 1",
+  "status": "queued",
+  "owner": "Auto Proposer",
+  "hypothesis": "If the current head-only CLIP-DINOiser learner is too rigid, then at least one more adaptable learner variant will show stronger and more consistent response to matched real probe-axis interventions than to shuffled or matched-random controls.",
+  "budget_tier": "Tier B",
+  "depends_on": [
+    "EXP-P1-003"
+  ],
+  "memory_index": [
+    {
+      "path": "/home/yuhe/clip_dinoiser/AGENTS.md",
+      "exists": true
+    },
+    {
+      "path": "/home/yuhe/clip_dinoiser/.slicetune/MEMORY.md",
+      "exists": true
+    },
+    {
+      "path": "/home/yuhe/clip_dinoiser/.slicetune/context/program.md",
+      "exists": true
+    },
+    {
+      "path": "/home/yuhe/clip_dinoiser/.slicetune/context/playbook.md",
+      "exists": true
+    },
+    {
+      "path": "/home/yuhe/clip_dinoiser/.slicetune/state/board.md",
+      "exists": true
+    },
+    {
+      "path": "/home/yuhe/clip_dinoiser/.slicetune/state/decision_log.md",
+      "exists": true
+    }
+  ],
+  "task_snapshot": {
+    "research_state": "audit",
+    "next_action": "satisfy_gates_then_queue",
+    "acceptance_status": "not_required",
+    "recent_facts": [
+      "card_status=queued",
+      "debate_bundle_exists=True",
+      "result_bundle_exists=False",
+      "judge_report_exists=False"
+    ],
+    "blockers": []
+  },
+  "runtime_snapshot": {
+    "attempt_count": 0,
+    "judge_decision": "",
+    "runtime_status": "queued"
+  },
+  "artifact_snapshot": {
+    "output_dir": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix",
+    "has_task_plan": true,
+    "has_result_bundle": false,
+    "has_judge_report": false,
+    "debate_bundle_path": ".slicetune/debates/EXP-P1-004_bundle.json"
+  },
+  "repo_memory_tail": {
+    "board_md_tail": [
+      "    - 先只跑 `real_feature_guided`",
+      "    - 先写 learner-specific noise floor 与 realized intervention fidelity",
+      "",
+      "---",
+      "",
+      "## 3. 主分支状态",
+      "",
+      "### keep",
+      "",
+      "- Phase 1 noise floor / training noise 审计",
+      "- learner sensitivity ladder 审计",
+      "- learner adaptability audit 设计",
+      "- runtime preflight / queue / daemon / attempt / taskflow",
+      "- human review stop + release",
+      "- agentic planning / analysis / judgment artifact",
+      "- executable literature radar loop",
+      "",
+      "### park",
+      "",
+      "- surrogate 扩张",
+      "- candidate generation 搜索复杂化",
+      "- frontend polish",
+      "",
+      "### 当前停机原因",
+      "",
+      "- `EXP-P1-003` 已完成并 `promote`",
+      "- 当前主线已自动推进到 `EXP-P1-004`",
+      "- 系统当前没有越权停机；真正的下一阻塞是：",
+      "  - `feature_intervention_matrix` 仍缺 runtime handler / executable recipe",
+      "  - 更关键的是：当前还需要插入 learner adaptability audit，先回答“当前 learner 是否太僵”"
+    ],
+    "decision_log_tail": [
+      "    - `real / shuffled / matched-random` 三类 controls",
+      "    - learner-specific noise floor",
+      "",
+      "---",
+      "",
+      "## DEC-044",
+      "",
+      "- 决策：当前 feature space 在 `EXP-P1-004` 中只被视为 `working hypothesis probe axes`，不是 ground truth",
+      "- 结论：`keep`",
+      "- 原因：",
+      "  - 当前 `learner algorithm` 与 `feature definition` 同时不确定，不能两边一起做大搜索",
+      "  - 更稳妥的做法是：",
+      "    - 先用少量现有 feature axes 作为 probe",
+      "    - 配 `shuffled / matched-random` 对照",
+      "    - 记录 realized intervention fidelity",
+      "  - 这样才能区分：",
+      "    - learner 太僵",
+      "    - feature 无效",
+      "    - learner–feature coupling 确实存在",
+      "",
+      "---",
+      "",
+      "## DEC-045",
+      "",
+      "- 决策：`agentic planner` 必须能从 `experiment card metadata` 稳定编译出阶段特化的 planning artifact，而不是反复回退到 generic 模板",
+      "- 结论：`keep`",
+      "- 原因：",
+      "  - `EXP-P1-004` 的细化设计如果只存在于手工 artifact，会被 daemon 下一次回填覆盖",
+      "  - 因此已将 `minimal_learner_adaptability_audit` 接入 `planner.py`",
+      "  - 现在 `design_mode + metadata` 已成为 `hypothesis_brief / design_pack / evaluation_rubric` 的稳定上游合同"
+    ]
+  }
+}

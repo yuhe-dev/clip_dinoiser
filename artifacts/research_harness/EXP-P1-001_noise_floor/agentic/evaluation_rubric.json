@@ -1,0 +1,43 @@
+{
+  "generated_by": "agentic_planner_v1",
+  "generated_at_utc": "2026-04-24T14:00:24.878771+00:00",
+  "experiment_id": "EXP-P1-001",
+  "phase": "Phase 1",
+  "loop_kind": "noise_floor",
+  "primary_metric": "mIoU",
+  "comparison_contract": {
+    "phase": "Phase 1",
+    "depends_on": [],
+    "design_class": "executable_candidate"
+  },
+  "judge_contract": {
+    "contract_type": "noise_floor",
+    "thresholds": {
+      "minimum_labeled_runs": 100,
+      "narrow_std_threshold": 0.05,
+      "narrow_range_threshold": 0.2
+    }
+  },
+  "judge_policy_snapshot": {
+    "minimum_labeled_runs": 100,
+    "narrow_std_threshold": 0.05,
+    "narrow_range_threshold": 0.2
+  },
+  "success_criteria": [
+    "Have at least the minimum labeled run count required by the judge policy.",
+    "Observed spread is narrow enough to justify downstream audits."
+  ],
+  "caution_criteria": [
+    "If spread is wide, baseline is still useful but should not anchor small-Delta claims."
+  ],
+  "failure_criteria": [
+    "Insufficient labeled runs to establish a stable floor."
+  ],
+  "promote_rule": "Promote only when success criteria are met and no major protocol contamination is detected.",
+  "park_rule": "Park when interesting signal exists but the current phase or evidence depth is insufficient.",
+  "kill_rule": "Kill when repeated execution still fails to produce interpretable signal under a valid protocol.",
+  "source_paths": {
+    "context_packet": "/home/yuhe/slicetune/clip_dinoiser/artifacts/research_harness/EXP-P1-001_noise_floor/agentic/context_snapshot.json",
+    "judge_policy_path": ".slicetune/judge_policies/noise_floor_v1.json"
+  }
+}

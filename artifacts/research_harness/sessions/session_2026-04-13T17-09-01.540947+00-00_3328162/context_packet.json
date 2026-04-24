@@ -1,0 +1,127 @@
+{
+  "generated_at_utc": "2026-04-13T17:09:01.541751+00:00",
+  "experiment_id": "EXP-P1-002",
+  "card_path": "/home/yuhe/clip_dinoiser/.slicetune/experiments/EXP-P1-002_same_subset_multiseed.json",
+  "loop_kind": "same_subset_multi_seed",
+  "phase": "Phase 1",
+  "status": "queued",
+  "owner": "Learner Sensitivity Auditor",
+  "hypothesis": "A meaningful part of the current global mIoU spread may come from training noise rather than subset composition alone.",
+  "budget_tier": "Tier B",
+  "depends_on": [],
+  "memory_index": [
+    {
+      "path": "/home/yuhe/clip_dinoiser/AGENTS.md",
+      "exists": true
+    },
+    {
+      "path": "/home/yuhe/clip_dinoiser/.slicetune/MEMORY.md",
+      "exists": true
+    },
+    {
+      "path": "/home/yuhe/clip_dinoiser/.slicetune/context/program.md",
+      "exists": true
+    },
+    {
+      "path": "/home/yuhe/clip_dinoiser/.slicetune/context/playbook.md",
+      "exists": true
+    },
+    {
+      "path": "/home/yuhe/clip_dinoiser/.slicetune/state/board.md",
+      "exists": true
+    },
+    {
+      "path": "/home/yuhe/clip_dinoiser/.slicetune/state/decision_log.md",
+      "exists": true
+    }
+  ],
+  "task_snapshot": {
+    "research_state": "verification",
+    "next_action": "judge_results",
+    "acceptance_status": "not_ready",
+    "recent_facts": [
+      "completed_seed_count=5",
+      "failure_count=0",
+      "last_completed_seed=4 mIoU=24.2700"
+    ],
+    "blockers": []
+  },
+  "runtime_snapshot": {
+    "attempt_count": 2,
+    "judge_decision": "",
+    "runtime_status": "queued"
+  },
+  "artifact_snapshot": {
+    "output_dir": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-002_same_subset_multiseed",
+    "has_task_plan": true,
+    "has_result_bundle": false,
+    "has_judge_report": false,
+    "debate_bundle_path": ".slicetune/debates/EXP-P1-002_bundle.json"
+  },
+  "repo_memory_tail": {
+    "board_md_tail": [
+      "",
+      "### kill（当前暂无永久 kill）",
+      "",
+      "- 暂无",
+      "",
+      "---",
+      "",
+      "## 4. 工程重构待办",
+      "",
+      "### 高优先级",
+      "",
+      "- 高频顶层实验脚本抽薄并下沉到包层",
+      "- 扩展 `research_harness/` 到第二条 loop",
+      "- artifact 契约统一化",
+      "- queue runner / heartbeat / checkpoint / resume",
+      "- debate protocol 落地为强制 gate",
+      "- 机器可读 debate bundle 规范",
+      "- attempt 级目录与更强的 completion sentinel 策略",
+      "- 自动 absorber / runtime index / proposer loop",
+      "- 未来再考虑更自由的 planner / generator，不在当前 phase 提前发散",
+      "- 自动 absorber / runtime index / proposer loop",
+      "",
+      "### 中优先级",
+      "",
+      "- 分析与汇总脚本收拢",
+      "- slice debugging / export 系列脚本统一接口",
+      "",
+      "### 低优先级",
+      "",
+      "- 非当前主线的旧实验脚本整理与归档"
+    ],
+    "decision_log_tail": [
+      "---",
+      "",
+      "## DEC-027",
+      "",
+      "- 决策：新增 `max_attempts` 与 `blocked_retry_limit`，作为 retry 上限保护",
+      "- 结论：`keep`",
+      "- 原因：",
+      "  - 长时间自治系统不能对失败卡无限重试",
+      "  - 到达 retry 上限后，应默认阻断并等待人类或上层 agent 明确调整",
+      "",
+      "---",
+      "",
+      "## DEC-028",
+      "",
+      "- 决策：新增 `runtime_index` 吸收层，把 cards、attempts、judge reports、run manifests 聚合成机器可读全局状态",
+      "- 结论：`keep`",
+      "- 原因：",
+      "  - daemon、后续 agent 和人类验收都需要一个稳定的全局状态视图",
+      "  - markdown `board.md` 适合人读，但不适合作为持续自动循环的唯一状态入口",
+      "",
+      "---",
+      "",
+      "## DEC-029",
+      "",
+      "- 决策：新增 phase-locked proposer 层，但默认只允许按 `proposal_policy` 生成 follow-on proposal，不允许自由发明新主线",
+      "- 结论：`keep`",
+      "- 原因：",
+      "  - 用户希望系统能在长时运行中自动决定下一步",
+      "  - 但当前阶段不能让 proposer 擅自扩张研究分支",
+      "  - 因此 proposer 只消费 `runtime_index + proposal_policy`，并优先生成 `draft_only` / `planned` 提案"
+    ]
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "generated_at_utc": "2026-04-15T03:19:59.312680+00:00",
+  "experiment_id": "EXP-P1-004",
+  "card_path": "/home/yuhe/clip_dinoiser/.slicetune/experiments/EXP-P1-004.json",
+  "loop_kind": "feature_intervention_matrix",
+  "phase": "Phase 1",
+  "status": "queued",
+  "owner": "Auto Proposer",
+  "hypothesis": "If the current head-only CLIP-DINOiser learner is too rigid, then at least one more adaptable learner variant will show stronger and more consistent response to matched real probe-axis interventions than to shuffled or matched-random controls.",
+  "budget_tier": "Tier B",
+  "depends_on": [
+    "EXP-P1-003"
+  ],
+  "memory_index": [
+    {
+      "path": "/home/yuhe/clip_dinoiser/AGENTS.md",
+      "exists": true
+    },
+    {
+      "path": "/home/yuhe/clip_dinoiser/.slicetune/MEMORY.md",
+      "exists": true
+    },
+    {
+      "path": "/home/yuhe/clip_dinoiser/.slicetune/context/program.md",
+      "exists": true
+    },
+    {
+      "path": "/home/yuhe/clip_dinoiser/.slicetune/context/playbook.md",
+      "exists": true
+    },
+    {
+      "path": "/home/yuhe/clip_dinoiser/.slicetune/state/board.md",
+      "exists": true
+    },
+    {
+      "path": "/home/yuhe/clip_dinoiser/.slicetune/state/decision_log.md",
+      "exists": true
+    }
+  ],
+  "task_snapshot": {
+    "research_state": "judgment",
+    "next_action": "continue_feature_intervention_execution",
+    "acceptance_status": "not_required",
+    "recent_facts": [
+      "completed_run_count=21",
+      "failure_count=0",
+      "learner_variant_count=3",
+      "probe_axis_count=2"
+    ],
+    "blockers": []
+  },
+  "runtime_snapshot": {
+    "attempt_count": 3,
+    "judge_decision": "",
+    "runtime_status": "queued"
+  },
+  "artifact_snapshot": {
+    "output_dir": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix",
+    "has_task_plan": true,
+    "has_result_bundle": false,
+    "has_judge_report": false,
+    "debate_bundle_path": ".slicetune/debates/EXP-P1-004_bundle.json"
+  },
+  "repo_memory_tail": {
+    "board_md_tail": [
+      "  - 当前尚未产出 `cache / manifests / runs / progress.json`",
+      "  - 高概率正在做全训练池 class-presence 预处理",
+      "",
+      "---",
+      "",
+      "## 3. 主分支状态",
+      "",
+      "### keep",
+      "",
+      "- Phase 1 noise floor / training noise 审计",
+      "- learner sensitivity ladder 审计",
+      "- learner adaptability audit 设计",
+      "- runtime preflight / queue / daemon / attempt / taskflow",
+      "- human review stop + release",
+      "- agentic planning / analysis / judgment artifact",
+      "- executable literature radar loop",
+      "",
+      "### park",
+      "",
+      "- surrogate 扩张",
+      "- candidate generation 搜索复杂化",
+      "- frontend polish",
+      "",
+      "### 当前停机原因",
+      "",
+      "- `EXP-P1-003` 已完成并 `promote`",
+      "- 当前主线已自动推进到 `EXP-P1-004`",
+      "- 系统当前没有越权停机；真正的下一阻塞是：",
+      "  - `feature_intervention_matrix` 仍缺 runtime handler / executable recipe",
+      "  - 更关键的是：当前还需要插入 learner adaptability audit，先回答“当前 learner 是否太僵”"
+    ],
+    "decision_log_tail": [
+      "",
+      "- 决策：保持 `clipdino2` worker 路径对 Python 3.9 兼容，不在训练执行链路中使用未延迟求值的 `|` 联合类型注解",
+      "- 结论：`keep`",
+      "- 原因：",
+      "  - `EXP-P1-004` 第一条真实训练在 worker 进程中失败，不是算法问题，而是 `feature_experiment_pipeline.py` 在 Python 3.9 下解析 `list[str] | None` 时直接报错",
+      "  - 这说明 research runtime 的系统 Python 与训练 worker Python 版本并不一致，训练链路必须优先保证低版本兼容",
+      "  - 修复后，worker 已能继续向前推进到真正的训练逻辑",
+      "",
+      "---",
+      "",
+      "## DEC-050",
+      "",
+      "- 决策：向 Hydra `cfg.train` 注入 `trainable_modules` 时必须通过 `open_dict` 显式打开 struct 写入",
+      "- 结论：`keep`",
+      "- 原因：",
+      "  - `EXP-P1-004` 第二次真实训练失败来自 OmegaConf/Hydra 的 struct 保护，而不是 selective-unfreeze 设计本身错误",
+      "  - 若不先修正配置注入方式，后续任何 learner adaptability 变体都无法真正进入训练",
+      "  - 修复后，`EXP-P1-004` 已进入 `L0_head_only_noise_seed00` 的真实训练阶段",
+      "",
+      "---",
+      "",
+      "## DEC-051",
+      "",
+      "- 决策：将 `EXP-P1-004` 首个 `L0_head_only_noise_seed00` 结果解释为“runtime fidelity check passed”，而不是“learner adaptability 已有科学结论”",
+      "- 结论：`keep`",
+      "- 原因：",
+      "  - 首个真实结果已落盘：`mIoU=24.29`",
+      "  - 该数值与先前固定 subset、同配置的 head-only 基线一致",
+      "  - 这首先说明新接入的 `feature_intervention_matrix + selective-unfreeze` 执行链路没有明显破坏基线可比性",
+      "  - 但当前只完成了一个 `L0` noise seed，尚不足以计算 learner-specific noise floor，更不足以比较 `L0/L1/L2` 对 probe feature axes 的响应差异"
+    ]
+  }
+}

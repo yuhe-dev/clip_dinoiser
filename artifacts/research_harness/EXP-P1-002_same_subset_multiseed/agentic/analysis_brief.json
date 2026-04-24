@@ -1,0 +1,62 @@
+{
+  "generated_by": "agentic_analyst_v1",
+  "generated_at_utc": "2026-04-24T14:00:24.883874+00:00",
+  "experiment_id": "EXP-P1-002",
+  "phase": "Phase 1",
+  "loop_kind": "same_subset_multi_seed",
+  "status": "completed",
+  "judge_decision": "promote",
+  "evidence_level": "E3",
+  "key_findings": [
+    "Multi-seed training noise stdev 0.0089 is meaningfully below the global floor reference 0.0260.",
+    "Fixed-subset training noise is now available as a reusable baseline for later Phase 1 comparisons."
+  ],
+  "result_summary": {
+    "base_candidate_id": "rand_subset_s0145_t00",
+    "metric_name": "mIoU",
+    "requested_seed_count": 5,
+    "completed_seed_count": 5,
+    "failure_count": 0,
+    "training_seed_values": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "per_seed_metrics": {
+      "0": 24.29,
+      "1": 24.29,
+      "2": 24.29,
+      "3": 24.29,
+      "4": 24.27
+    },
+    "count": 5,
+    "min": 24.27,
+    "max": 24.29,
+    "range": 0.019999999999999574,
+    "mean": 24.285999999999998,
+    "median": 24.29,
+    "stdev": 0.008944271909998969
+  },
+  "verdict": "Result is strong enough to advance the current branch.",
+  "branch_recommendation": {
+    "current_card": "EXP-P1-002",
+    "suggested_next_hypotheses": [
+      "Audit learner sensitivity under broader training regimes because composition effects may still be recoverable.",
+      "Design feature intervention experiments now that training noise is bounded below the global floor."
+    ],
+    "recommended_actions": [
+      "Proceed to feature intervention and slice-leverage audits because data-composition effects may still be separable from training noise.",
+      "Keep this summary as the training-noise baseline for future comparisons."
+    ]
+  },
+  "rubric_alignment": {
+    "has_rubric": true,
+    "primary_metric": "mIoU",
+    "promote_rule": "Promote only when success criteria are met and no major protocol contamination is detected."
+  },
+  "source_paths": {
+    "context_packet": "/home/yuhe/slicetune/clip_dinoiser/artifacts/research_harness/EXP-P1-002_same_subset_multiseed/agentic/context_snapshot.json"
+  }
+}

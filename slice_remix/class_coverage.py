@@ -1,16 +1,28 @@
 from __future__ import annotations
 
 import os
-from typing import Any
+from typing import Any, Sequence
 
 import numpy as np
 from PIL import Image
 
 
-def resolve_annotation_path(sample_id: str, annotation_root: str) -> str:
+def resolve_annotation_path(
+    sample_id: str,
+    annotation_root: str,
+    *,
+    annotation_rel: str | None = None,
+    annotation_suffix: str = "_labelTrainIds.png",
+) -> str:
+    if annotation_rel:
+        normalized_rel = str(annotation_rel).replace("\\", "/")
+        if os.path.isabs(normalized_rel):
+            return normalized_rel
+        return os.path.join(os.path.abspath(annotation_root), normalized_rel)
+
     normalized_sample = str(sample_id).replace("\\", "/")
     stem, _ext = os.path.splitext(os.path.basename(normalized_sample))
-    filename = f"{stem}_labelTrainIds.png"
+    filename = f"{stem}{annotation_suffix}"
 
     normalized_root = os.path.abspath(annotation_root)
     rel_parts = normalized_sample.split("/")
@@ -28,17 +40,38 @@ def load_class_presence_matrix(
     *,
     num_classes: int,
     ignore_label: int = 255,
+    annotation_rels: Sequence[str] | None = None,
+    annotation_suffix: str = "_labelTrainIds.png",
+    reduce_zero_label: bool = False,
+    label_id_map: dict[int, int] | None = None,
 ) -> np.ndarray:
     matrix = np.zeros((len(sample_ids), int(num_classes)), dtype=np.uint8)
     for index, sample_id in enumerate(sample_ids):
-        annotation_path = resolve_annotation_path(sample_id, annotation_root)
+        annotation_rel = None if annotation_rels is None else str(annotation_rels[index])
+        annotation_path = resolve_annotation_path(
+            sample_id,
+            annotation_root,
+            annotation_rel=annotation_rel,
+            annotation_suffix=annotation_suffix,
+        )
         mask = np.asarray(Image.open(annotation_path), dtype=np.int64)
         labels = np.unique(mask)
         for label in labels.tolist():
             if int(label) == int(ignore_label):
                 continue
-            if 0 <= int(label) < int(num_classes):
-                matrix[index, int(label)] = 1
+            mapped_label: int | None = None
+            if label_id_map is not None:
+                mapped_label = label_id_map.get(int(label))
+            elif reduce_zero_label:
+                if int(label) == 0:
+                    continue
+                mapped_label = int(label) - 1
+            else:
+                mapped_label = int(label)
+            if mapped_label is None:
+                continue
+            if 0 <= int(mapped_label) < int(num_classes):
+                matrix[index, int(mapped_label)] = 1
     return matrix
 
 

@@ -1,0 +1,8 @@
+{
+  "experiment_id": "EXP-P1-004",
+  "session_id": "session_2026-04-14T09-24-09.700921+00-00_3843949",
+  "error_kind": "RuntimeError",
+  "message": "run L0_head_only_noise_seed00 failed with exit code 1",
+  "traceback": "Traceback (most recent call last):\n  File \"/home/yuhe/clip_dinoiser/run_research_queue.py\", line 471, in _run_single_card\n    exit_code, tick_exception, tick_traceback, tick_artifacts = _run_tick_with_watchdog(\n                                                                ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/yuhe/clip_dinoiser/run_research_queue.py\", line 156, in _run_tick_with_watchdog\n    return run_research_tick_main(tick_args), None, \"\", {}\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/yuhe/clip_dinoiser/run_research_tick.py\", line 673, in main\n    return _run_feature_intervention_matrix(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/yuhe/clip_dinoiser/run_research_tick.py\", line 561, in _run_feature_intervention_matrix\n    bundle = run_feature_intervention_matrix(\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/yuhe/clip_dinoiser/research_harness/feature_intervention.py\", line 589, in run_feature_intervention_matrix\n    run = _run_single_training(\n          ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/yuhe/clip_dinoiser/research_harness/feature_intervention.py\", line 414, in _run_single_training\n    raise RuntimeError(f\"run {run_id} failed with exit code {completed.returncode}\")\nRuntimeError: run L0_head_only_noise_seed00 failed with exit code 1\n",
+  "recorded_at_utc": "2026-04-14T09:47:20.908190+00:00"
+}

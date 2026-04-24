@@ -1,0 +1,48 @@
+# Design Pack
+
+- `experiment_id`: EXP-P1-001
+- `phase`: Phase 1
+- `loop_kind`: noise_floor
+- `design_class`: executable_candidate
+- `objective`: Summarize the current labeled random-subset floor.
+
+## generated_by
+
+agentic_planner_v1
+
+## generated_at_utc
+
+2026-04-24T14:00:24.878687+00:00
+
+## mutation_scope
+
+- `changed`: ['none; analysis-only baseline consolidation']
+- `frozen`: ['training protocol', 'benchmark split', 'metric definition']
+
+## execution_recipe
+
+- load labeled random-subset rows
+- extract metric values
+- compute global floor summary
+- judge whether spread is narrow enough for downstream audits
+
+## confound_guardrails
+
+- require stable labeled result source
+- do not mix benchmark versions
+
+## expected_signal
+
+- `primary`: Produce evidence strong enough to update keep/park/kill for the current branch.
+- `secondary`: Produce structured artifacts that can be judged and debated.
+
+## runtime_requirements
+
+- `input_path`: artifacts/surrogate_random_v1/random_subsets_labeled.jsonl
+- `output_dir`: artifacts/research_harness/EXP-P1-001_noise_floor
+- `judge_policy_path`: .slicetune/judge_policies/noise_floor_v1.json
+
+## source_paths
+
+- `hypothesis_brief`: 
+- `context_packet`: /home/yuhe/slicetune/clip_dinoiser/artifacts/research_harness/EXP-P1-001_noise_floor/agentic/context_snapshot.json

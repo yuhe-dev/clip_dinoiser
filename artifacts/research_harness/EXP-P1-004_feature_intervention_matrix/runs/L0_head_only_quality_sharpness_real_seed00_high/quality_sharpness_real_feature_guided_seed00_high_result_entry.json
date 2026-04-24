@@ -1,0 +1,18 @@
+{
+  "candidate_id": "quality_sharpness_real_feature_guided_seed00_high",
+  "subset_manifest": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/manifests/quality_sharpness_real_feature_guided_seed00_high.json",
+  "result_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/runs/L0_head_only_quality_sharpness_real_seed00_high/result.json",
+  "seed": 0,
+  "trainable_modules": [
+    "obj_proj",
+    "bkg_decoder"
+  ],
+  "timing": {
+    "subset_size": 1000,
+    "started_at": "2026-04-14T12:05:17.043357+00:00",
+    "finished_at": "2026-04-14T12:15:24.288935+00:00",
+    "train_seconds": 20.035,
+    "eval_seconds": 577.345,
+    "total_seconds": 607.246
+  }
+}

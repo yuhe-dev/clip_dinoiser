@@ -1,0 +1,17 @@
+{
+  "debate_id": "",
+  "decision": "pending",
+  "round_count": 0,
+  "reviewer_count": 0,
+  "artifact_paths": {
+    "design_card": "",
+    "review_cards": [],
+    "arbiter_decision": ""
+  },
+  "updated_at_utc": "2026-04-14T09:19:38.169918+00:00",
+  "created_by": "auto_proposer",
+  "created_at_utc": "2026-04-14T09:19:08.134296+00:00",
+  "design_card_path": "",
+  "review_card_paths": [],
+  "decision_card_path": ""
+}

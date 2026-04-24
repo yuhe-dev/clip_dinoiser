@@ -1,0 +1,66 @@
+{
+  "generated_by": "agentic_analyst_v1",
+  "generated_at_utc": "2026-04-24T14:00:24.887802+00:00",
+  "experiment_id": "EXP-P1-003",
+  "phase": "Phase 1",
+  "loop_kind": "learner_sensitivity_ladder",
+  "status": "completed",
+  "judge_decision": "promote",
+  "evidence_level": "E2",
+  "key_findings": [
+    "Observed learner-regime range 3.9000 is above the meaningful sensitivity threshold 0.0134.",
+    "Best regime `fast_cached_1ep` outperformed baseline `fast_cached_1ep` by 0.0000.",
+    "Rubric contract `learner_sensitivity_ladder` alignment=True.",
+    "Context research_state=audit."
+  ],
+  "result_summary": {
+    "base_candidate_id": "rand_subset_s0145_t00",
+    "metric_name": "mIoU",
+    "requested_regime_count": 3,
+    "completed_regime_count": 3,
+    "failure_count": 0,
+    "regime_ids": [
+      "fast_cached_1ep",
+      "fast_1ep",
+      "standard_3ep"
+    ],
+    "per_regime_metrics": {
+      "fast_cached_1ep": 24.29,
+      "fast_1ep": 20.39,
+      "standard_3ep": 20.75
+    },
+    "best_regime_id": "fast_cached_1ep",
+    "best_config_name": "feature_experiment_fast_cached_slide",
+    "worst_regime_id": "fast_1ep",
+    "baseline_regime_id": "fast_cached_1ep",
+    "best_minus_baseline": 0.0,
+    "regime_range": 3.8999999999999986,
+    "count": 3,
+    "min": 20.39,
+    "max": 24.29,
+    "range": 3.8999999999999986,
+    "mean": 21.810000000000002,
+    "median": 20.75,
+    "stdev": 2.1552726045676907
+  },
+  "verdict": "Result is strong enough to advance the current branch.",
+  "branch_recommendation": {
+    "current_card": "EXP-P1-003",
+    "suggested_next_hypotheses": [
+      "Refine the next phase-specific hypothesis based on the completed evidence."
+    ],
+    "recommended_actions": [
+      "Promote the strongest learner regime as the next anchor for feature intervention experiments.",
+      "Use this ladder result to decide whether protocol sensitivity or feature choice is the main bottleneck.",
+      "Carry this result forward as a context-aware promoted artifact for the current branch."
+    ]
+  },
+  "rubric_alignment": {
+    "has_rubric": true,
+    "primary_metric": "mIoU",
+    "promote_rule": "Promote only when success criteria are met and no major protocol contamination is detected."
+  },
+  "source_paths": {
+    "context_packet": "/home/yuhe/slicetune/clip_dinoiser/artifacts/research_harness/EXP-P1-003_learner_sensitivity_ladder/agentic/context_snapshot.json"
+  }
+}

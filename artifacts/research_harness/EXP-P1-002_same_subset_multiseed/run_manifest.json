@@ -1,0 +1,27 @@
+{
+  "experiment_id": "EXP-P1-002",
+  "loop_kind": "same_subset_multi_seed",
+  "card_path": "/home/yuhe/clip_dinoiser/.slicetune/experiments/EXP-P1-002_same_subset_multiseed.json",
+  "output_dir": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-002_same_subset_multiseed",
+  "judge_policy_path": "/home/yuhe/clip_dinoiser/.slicetune/judge_policies/same_subset_multiseed_v1.json",
+  "invoked_command": "/home/yuhe/clip_dinoiser/run_research_daemon.py --scan-dir /home/yuhe/clip_dinoiser/.slicetune/experiments --controller-policy /home/yuhe/clip_dinoiser/.slicetune/runtime/controller_policy.json --human-approval /home/yuhe/clip_dinoiser/.slicetune/approvals/human_review.json --poll-interval-seconds 15.0 --proposal-policy /home/yuhe/clip_dinoiser/.slicetune/runtime/proposal_policy.json --proposal-index-path /home/yuhe/clip_dinoiser/.slicetune/state/proposal_index.json --runtime-index-path /home/yuhe/clip_dinoiser/.slicetune/state/runtime_index.json --continue-after-failure --auto-propose --auto-debate",
+  "repo_root": "/home/yuhe/clip_dinoiser",
+  "git_sha": "6c6107a4f71632e789da7e41624cb1dff4a4b39a",
+  "git_branch": "main-clean",
+  "git_is_dirty": true,
+  "python_version": "3.12.4",
+  "platform": "Linux-6.8.0-106-generic-x86_64-with-glibc2.35",
+  "hostname": "test-G7466-M6",
+  "started_at_utc": "2026-04-13T17:09:02.822451+00:00",
+  "finished_at_utc": "2026-04-13T17:09:04.138855+00:00",
+  "duration_seconds": 1.3164095699321479,
+  "metadata": {
+    "budget_tier": "Tier B",
+    "phase": "Phase 1",
+    "owner": "Learner Sensitivity Auditor",
+    "metric_name": "mIoU",
+    "worker_runtime_profile_id": "clipdino2",
+    "worker_python_bin": "/home/yuhe/.conda/envs/clipdino2/bin/python",
+    "worker_preflight_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-002_same_subset_multiseed/preflight_report.json"
+  }
+}

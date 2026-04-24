@@ -1,0 +1,77 @@
+{
+  "generated_by": "taskflow",
+  "generated_at_utc": "2026-04-24T14:00:24.872473+00:00",
+  "experiment_id": "EXP-P1-002",
+  "loop_kind": "same_subset_multi_seed",
+  "current_step": "status::completed",
+  "next_action": "review_judge_report_and_choose_next_branch",
+  "research_state": "judgment",
+  "next_state": "acceptance",
+  "acceptance_status": "not_required",
+  "state_history": [
+    {
+      "at_utc": "2026-04-24T14:00:24.872478+00:00",
+      "research_state": "judgment",
+      "card_status": "completed"
+    }
+  ],
+  "tasks": [
+    {
+      "task_id": "frame_hypothesis",
+      "title": "Frame research hypothesis",
+      "stage": "hypothesis",
+      "status": "completed",
+      "detail": "A meaningful part of the current global mIoU spread may come from training noise rather than subset composition alone."
+    },
+    {
+      "task_id": "design_protocol",
+      "title": "Design experiment or debate protocol",
+      "stage": "design",
+      "status": "completed",
+      "detail": "debate bundle ready"
+    },
+    {
+      "task_id": "audit_readiness",
+      "title": "Audit readiness before execution",
+      "stage": "audit",
+      "status": "completed",
+      "detail": "card_status=completed"
+    },
+    {
+      "task_id": "run_execution",
+      "title": "Execute experiment loop",
+      "stage": "execution",
+      "status": "completed",
+      "detail": "result bundle present"
+    },
+    {
+      "task_id": "verify_outputs",
+      "title": "Verify outputs and summarize metrics",
+      "stage": "verification",
+      "status": "completed",
+      "detail": "judge artifacts present"
+    },
+    {
+      "task_id": "judge_branch",
+      "title": "Judge branch outcome",
+      "stage": "judgment",
+      "status": "running",
+      "detail": "next_state=acceptance"
+    },
+    {
+      "task_id": "human_acceptance",
+      "title": "Human acceptance gate",
+      "stage": "acceptance",
+      "status": "pending",
+      "detail": "not yet at acceptance gate"
+    }
+  ],
+  "recent_facts": [
+    "card_status=completed",
+    "debate_bundle_exists=True",
+    "result_bundle_exists=True",
+    "judge_report_exists=True"
+  ],
+  "blockers": [],
+  "updated_at_utc": "2026-04-24T14:00:24.872498+00:00"
+}

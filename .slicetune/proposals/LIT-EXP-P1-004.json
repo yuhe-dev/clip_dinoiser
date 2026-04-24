@@ -1,0 +1,51 @@
+{
+  "proposal_id": "LIT-EXP-P1-004",
+  "proposal_class": "literature_radar",
+  "status": "materialized",
+  "phase": "Phase 1",
+  "title": "Trigger literature radar for EXP-P1-004",
+  "rationale": "Automatic literature radar proposal after repeated failures or non-promotable outcome: status=blocked_debate_gate; research_state=design",
+  "source_experiment_ids": [
+    "EXP-P1-004"
+  ],
+  "target_experiment_id": "EXP-LIT-EXP-P1-004",
+  "target_card_path": "/home/yuhe/clip_dinoiser/.slicetune/experiments/EXP-LIT-EXP-P1-004.json",
+  "auto_materialized": true,
+  "created_at_utc": "2026-04-14T09:19:08.133999+00:00",
+  "metadata": {
+    "trigger_reasons": [
+      "status=blocked_debate_gate"
+    ],
+    "source_status": "blocked_debate_gate",
+    "source_decision": "",
+    "generated_card": {
+      "experiment_id": "EXP-LIT-EXP-P1-004",
+      "name": "Trigger literature radar for EXP-P1-004",
+      "phase": "Phase 1",
+      "owner": "Literature Radar",
+      "loop_kind": "literature_radar",
+      "status": "planned",
+      "budget_tier": "Tier A",
+      "output_dir": "artifacts/research_harness/EXP-LIT-EXP-P1-004_literature_radar",
+      "judge_policy_path": "",
+      "requires_debate": true,
+      "debate_bundle_path": ".slicetune/debates/EXP-LIT-EXP-P1-004_bundle.json",
+      "human_review_required": true,
+      "phase_completion_candidate": false,
+      "priority": 20,
+      "depends_on": [
+        "EXP-P1-004"
+      ],
+      "metadata": {
+        "design_only": false,
+        "proposal_origin": "dynamic_literature_radar",
+        "source_experiment_id": "EXP-P1-004",
+        "trigger_reasons": [
+          "status=blocked_debate_gate"
+        ],
+        "search_backend": "openalex",
+        "max_results_per_query": 8
+      }
+    }
+  }
+}

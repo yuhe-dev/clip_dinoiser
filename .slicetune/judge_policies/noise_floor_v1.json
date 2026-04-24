@@ -1,0 +1,5 @@
+{
+  "minimum_labeled_runs": 100,
+  "narrow_std_threshold": 0.05,
+  "narrow_range_threshold": 0.2
+}

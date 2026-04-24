@@ -45,35 +45,35 @@ class MaskClip(nn.Module):
         self.backbone.visual.transformer.resblocks[-2].register_forward_hook(hook_fn_forward)
         self._positional_embd = nn.Parameter(self.backbone.visual.positional_embedding.data.clone())
 
-    @torch.no_grad()
-    def extract_feat(self, inputs: Tensor) -> Tuple[Tensor]:
+    def extract_feat(self, inputs: Tensor, *, track_grad: bool = False) -> Tuple[Tensor]:
         """Extract features from images."""
-        pos_embed = self.backbone.visual.positional_embedding
+        with torch.set_grad_enabled(bool(track_grad)):
+            pos_embed = self.backbone.visual.positional_embedding
 
-        B, C, H, W = inputs.shape
-        hw_shape = (H // self.patch_size, W // self.patch_size)
-        x_len, pos_len = hw_shape[0]*hw_shape[1], pos_embed.shape[0]
+            B, C, H, W = inputs.shape
+            hw_shape = (H // self.patch_size, W // self.patch_size)
+            x_len, pos_len = hw_shape[0]*hw_shape[1], pos_embed.shape[0]
 
-        if x_len != pos_len:
-            if pos_len == (self.img_size[0] // self.patch_size) * (self.img_size[1] // self.patch_size) + 1:
-                pos_h = self.img_size[0] // self.patch_size
-                pos_w = self.img_size[1] // self.patch_size
-            else:
-                raise ValueError(
-                    '{}, {}'.format(x_len, pos_len))
+            if x_len != pos_len:
+                if pos_len == (self.img_size[0] // self.patch_size) * (self.img_size[1] // self.patch_size) + 1:
+                    pos_h = self.img_size[0] // self.patch_size
+                    pos_w = self.img_size[1] // self.patch_size
+                else:
+                    raise ValueError(
+                        '{}, {}'.format(x_len, pos_len))
 
-            self.backbone.visual.positional_embedding.data = self.resize_pos_embed(
-                self._positional_embd[None], hw_shape,  (pos_h, pos_w), 'bicubic')[0]
+                self.backbone.visual.positional_embedding.data = self.resize_pos_embed(
+                    self._positional_embd[None], hw_shape,  (pos_h, pos_w), 'bicubic')[0]
 
-        _ = self.backbone(inputs)
-        v = self.hook_features["v"]
-        v = self.extract_v(v, self.backbone.visual.transformer.resblocks[-1]).permute(1, 0, 2)
-        v = self.backbone.visual.ln_post(v)
-        v = v[:, 1:]
-        v = v.reshape(B, hw_shape[0], hw_shape[1], -1).permute(0, 3, 1, 2).contiguous()
+            _ = self.backbone(inputs)
+            v = self.hook_features["v"]
+            v = self.extract_v(v, self.backbone.visual.transformer.resblocks[-1]).permute(1, 0, 2)
+            v = self.backbone.visual.ln_post(v)
+            v = v[:, 1:]
+            v = v.reshape(B, hw_shape[0], hw_shape[1], -1).permute(0, 3, 1, 2).contiguous()
 
-        self.backbone.visual.positional_embedding.data = self._positional_embd
-        return v
+            self.backbone.visual.positional_embedding.data = self._positional_embd
+            return v
 
     def extract_v(self, x, block):
         y = block.ln_1(x)
@@ -82,8 +82,8 @@ class MaskClip(nn.Module):
         y = y.view(B, N, 3, C // 3).permute(2, 0, 1, 3).reshape(3 * B, N, C // 3)
         y = F.linear(y, block.attn.out_proj.weight, block.attn.out_proj.bias)
         q, k, v = y.tensor_split(3, dim=0)
-        v += x
-        v += block.mlp(block.ln_2(v))
+        v = v + x
+        v = v + block.mlp(block.ln_2(v))
         return v
 
 
@@ -117,11 +117,11 @@ class MaskClip(nn.Module):
         pos_embed = torch.cat((cls_token_weight, pos_embed_weight), dim=1)
         return pos_embed
 
-    def forward(self, inputs: Tensor, return_feat=False) -> Tensor:
+    def forward(self, inputs: Tensor, return_feat=False, track_grad: bool = False) -> Tensor:
         """Encode images with backbone and decode into a semantic segmentation
         map of the same size as input."""
         inputs = self.clip_T(inputs)
-        x = self.extract_feat(inputs)
+        x = self.extract_feat(inputs, track_grad=track_grad)
         if return_feat:
             seg_logits, feats = self.decode_head(x, return_feat)
             return seg_logits, feats

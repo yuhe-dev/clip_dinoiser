@@ -1,0 +1,23 @@
+{
+  "schema_path": "/home/yuhe/clip_dinoiser/docs/feature_schema/unified_processed_feature_schema.json",
+  "axes": {
+    "quality_sharpness": {
+      "mean": -9.389876964860377e-08,
+      "std": 1.8382925987243652,
+      "min": -9.076729774475098,
+      "max": 3.3686447143554688
+    },
+    "difficulty_small_object": {
+      "mean": 2.159118572819807e-08,
+      "std": 0.9999998807907104,
+      "min": -0.9410094022750854,
+      "max": 2.4745686054229736
+    },
+    "coverage_density": {
+      "mean": -2.373695338064863e-07,
+      "std": 0.9999999403953552,
+      "min": -1.6392080783843994,
+      "max": 6.263869762420654
+    }
+  }
+}

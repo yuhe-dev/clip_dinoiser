@@ -1,0 +1,21 @@
+{
+  "status": "skipped_non_queueable_status",
+  "experiment_id": "EXP-P1-001",
+  "card_path": "/home/yuhe/clip_dinoiser/.slicetune/experiments/EXP-P1-001_noise_floor.json",
+  "reason": "card status 'completed' is not queueable",
+  "controller_policy_path": "/home/yuhe/clip_dinoiser/.slicetune/runtime/controller_policy.json",
+  "memory_paths": [
+    "/home/yuhe/clip_dinoiser/AGENTS.md",
+    "/home/yuhe/clip_dinoiser/.slicetune/MEMORY.md",
+    "/home/yuhe/clip_dinoiser/.slicetune/context/program.md",
+    "/home/yuhe/clip_dinoiser/.slicetune/context/playbook.md",
+    "/home/yuhe/clip_dinoiser/.slicetune/state/board.md",
+    "/home/yuhe/clip_dinoiser/.slicetune/state/decision_log.md"
+  ],
+  "session_id": "session_2026-04-13T05-06-01.201505+00-00_2948227",
+  "current_step": "preflight",
+  "last_heartbeat_at_utc": "",
+  "lease_expires_at_utc": "",
+  "recovery_hint": "manually reset the card to queued if you intend to rerun it",
+  "updated_at_utc": "2026-04-13T05:06:01.201911+00:00"
+}

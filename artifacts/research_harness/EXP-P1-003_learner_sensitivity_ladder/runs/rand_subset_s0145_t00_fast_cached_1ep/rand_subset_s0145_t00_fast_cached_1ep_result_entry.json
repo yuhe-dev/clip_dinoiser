@@ -1,0 +1,14 @@
+{
+  "candidate_id": "rand_subset_s0145_t00_fast_cached_1ep",
+  "subset_manifest": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-003_learner_sensitivity_ladder/manifests/rand_subset_s0145_t00_fast_cached_1ep.json",
+  "result_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-003_learner_sensitivity_ladder/runs/rand_subset_s0145_t00_fast_cached_1ep/result.json",
+  "seed": 0,
+  "timing": {
+    "subset_size": 1000,
+    "started_at": "2026-04-13T18:17:23.654765+00:00",
+    "finished_at": "2026-04-13T18:27:37.213121+00:00",
+    "train_seconds": 19.465,
+    "eval_seconds": 585.162,
+    "total_seconds": 613.558
+  }
+}

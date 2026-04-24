@@ -1,0 +1,54 @@
+_base_: "default.yml"
+defaults:
+  - _self_
+
+seed: 0
+model_name: CLIP_DINOiser_fast_intermediate_grad
+model:
+  type: CLIP_DINOiser
+  clip_backbone: maskclip
+  vit_arch: vit_base
+  vit_patch_size: 16
+  enc_type_feats: "v"
+  gamma: 0.2
+  in_dim: 256
+  delta: 0.99
+  feats_idx: -3
+  enable_clip_grad_for_training: true
+  detach_intermediate_train_feats: false
+
+train:
+  batch_size: 24
+  corr_lr: 0.00005
+  found_lr: 0.01
+  backbone_lr: 0.00001
+  num_workers: 8
+  epochs: 1
+  milestones:
+    - 2000
+  step_lr_gamma: 0.1
+  data: "./data/coco_stuff164k"
+  loss: CE
+  ds_size: 1000
+  im_size: 320
+output: "reproduce_fast_cached_slide_intermediate_grad"
+
+evaluate:
+  eval_only: true
+  validation_mode: full
+  proxy_subset_size: 300
+  proxy_seed: ${seed}
+  proxy_inference_mode: whole
+  full_eval_top_k: 3
+  workers_per_gpu: 4
+  task:
+    - coco_stuff
+
+  voc: segmentation/configs/_base_/datasets/pascal_voc12.py
+  voc20: segmentation/configs/_base_/datasets/pascal_voc12_20.py
+  context: segmentation/configs/_base_/datasets/pascal_context.py
+  context59: segmentation/configs/_base_/datasets/pascal_context59.py
+  coco_stuff: segmentation/configs/_base_/datasets/stuff_cached_slide.py
+  coco_object: segmentation/configs/_base_/datasets/coco.py
+  cityscapes: segmentation/configs/_base_/datasets/cityscapes.py
+  ade20k: segmentation/configs/_base_/datasets/ade20k.py

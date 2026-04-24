@@ -1,0 +1,29 @@
+{
+  "generated_by": "agentic_planner_v1",
+  "generated_at_utc": "2026-04-24T14:00:24.890651+00:00",
+  "experiment_id": "EXP-P1-004",
+  "phase": "Phase 1",
+  "loop_kind": "feature_intervention_matrix",
+  "status": "completed",
+  "problem_statement": "Under Phase 1, determine whether the current head-only learner is too rigid to convert feature-defined data composition differences into stable training response, and whether more adaptable learner variants reveal stronger response to real probe-axis interventions than to shuffled or matched-random controls.",
+  "hypothesis": "If the current head-only CLIP-DINOiser learner is too rigid, then at least one more adaptable learner variant will show stronger and more consistent response to matched real probe-axis interventions than to shuffled or matched-random controls.",
+  "trigger_context": [
+    "completed_run_count=21",
+    "failure_count=0",
+    "learner_variant_count=3",
+    "probe_axis_count=2"
+  ],
+  "success_signal": "At least one learner variant exceeds its own noise floor on at least one real probe axis, and in confirm stage the real intervention achieves response_to_noise_ratio >= 2.0 while beating shuffled and matched-random controls.",
+  "failure_signal": "All learner variants remain below their own noise floors, or real features fail to outperform shuffled/random controls, or off-target drift remains too large to support causal interpretation.",
+  "open_questions": [
+    "Which learner adaptability level first shows composition response above noise floor?",
+    "Which probe axis shows earlier stable signal: quality_sharpness or difficulty_small_object?",
+    "Do real features outperform shuffled and matched-random controls?",
+    "Is the bottleneck learner rigidity, feature invalidity, or both?"
+  ],
+  "source_paths": {
+    "context_packet": "/home/yuhe/slicetune/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/agentic/context_snapshot.json",
+    "card_path": "/home/yuhe/slicetune/clip_dinoiser/.slicetune/experiments/EXP-P1-004.json",
+    "design_spec_path": ".slicetune/experiments/EXP-P1-004_design_spec.md"
+  }
+}

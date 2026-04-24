@@ -1,0 +1,38 @@
+{
+  "experiment_id": "EXP-LIT-EXP-P1-004",
+  "name": "Trigger literature radar for EXP-P1-004",
+  "phase": "Phase 1",
+  "owner": "Literature Radar",
+  "loop_kind": "literature_radar",
+  "status": "planned",
+  "hypothesis": "",
+  "budget_tier": "Tier A",
+  "input_path": "",
+  "metric_name": "mIoU",
+  "output_dir": "artifacts/research_harness/EXP-LIT-EXP-P1-004_literature_radar",
+  "judge_policy_path": "",
+  "requires_debate": true,
+  "debate_bundle_path": ".slicetune/debates/EXP-LIT-EXP-P1-004_bundle.json",
+  "human_review_required": true,
+  "phase_completion_candidate": false,
+  "priority": 20,
+  "depends_on": [
+    "EXP-P1-004"
+  ],
+  "next_eligible_at_utc": "",
+  "attempt_count": 0,
+  "max_attempts": 0,
+  "last_attempt_id": "",
+  "status_history": [],
+  "metadata": {
+    "design_only": false,
+    "proposal_origin": "dynamic_literature_radar",
+    "source_experiment_id": "EXP-P1-004",
+    "trigger_reasons": [
+      "status=blocked_debate_gate"
+    ],
+    "search_backend": "openalex",
+    "max_results_per_query": 8
+  },
+  "judge_config": {}
+}

@@ -1,0 +1,124 @@
+{
+  "experiment_id": "EXP-P1-002",
+  "name": "Measure training noise on one fixed subset with multiple training seeds",
+  "phase": "Phase 1",
+  "owner": "Learner Sensitivity Auditor",
+  "loop_kind": "same_subset_multi_seed",
+  "status": "stale_requeued",
+  "hypothesis": "A meaningful part of the current global mIoU spread may come from training noise rather than subset composition alone.",
+  "budget_tier": "Tier B",
+  "input_path": "artifacts/surrogate_random_v1/manifests/rand_subset_s0145_t00.json",
+  "metric_name": "mIoU",
+  "output_dir": "artifacts/research_harness/EXP-P1-002_same_subset_multiseed",
+  "judge_policy_path": ".slicetune/judge_policies/same_subset_multiseed_v1.json",
+  "requires_debate": true,
+  "debate_bundle_path": ".slicetune/debates/EXP-P1-002_bundle.json",
+  "human_review_required": true,
+  "phase_completion_candidate": false,
+  "priority": 100,
+  "depends_on": [],
+  "next_eligible_at_utc": "",
+  "attempt_count": 2,
+  "max_attempts": 0,
+  "last_attempt_id": "EXP-P1-002_2026-04-13T16-54-19.117706+00-00_3314476",
+  "status_history": [
+    {
+      "from": "queued",
+      "to": "claimed",
+      "reason": "claimed new lease",
+      "session_id": "session_2026-04-13T05-06-10.689145+00-00_2948323",
+      "at_utc": "2026-04-13T05:06:10.689718+00:00"
+    },
+    {
+      "from": "claimed",
+      "to": "running",
+      "reason": "controller gates passed",
+      "session_id": "session_2026-04-13T05-06-10.689145+00-00_2948323",
+      "at_utc": "2026-04-13T05:06:10.689971+00:00"
+    },
+    {
+      "from": "running",
+      "to": "queued",
+      "reason": "manual recovery after base-env dependency failure; rerun under runtime-profile-based controller",
+      "session_id": "controller-recovery-2026-04-13",
+      "at_utc": "2026-04-13T14:05:00+08:00"
+    },
+    {
+      "from": "queued",
+      "to": "claimed",
+      "reason": "claimed new lease",
+      "session_id": "session_2026-04-13T05-18-32.721915+00-00_2958884",
+      "at_utc": "2026-04-13T05:18:33.970158+00:00"
+    },
+    {
+      "from": "claimed",
+      "to": "running",
+      "reason": "controller gates passed",
+      "session_id": "session_2026-04-13T05-18-32.721915+00-00_2958884",
+      "at_utc": "2026-04-13T05:18:33.970483+00:00"
+    },
+    {
+      "from": "running",
+      "to": "stale_requeued",
+      "reason": "controller reclaimed stale card lease",
+      "session_id": "controller-reclaim",
+      "at_utc": "2026-04-13T16:47:54.816733+00:00"
+    },
+    {
+      "from": "stale_requeued",
+      "to": "claimed",
+      "reason": "claimed new lease",
+      "session_id": "session_2026-04-13T16-47-54.822841+00-00_3309656",
+      "at_utc": "2026-04-13T16:47:56.168743+00:00"
+    },
+    {
+      "from": "claimed",
+      "to": "running",
+      "reason": "controller gates passed",
+      "session_id": "session_2026-04-13T16-47-54.822841+00-00_3309656",
+      "at_utc": "2026-04-13T16:47:56.168965+00:00"
+    },
+    {
+      "from": "running",
+      "to": "stale_requeued",
+      "reason": "controller reclaimed stale card lease",
+      "session_id": "controller-reclaim",
+      "at_utc": "2026-04-13T16:54:17.919398+00:00"
+    }
+  ],
+  "metadata": {
+    "config_name": "feature_experiment_fast_cached_slide",
+    "training_seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "python_bin": "/home/yuhe/.conda/envs/clipdino2/bin/python",
+    "runtime_profile_candidates": [
+      "clipdino2",
+      "clipdino",
+      "current_python"
+    ],
+    "worker_script": "run_remix_training_experiment.py",
+    "gpu_id": "0",
+    "master_port_base": 29720,
+    "result_name": "result.json",
+    "continue_on_failure": false,
+    "worker_requirements": {
+      "required_modules": [
+        "torch",
+        "torchvision",
+        "mmcv",
+        "hydra",
+        "omegaconf"
+      ],
+      "require_cuda": true,
+      "worker_script": "run_remix_training_experiment.py",
+      "config_name": "feature_experiment_fast_cached_slide",
+      "gpu_id": "0"
+    }
+  },
+  "judge_config": {}
+}

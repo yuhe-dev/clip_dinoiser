@@ -1,0 +1,108 @@
+{
+  "rules": [
+    {
+      "proposal_id": "PRO-P1-003",
+      "proposal_class": "draft_only",
+      "target_experiment_id": "EXP-P1-003",
+      "name": "Design learner sensitivity ladder after fixed-subset training-noise audit",
+      "phase": "Phase 1",
+      "owner": "Auto Proposer",
+      "loop_kind": "learner_sensitivity_ladder",
+      "target_status": "planned",
+      "priority": 30,
+      "budget_tier": "Tier B",
+      "input_path": "artifacts/surrogate_random_v1/manifests/rand_subset_s0145_t00.json",
+      "judge_policy_path": ".slicetune/judge_policies/learner_sensitivity_ladder_v1.json",
+      "requires_debate": true,
+      "depends_on": [
+        "EXP-P1-002"
+      ],
+      "trigger_on_completed": [
+        "EXP-P1-002"
+      ],
+      "required_decisions": [
+        "promote"
+      ],
+      "hypothesis": "If fixed-subset multi-seed noise remains comparable to the global floor, the next priority is to audit whether the learner itself is insufficiently sensitive to composition changes.",
+      "rationale": "Phase 1 requires learner sensitivity audit before widening downstream search or feature intervention branches.",
+      "metadata": {
+        "proposal_origin": "phase1_locked_follow_on",
+        "source_runtime_index_dependency": "EXP-P1-002",
+        "python_bin": "/home/yuhe/.conda/envs/clipdino2/bin/python",
+        "runtime_profile_candidates": [
+          "clipdino2",
+          "clipdino",
+          "current_python"
+        ],
+        "worker_script": "run_remix_training_experiment.py",
+        "gpu_id": "0",
+        "master_port_base": 29740,
+        "result_name": "result.json",
+        "continue_on_failure": false,
+        "regimes": [
+          {
+            "regime_id": "fast_cached_1ep",
+            "config_name": "feature_experiment_fast_cached_slide",
+            "training_seed": 0
+          },
+          {
+            "regime_id": "fast_1ep",
+            "config_name": "feature_experiment_fast",
+            "training_seed": 0
+          },
+          {
+            "regime_id": "standard_3ep",
+            "config_name": "feature_experiment",
+            "training_seed": 0
+          }
+        ]
+      }
+    },
+    {
+      "proposal_id": "PRO-P1-004",
+      "proposal_class": "draft_only",
+      "target_experiment_id": "EXP-P1-004",
+      "name": "Design feature intervention matrix after learner sensitivity ladder",
+      "phase": "Phase 1",
+      "owner": "Auto Proposer",
+      "loop_kind": "feature_intervention_matrix",
+      "target_status": "planned",
+      "priority": 40,
+      "budget_tier": "Tier B",
+      "requires_debate": true,
+      "depends_on": [
+        "EXP-P1-003"
+      ],
+      "trigger_on_completed": [
+        "EXP-P1-003"
+      ],
+      "required_decisions": [
+        "promote"
+      ],
+      "hypothesis": "Once learner sensitivity is better characterized, matched feature interventions can test whether quality, difficulty, or coverage dimensions have separable response signal.",
+      "rationale": "Phase 1 should only widen into feature interventions after the learner sensitivity branch has been explicitly audited.",
+      "metadata": {
+        "proposal_origin": "phase1_locked_follow_on",
+        "source_runtime_index_dependency": "EXP-P1-003"
+      }
+    }
+  ],
+  "dynamic_rules": {
+    "literature_radar": {
+      "enabled": true,
+      "proposal_class": "literature_radar",
+      "phase": "Phase 1",
+      "trigger_decisions": [
+        "reject",
+        "kill"
+      ],
+      "trigger_status_prefixes": [
+        "blocked_"
+      ],
+      "min_attempt_count": 2,
+      "retry_exhaustion_statuses": [
+        "blocked_retry_limit"
+      ]
+    }
+  }
+}

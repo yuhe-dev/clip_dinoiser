@@ -1,0 +1,21 @@
+{
+  "status": "blocked_preflight",
+  "experiment_id": "EXP-P1-004",
+  "card_path": "/home/yuhe/clip_dinoiser/.slicetune/experiments/EXP-P1-004.json",
+  "reason": "loop_kind 'feature_intervention_matrix' does not have a runtime handler yet",
+  "controller_policy_path": "/home/yuhe/clip_dinoiser/.slicetune/runtime/controller_policy.json",
+  "memory_paths": [
+    "/home/yuhe/clip_dinoiser/AGENTS.md",
+    "/home/yuhe/clip_dinoiser/.slicetune/MEMORY.md",
+    "/home/yuhe/clip_dinoiser/.slicetune/context/program.md",
+    "/home/yuhe/clip_dinoiser/.slicetune/context/playbook.md",
+    "/home/yuhe/clip_dinoiser/.slicetune/state/board.md",
+    "/home/yuhe/clip_dinoiser/.slicetune/state/decision_log.md"
+  ],
+  "session_id": "session_2026-04-14T09-20-38.285834+00-00_3376541",
+  "current_step": "execution_readiness",
+  "last_heartbeat_at_utc": "",
+  "lease_expires_at_utc": "",
+  "recovery_hint": "implement an execution handler or mark a different executable loop before requeueing",
+  "updated_at_utc": "2026-04-14T09:20:38.287390+00:00"
+}

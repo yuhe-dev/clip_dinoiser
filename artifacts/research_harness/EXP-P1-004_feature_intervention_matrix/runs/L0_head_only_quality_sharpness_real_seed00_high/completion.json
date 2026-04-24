@@ -1,0 +1,17 @@
+{
+  "experiment_id": "EXP-P1-004",
+  "run_id": "L0_head_only_quality_sharpness_real_seed00_high",
+  "run_role": "intervention_pair",
+  "config_name": "feature_experiment_fast_cached_slide",
+  "training_seed": 0,
+  "subset_manifest_path": "/home/yuhe/clip_dinoiser/artifacts/research_harness/EXP-P1-004_feature_intervention_matrix/manifests/quality_sharpness_real_feature_guided_seed00_high.json",
+  "trainable_modules": [
+    "obj_proj",
+    "bkg_decoder"
+  ],
+  "metric_name": "mIoU",
+  "metric_value": 23.73,
+  "python_bin": "/home/yuhe/.conda/envs/clipdino2/bin/python3.9",
+  "runtime_profile_id": "clipdino2",
+  "completed_at_utc": "2026-04-14T12:15:30.639796+00:00"
+}

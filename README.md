@@ -97,7 +97,7 @@ To run the evaluation, download and set up PASCAL VOC, PASCAL Context, COCO-Stuf
 COCO-Object dataset uses only object classes from COCO-Stuff164k dataset by collecting instance segmentation annotations. Run the following command to convert instance segmentation annotations to semantic segmentation annotations:
 
 ```
-python tools/convert_coco.py data/coco_stuff164k/ -o data/coco_stuff164k/
+python tools/convert_coco_object.py data/coco_stuff164k/ -o data/coco_stuff164k/
 ```
 ### Running evaluation
 
