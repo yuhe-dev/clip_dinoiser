@@ -6,8 +6,6 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 
-from clip_dinoiser.tools.sample_voc20_subset import build_split_records
-
 from .contracts import VocTrainAugRecord
 
 
@@ -41,20 +39,28 @@ DEFAULT_VOC_ROOT = _existing_root(
 def build_voc_train_aug_records(data_root: str | Path) -> list[VocTrainAugRecord]:
     root = Path(data_root).resolve()
     split_path = root / "ImageSets" / "Segmentation" / "train_aug.txt"
-    records = build_split_records(
-        root,
-        split_path,
-        annotation_dir="SegmentationClassAug",
-        annotation_suffix=".png",
-    )
-    return [
-        VocTrainAugRecord(
-            stem=str(record["stem"]),
-            image_rel=str(record["image_rel"]),
-            annotation_rel=str(record["annotation_rel"]),
+    if not split_path.is_file():
+        raise FileNotFoundError(f"Split file not found: {split_path}")
+
+    records: list[VocTrainAugRecord] = []
+    for line in split_path.read_text(encoding="utf-8").splitlines():
+        stem = line.strip()
+        if not stem:
+            continue
+        image_path = root / "JPEGImages" / f"{stem}.jpg"
+        annotation_path = root / "SegmentationClassAug" / f"{stem}.png"
+        if not image_path.is_file():
+            raise FileNotFoundError(f"Image not found for split entry '{stem}': {image_path}")
+        if not annotation_path.is_file():
+            raise FileNotFoundError(f"Annotation not found for split entry '{stem}': {annotation_path}")
+        records.append(
+            VocTrainAugRecord(
+                stem=stem,
+                image_rel=image_path.relative_to(root).as_posix(),
+                annotation_rel=annotation_path.relative_to(root).as_posix(),
+            )
         )
-        for record in records
-    ]
+    return records
 
 
 def load_mask_array(path: str | Path) -> np.ndarray:

@@ -1,8 +1,10 @@
 from __future__ import annotations
 
+import hashlib
 from typing import Iterable
 
 import numpy as np
+from PIL import Image
 
 from clip_dinoiser.feature_utils.data_feature.implementations.difficulty import (
     SmallObjectRatioCOCOStuff,
@@ -31,6 +33,22 @@ DEFAULT_AXIS_DEFINITIONS: dict[str, VocFeatureAxisDefinition] = {
         description="Rarity-weighted foreground class exposure per image.",
         family="coverage",
         enabled_by_default=True,
+    ),
+    "rare_class_exposure_clipped": VocFeatureAxisDefinition(
+        key="rare_class_exposure_clipped",
+        description=(
+            "Foreground class exposure using log inverse class-frequency weights, "
+            "percentile clipping, and positive-mean normalization."
+        ),
+        family="coverage",
+    ),
+    "crop_survival_score": VocFeatureAxisDefinition(
+        key="crop_survival_score",
+        description=(
+            "Monte Carlo estimate of foreground-mask survival under the supervised "
+            "probe resize ratio range and 512 crop."
+        ),
+        family="difficulty",
     ),
     "foreground_class_count": VocFeatureAxisDefinition(
         key="foreground_class_count",
@@ -100,11 +118,27 @@ def _normalize_positive_mean(values: np.ndarray) -> np.ndarray:
     return (array / scale).astype(np.float32)
 
 
+def _clipped_log_inverse_class_weights(
+    class_presence_rate: np.ndarray,
+    *,
+    clip_percentile: float,
+) -> np.ndarray:
+    clipped_percentile = float(np.clip(float(clip_percentile), 0.0, 100.0))
+    safe_rate = np.clip(np.asarray(class_presence_rate, dtype=np.float32), 1e-6, 1.0)
+    log_inverse = np.log(1.0 / safe_rate).astype(np.float32)
+    positive = log_inverse[log_inverse > 0]
+    if positive.size > 0:
+        ceiling = float(np.percentile(positive, clipped_percentile))
+        log_inverse = np.minimum(log_inverse, ceiling).astype(np.float32)
+    return _normalize_positive_mean(log_inverse)
+
+
 def _compute_class_presence_bundle(
     records: list[VocTrainAugRecord],
     *,
     data_root: str,
-) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    rare_class_clip_percentile: float,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     matrix = load_class_presence_matrix(
         sample_ids=[record.image_rel for record in records],
         annotation_root=str(data_root),
@@ -116,7 +150,16 @@ def _compute_class_presence_bundle(
     class_presence_rate = matrix.mean(axis=0).astype(np.float32)
     raw_weights = 1.0 / np.clip(class_presence_rate, 1e-6, None)
     rarity_weights = _normalize_positive_mean(raw_weights)
-    return matrix, class_presence_rate, rarity_weights
+    clipped_rarity_weights = _clipped_log_inverse_class_weights(
+        class_presence_rate,
+        clip_percentile=float(rare_class_clip_percentile),
+    )
+    return matrix, class_presence_rate, rarity_weights, clipped_rarity_weights
+
+
+def _stable_uint32(value: str) -> int:
+    digest = hashlib.sha256(value.encode("utf-8")).digest()
+    return int.from_bytes(digest[:4], byteorder="little", signed=False)
 
 
 def _compute_small_object_scores(
@@ -143,6 +186,84 @@ def _compute_small_object_scores(
             )
         )
     return scores
+
+
+def _resize_mask_keep_ratio(mask: np.ndarray, *, target_size: int, ratio: float) -> np.ndarray:
+    height, width = mask.shape[:2]
+    if height <= 0 or width <= 0:
+        return np.asarray(mask, dtype=np.uint8)
+    scaled_target = max(1.0, float(target_size) * float(ratio))
+    scale = min(scaled_target / float(height), scaled_target / float(width))
+    resized_height = max(1, int(round(float(height) * scale)))
+    resized_width = max(1, int(round(float(width) * scale)))
+    if resized_height == height and resized_width == width:
+        return np.asarray(mask, dtype=np.uint8)
+    if hasattr(cv2, "resize"):
+        return cv2.resize(
+            np.asarray(mask, dtype=np.uint8),
+            (int(resized_width), int(resized_height)),
+            interpolation=cv2.INTER_NEAREST,
+        )
+    pil_mask = Image.fromarray(np.asarray(mask, dtype=np.uint8))
+    resized = pil_mask.resize((int(resized_width), int(resized_height)), resample=Image.NEAREST)
+    return np.asarray(resized, dtype=np.uint8)
+
+
+def _random_crop_mask(
+    mask: np.ndarray,
+    *,
+    crop_size: int,
+    rng: np.random.Generator,
+) -> np.ndarray:
+    height, width = mask.shape[:2]
+    top_margin = max(int(height) - int(crop_size), 0)
+    left_margin = max(int(width) - int(crop_size), 0)
+    top = int(rng.integers(0, top_margin + 1)) if top_margin > 0 else 0
+    left = int(rng.integers(0, left_margin + 1)) if left_margin > 0 else 0
+    return mask[top : min(top + int(crop_size), height), left : min(left + int(crop_size), width)]
+
+
+def _foreground_pixel_count(mask: np.ndarray) -> int:
+    array = np.asarray(mask, dtype=np.int32)
+    return int(((array > 0) & (array != 255)).sum())
+
+
+def _compute_crop_survival_scores(
+    records: list[VocTrainAugRecord],
+    *,
+    data_root: str,
+    crop_size: int,
+    resize_ratio_min: float,
+    resize_ratio_max: float,
+    simulations: int,
+    seed: int,
+) -> np.ndarray:
+    resolved_simulations = max(1, int(simulations))
+    resolved_crop_size = max(1, int(crop_size))
+    ratio_min = float(min(resize_ratio_min, resize_ratio_max))
+    ratio_max = float(max(resize_ratio_min, resize_ratio_max))
+    scores = np.zeros(len(records), dtype=np.float32)
+
+    for index, record in enumerate(records):
+        mask = load_mask_array(record.annotation_path(data_root))
+        original_foreground = _foreground_pixel_count(mask)
+        if original_foreground <= 0:
+            scores[index] = 0.0
+            continue
+
+        rng = np.random.default_rng(int(seed) + _stable_uint32(record.stem))
+        trial_scores = np.zeros(resolved_simulations, dtype=np.float32)
+        for trial_index in range(resolved_simulations):
+            ratio = float(rng.uniform(ratio_min, ratio_max))
+            resized = _resize_mask_keep_ratio(mask, target_size=resolved_crop_size, ratio=ratio)
+            resized_foreground = _foreground_pixel_count(resized)
+            if resized_foreground <= 0:
+                trial_scores[trial_index] = 0.0
+                continue
+            cropped = _random_crop_mask(resized, crop_size=resolved_crop_size, rng=rng)
+            trial_scores[trial_index] = float(_foreground_pixel_count(cropped) / float(resized_foreground))
+        scores[index] = float(np.mean(trial_scores))
+    return scores.astype(np.float32)
 
 
 def _foreground_labels(mask: np.ndarray) -> np.ndarray:
@@ -197,11 +318,22 @@ def compute_voc_feature_rows(
     data_root: str,
     feature_axes: Iterable[str] | None = None,
     small_object_tau_ratio: float = 0.02,
+    rare_class_clip_percentile: float = 95.0,
+    crop_survival_crop_size: int = 512,
+    crop_survival_resize_ratio_range: tuple[float, float] = (0.5, 2.0),
+    crop_survival_simulations: int = 24,
+    crop_survival_seed: int = 0,
 ) -> VocFeatureComputationResult:
     resolved_axes = resolve_feature_axes(feature_axes)
-    class_presence_matrix, class_presence_rate, rarity_weights = _compute_class_presence_bundle(
+    (
+        class_presence_matrix,
+        class_presence_rate,
+        rarity_weights,
+        clipped_rarity_weights,
+    ) = _compute_class_presence_bundle(
         records,
         data_root=data_root,
+        rare_class_clip_percentile=float(rare_class_clip_percentile),
     )
     foreground_class_count = class_presence_matrix.sum(axis=1).astype(np.int64)
 
@@ -218,6 +350,23 @@ def compute_voc_feature_rows(
             class_presence_matrix.astype(np.float32) * rarity_weights[None, :]
         ).sum(axis=1).astype(np.float32)
         axis_scores["rare_class_coverage"] = rare_class_scores
+
+    if "rare_class_exposure_clipped" in resolved_axes:
+        clipped_rare_class_scores = (
+            class_presence_matrix.astype(np.float32) * clipped_rarity_weights[None, :]
+        ).sum(axis=1).astype(np.float32)
+        axis_scores["rare_class_exposure_clipped"] = clipped_rare_class_scores
+
+    if "crop_survival_score" in resolved_axes:
+        axis_scores["crop_survival_score"] = _compute_crop_survival_scores(
+            records,
+            data_root=data_root,
+            crop_size=int(crop_survival_crop_size),
+            resize_ratio_min=float(crop_survival_resize_ratio_range[0]),
+            resize_ratio_max=float(crop_survival_resize_ratio_range[1]),
+            simulations=int(crop_survival_simulations),
+            seed=int(crop_survival_seed),
+        )
 
     if "foreground_class_count" in resolved_axes:
         axis_scores["foreground_class_count"] = foreground_class_count.astype(np.float32)
@@ -281,6 +430,7 @@ def compute_voc_feature_rows(
         class_presence_matrix=class_presence_matrix,
         class_presence_rate=class_presence_rate,
         rarity_weights=rarity_weights,
+        clipped_rarity_weights=clipped_rarity_weights,
         foreground_class_count=foreground_class_count,
     )
 

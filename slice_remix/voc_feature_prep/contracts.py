@@ -64,6 +64,7 @@ class VocFeatureComputationResult:
     class_presence_matrix: np.ndarray
     class_presence_rate: np.ndarray
     rarity_weights: np.ndarray
+    clipped_rarity_weights: np.ndarray
     foreground_class_count: np.ndarray
 
 
@@ -74,6 +75,7 @@ class VocFeaturePreparationArtifacts:
     feature_axes: tuple[str, ...]
     feature_table_path: str
     summary_path: str
+    feasibility_report_path: str
     manifest_index_path: str
     manifest_paths: dict[str, str]
 
@@ -84,6 +86,7 @@ class VocFeaturePreparationArtifacts:
             "feature_axes": list(self.feature_axes),
             "feature_table_path": str(self.feature_table_path),
             "summary_path": str(self.summary_path),
+            "feasibility_report_path": str(self.feasibility_report_path),
             "manifest_index_path": str(self.manifest_index_path),
             "manifest_paths": dict(self.manifest_paths),
         }

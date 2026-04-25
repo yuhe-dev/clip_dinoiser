@@ -55,6 +55,42 @@ def parse_args() -> argparse.Namespace:
         help="Connected-component area ratio threshold used by the small-object scorer.",
     )
     parser.add_argument(
+        "--rare-class-clip-percentile",
+        type=float,
+        default=95.0,
+        help="Percentile ceiling for rare_class_exposure_clipped log inverse class-frequency weights.",
+    )
+    parser.add_argument(
+        "--crop-survival-crop-size",
+        type=int,
+        default=512,
+        help="Crop size used by crop_survival_score simulation.",
+    )
+    parser.add_argument(
+        "--crop-survival-resize-ratio-min",
+        type=float,
+        default=0.5,
+        help="Minimum supervised-probe resize ratio for crop_survival_score simulation.",
+    )
+    parser.add_argument(
+        "--crop-survival-resize-ratio-max",
+        type=float,
+        default=2.0,
+        help="Maximum supervised-probe resize ratio for crop_survival_score simulation.",
+    )
+    parser.add_argument(
+        "--crop-survival-simulations",
+        type=int,
+        default=24,
+        help="Monte Carlo trials per mask for crop_survival_score.",
+    )
+    parser.add_argument(
+        "--crop-survival-seed",
+        type=int,
+        default=None,
+        help="Optional seed for crop_survival_score simulation. Defaults to anchor seed.",
+    )
+    parser.add_argument(
         "--feature-axis",
         action="append",
         choices=list(AVAILABLE_AXIS_NAMES),
@@ -75,6 +111,12 @@ def main() -> None:
         anchor_seed=args.anchor_seed,
         candidate_budget=args.candidate_budget,
         small_object_tau_ratio=args.small_object_tau_ratio,
+        rare_class_clip_percentile=args.rare_class_clip_percentile,
+        crop_survival_crop_size=args.crop_survival_crop_size,
+        crop_survival_resize_ratio_min=args.crop_survival_resize_ratio_min,
+        crop_survival_resize_ratio_max=args.crop_survival_resize_ratio_max,
+        crop_survival_simulations=args.crop_survival_simulations,
+        crop_survival_seed=args.crop_survival_seed,
         feature_axes=args.feature_axis,
     )
     print(json.dumps(payload, indent=2))

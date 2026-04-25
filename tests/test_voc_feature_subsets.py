@@ -17,6 +17,7 @@ if ROOT not in sys.path:
 from clip_dinoiser.slice_remix.voc_feature_prep import (
     DEFAULT_AXIS_NAMES,
     build_voc_train_aug_records,
+    compute_voc_feature_rows,
     prepare_voc_train_aug_feature_experiment,
 )
 
@@ -79,9 +80,11 @@ class VocFeatureSubsetPreparationTests(unittest.TestCase):
 
             feature_table_path = Path(payload["feature_table_path"])
             summary_path = Path(payload["summary_path"])
+            feasibility_report_path = Path(payload["feasibility_report_path"])
             manifest_index_path = Path(payload["manifest_index_path"])
             self.assertTrue(feature_table_path.is_file())
             self.assertTrue(summary_path.is_file())
+            self.assertTrue(feasibility_report_path.is_file())
             self.assertTrue(manifest_index_path.is_file())
 
             lines = feature_table_path.read_text(encoding="utf-8").strip().splitlines()
@@ -94,9 +97,20 @@ class VocFeatureSubsetPreparationTests(unittest.TestCase):
             self.assertEqual(summary["pool_size"], 8)
             self.assertIn("small_object_ratio", summary["axis_summary"])
             self.assertIn("rare_class_coverage", summary["axis_summary"])
+            self.assertIn("mid_mean", summary["axis_summary"]["small_object_ratio"])
+            self.assertIn("bucket_capacity", summary["axis_summary"]["small_object_ratio"])
+            self.assertEqual(
+                summary["axis_summary"]["small_object_ratio"]["bucket_capacity"]["method"],
+                "rank_tertile",
+            )
+            self.assertIn("feasibility_gate", summary)
+            feasibility = json.loads(feasibility_report_path.read_text(encoding="utf-8"))
+            self.assertIn("axis_correlations", feasibility)
+            self.assertIn("axis_rank_correlations", feasibility)
+            self.assertIn("small_object_ratio", feasibility["axes"])
 
             manifest_index = json.loads(manifest_index_path.read_text(encoding="utf-8"))
-            self.assertEqual(len(manifest_index), 7)
+            self.assertEqual(len(manifest_index), 9)
             anchor_manifest = json.loads(Path(manifest_index["anchor"]).read_text(encoding="utf-8"))
             self.assertEqual(anchor_manifest["candidate_id"], "voc_train_aug_anchor_2_seed0")
             self.assertEqual(len(anchor_manifest["sample_ids"]), 2)
@@ -108,20 +122,28 @@ class VocFeatureSubsetPreparationTests(unittest.TestCase):
             low_manifest = json.loads(
                 Path(manifest_index["small_object_ratio.low"]).read_text(encoding="utf-8")
             )
+            mid_manifest = json.loads(
+                Path(manifest_index["small_object_ratio.mid"]).read_text(encoding="utf-8")
+            )
             matched_manifest = json.loads(
                 Path(manifest_index["small_object_ratio.matched_random"]).read_text(encoding="utf-8")
             )
             anchor_ids = set(anchor_manifest["sample_ids"])
             high_ids = set(high_manifest["sample_ids"])
             low_ids = set(low_manifest["sample_ids"])
+            mid_ids = set(mid_manifest["sample_ids"])
             matched_ids = set(matched_manifest["sample_ids"])
             self.assertFalse(anchor_ids & matched_ids)
             self.assertFalse(high_ids & matched_ids)
             self.assertFalse(low_ids & matched_ids)
-            self.assertEqual(
-                summary["axis_summary"]["small_object_ratio"]["overlap_counts"],
-                {"anchor": 0, "high": 0, "low": 0},
-            )
+            self.assertEqual(len(mid_ids), 2)
+            overlap_counts = summary["axis_summary"]["small_object_ratio"]["overlap_counts"]
+            self.assertEqual(overlap_counts["anchor"], 0)
+            self.assertEqual(overlap_counts["high"], 0)
+            self.assertEqual(overlap_counts["low"], 0)
+            self.assertIn("mid", overlap_counts)
+            gate = summary["feasibility_gate"]["small_object_ratio"]
+            self.assertEqual(gate["matched_random_mid_overlap"], overlap_counts["mid"])
 
     def test_prepare_voc_train_aug_feature_experiment_can_limit_axes(self):
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -193,6 +215,40 @@ class VocFeatureSubsetPreparationTests(unittest.TestCase):
             self.assertIn("foreground_area_ratio", first_row)
             self.assertIn("foreground_component_count", first_row)
             self.assertIn("component_fragmentation", first_row)
+
+    def test_compute_voc_feature_rows_supports_probe_stage_axes(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            root = Path(tmpdir)
+            source_root = self._build_toy_voc_train_aug_root(root)
+            records = build_voc_train_aug_records(source_root)
+
+            result = compute_voc_feature_rows(
+                records,
+                data_root=str(source_root),
+                feature_axes=[
+                    "rare_class_coverage",
+                    "rare_class_exposure_clipped",
+                    "crop_survival_score",
+                ],
+                rare_class_clip_percentile=75.0,
+                crop_survival_simulations=3,
+                crop_survival_seed=13,
+            )
+
+            self.assertIn("rare_class_coverage", result.axis_scores)
+            self.assertIn("rare_class_exposure_clipped", result.axis_scores)
+            self.assertIn("crop_survival_score", result.axis_scores)
+            np.testing.assert_allclose(
+                result.axis_scores["rare_class_coverage"],
+                (result.class_presence_matrix.astype(np.float32) * result.rarity_weights[None, :]).sum(axis=1),
+            )
+            clipped_positive = result.clipped_rarity_weights[result.clipped_rarity_weights > 0]
+            self.assertAlmostEqual(float(clipped_positive.mean()), 1.0, places=6)
+            self.assertTrue(np.all(np.isfinite(result.clipped_rarity_weights)))
+            self.assertTrue(np.all(result.axis_scores["crop_survival_score"] >= 0.0))
+            self.assertTrue(np.all(result.axis_scores["crop_survival_score"] <= 1.0))
+            self.assertIn("rare_class_exposure_clipped", result.rows[0])
+            self.assertIn("crop_survival_score", result.rows[0])
 
 
 if __name__ == "__main__":
